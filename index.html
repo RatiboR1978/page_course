@@ -1,0 +1,1691 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Нейросети 2027: от навыка к заработку — TSSS AI</title>
+  <meta name="description" content="Практический онлайн-курс по нейросетям. Научитесь создавать тексты, изображения, видео и озвучку с помощью ИИ, соберите портфолио и выйдите на первые заказы.">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Нейросети 2027: от навыка к заработку">
+  <meta property="og:description" content="Практический онлайн-курс + платформа с бесплатным доступом к топовым ИИ.">
+  <meta property="og:image" content="assets/img/og-cover.jpg">
+  <meta property="og:locale" content="ru_RU">
+
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+
+  <!-- Шрифты: Manrope (текст) + Comfortaa (логотип, акценты) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/sections.css">
+
+  <!-- Без JS блоки .reveal остались бы скрытыми — показываем их сразу -->
+  <noscript>
+    <style>.reveal { opacity: 1; transform: none; }</style>
+  </noscript>
+</head>
+
+<body>
+
+  <main>
+
+    <!-- ============================================================
+         1. HERO — первый экран
+         ============================================================ -->
+    <section class="hero hero--with-bg" id="hero">
+      <div class="container hero__inner">
+
+        <div class="hero__content">
+          <a class="logo" href="#hero" aria-label="TSSS AI — на главную">
+            <img class="logo__img" src="assets/img/logo-150x150.png" alt="" width="150" height="150" onerror="this.style.display='none'">
+            <span class="logo__text">
+              Дистанционное обучение<br>
+              удалённым профессиям
+            </span>
+          </a>
+
+          <p class="hero__eyebrow">
+            Практический онлайн-курс +<br>
+            платформа с бесплатным<br>
+            доступом к топовым ИИ!
+          </p>
+
+          <h1 class="hero__title">
+            <span class="grad-text">Нейросети 2027:</span><br>
+            от навыка<br>
+            к заработку
+          </h1>
+
+          <p class="hero__text">
+            Научитесь создавать тексты, изображения, видео и озвучку с помощью ИИ,
+            соберите портфолио и подготовьте первые услуги для выхода на заказы,
+            за которые уже готовы платить.
+          </p>
+
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="#tariffs">Выбрать тариф</a>
+            <a class="btn btn--secondary-dark" href="#program">Посмотреть программу</a>
+          </div>
+        </div>
+
+        <!-- Мобильная иллюстрация (на десктопе скрыта — там фон секции) -->
+        <div class="hero__media">
+          <img class="hero__img" src="assets/img/hero-mobile.jpg" alt="Персонаж TSSS AI за ноутбуком" width="873" height="833" onerror="this.closest('.hero__media').style.display='none'">
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         2. PAINS — почему результата всё ещё нет
+         ============================================================ -->
+    <section class="section section--dark pains" id="pains">
+      <div class="container">
+
+        <div class="section__head section__head--center pains__head reveal">
+          <h2 class="section__title">
+            Можно открыть ChatGPT тысячу раз и
+            <span class="grad-text grad-text--h1">так и не научиться</span>
+            работать с искусственным интеллектом
+          </h2>
+          <p class="section__subtitle">
+            Вы смотрите ролики про новые сервисы, сохраняете подборки промптов
+            и периодически пробуете какие-то нейросети
+          </p>
+        </div>
+
+        <p class="pains__lead reveal" data-reveal-delay="80">Но результата все еще нет:</p>
+
+        <ul class="pains__list">
+
+          <li class="pain-item reveal" data-reveal-delay="0">
+            <p class="pain-item__title">Просите ИИ написать текст</p>
+            <p class="pain-item__text">...а потом переписываете половину сами</p>
+          </li>
+
+          <li class="pain-item reveal" data-reveal-delay="80">
+            <p class="pain-item__title">Пытаетесь сделать красивую картинку</p>
+            <p class="pain-item__text">...генерируете 20 вариантов и все странные</p>
+          </li>
+
+          <li class="pain-item reveal" data-reveal-delay="160">
+            <p class="pain-item__title">Начинаете делать видео</p>
+            <p class="pain-item__text">...но через час понимаете, что проще заказать монтаж или вообще отказаться от идеи.</p>
+          </li>
+
+          <li class="pain-item reveal" data-reveal-delay="0">
+            <p class="pain-item__title">Каждый день слышите про новую нейросеть</p>
+            <p class="pain-item__text">...и каждый раз думаете: «Так... теперь еще и эту изучать?»</p>
+          </li>
+
+          <li class="pain-item reveal" data-reveal-delay="80">
+            <p class="pain-item__title">Смотрите ролики на YouTube</p>
+            <p class="pain-item__text">...но один автор говорит одно, второй - совершенно другое, а ясности становится только меньше.</p>
+          </li>
+
+          <li class="pain-item reveal" data-reveal-delay="160">
+            <p class="pain-item__title">Открываете ChatGPT все чаще</p>
+            <p class="pain-item__text">...но используете его в основном для ответов на вопросы, генерации прикольных картинок и написания поздравления коллеге И понимаете, что могли бы получать от него гораздо больше пользы.</p>
+          </li>
+
+          <li class="pain-item reveal" data-reveal-delay="0">
+            <p class="pain-item__title">Появляется мысль попробовать заработать с помощью ИИ</p>
+            <p class="pain-item__text">..но сразу возникает вопрос: «А что именно я вообще могу предложить людям?»</p>
+          </li>
+
+          <li class="pain-item reveal" data-reveal-delay="80">
+            <p class="pain-item__title">Даже если что-то получилось</p>
+            <p class="pain-item__text">...нет ни одной работы, которую хотелось бы показать работодателю или первому клиенту.</p>
+          </li>
+
+          <li class="pain-item reveal" data-reveal-delay="160">
+            <p class="pain-item__title">Смотрите на тех, кто зарабатывает с помощью ИИ</p>
+            <p class="pain-item__text">...и кажется, что это только для дизайнеров, программистов или людей с техническим образованием.</p>
+          </li>
+
+          <!-- Иллюстрация перегруза — не отдельный блок под списком, а ячейка
+               той же сетки: на десктопе занимает третью колонку со 2-й по 4-ю
+               строку, и девять пунктов ложатся вокруг неё без пустых ячеек.
+               Картинка декоративная (дублирует смысл текста рядом), поэтому
+               alt пустой — скринридер её пропускает. -->
+          <li class="pains__media media-placeholder reveal" data-reveal-delay="80">
+            <img src="assets/img/pains.png" alt="" width="1254" height="1254"
+                 loading="lazy" decoding="async">
+          </li>
+
+        </ul>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         3. REASON — почему так происходит
+         ============================================================ -->
+    <section class="section section--dark reason" id="reason">
+      <div class="container">
+
+        <div class="section__head section__head--center reason__head reveal">
+          <h2 class="section__title">Почему так происходит?</h2>
+          <p class="section__subtitle">
+            Потому что большинство изучает отдельные сервисы и копирует чужие промпты,
+            но не понимает <span class="grad-text grad-text--h1">общей системы</span>.
+          </p>
+        </div>
+
+        <p class="reason__lead reveal" data-reveal-delay="80">Чтобы получать качественный результат, нужно знать:</p>
+
+        <!-- Нумерация 01–04 рисуется CSS-счётчиком на .reason-step__node.
+             Раскладка — таймлайн, а не сетка карточек (как на pains,
+             audience и т.д.): четыре пункта — это порядок понимания,
+             а не независимые тезисы, и общая линия читается как путь. -->
+        <ol class="reason__timeline">
+
+          <li class="reason-step reveal" data-reveal-delay="0">
+            <span class="reason-step__node" aria-hidden="true"></span>
+            <p class="reason-step__text">какую нейросеть выбрать</p>
+          </li>
+
+          <li class="reason-step reveal" data-reveal-delay="80">
+            <span class="reason-step__node" aria-hidden="true"></span>
+            <p class="reason-step__text">как правильно поставить задачу</p>
+          </li>
+
+          <li class="reason-step reveal" data-reveal-delay="160">
+            <span class="reason-step__node" aria-hidden="true"></span>
+            <p class="reason-step__text">как доработать ответ</p>
+          </li>
+
+          <li class="reason-step reveal" data-reveal-delay="0">
+            <span class="reason-step__node" aria-hidden="true"></span>
+            <p class="reason-step__text">как превратить генерацию в готовую работу</p>
+          </li>
+
+        </ol>
+
+        <div class="reason__outro reveal" data-reveal-delay="80">
+          <p class="reason__result">
+            Тогда ИИ перестает быть развлечением и становится инструментом для создания
+            текстов, визуалов, видео и услуг, на которых можно зарабатывать.
+          </p>
+
+          <p class="reason__path-title">На курсе вы пройдете путь:</p>
+
+          <!-- Стрелки между шагами — на ::after, в текст не пишутся -->
+          <ol class="reason__path">
+            <li class="reason__path-item">навык</li>
+            <li class="reason__path-item">портфолио</li>
+            <li class="reason__path-item">услуга</li>
+            <li class="reason__path-item">первые заказы</li>
+          </ol>
+        </div>
+
+        <div class="reason__cta reveal" data-reveal-delay="160">
+          <a class="btn btn--primary" href="#">Хочу перейти от экспериментов к результату</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         4. TREND — ИИ становится нормой, а не преимуществом
+         ============================================================ -->
+    <section class="section section--dark trend" id="trend">
+      <div class="container">
+
+        <div class="section__head section__head--center trend__head reveal">
+          <h2 class="section__title">
+            Тридцать лет назад умение работать на компьютере было преимуществом.
+            Сегодня это норма, которую даже не пишут в вакансиях.
+          </h2>
+          <p class="section__subtitle">
+            С искусственным интеллектом происходит то же самое –
+            только <span class="grad-text grad-text--h1">в десятки раз быстрее</span>.
+          </p>
+        </div>
+
+        <!-- Иллюстрация и цифры — одна двухколоночная связка: на десктопе
+             картинка слева, две карточки друг под другом справа. В разметке
+             цифры идут первыми (на мобильном они важнее и стоят выше),
+             а на десктопе колонки расставляет grid-column. -->
+        <div class="trend__facts">
+
+          <ul class="trend__stats">
+
+            <li class="stat-card reveal" data-reveal-delay="0">
+              <p class="stat-card__value">66%</p>
+              <p class="stat-card__text">
+                руководителей в США заявляют, что не наняли бы кандидата
+                без навыков работы с ИИ
+              </p>
+              <p class="stat-card__source">Источник: Microsoft &amp; LinkedIn, Work Trend Index, 2024</p>
+            </li>
+
+            <li class="stat-card reveal" data-reveal-delay="80">
+              <p class="stat-card__value">65%</p>
+              <p class="stat-card__text">
+                сотрудников боятся отстать, если не освоят ИИ вовремя
+              </p>
+              <p class="stat-card__source">Источник: Microsoft, Work Trend Index, 2026</p>
+            </li>
+
+          </ul>
+
+          <!-- Иллюстрация рядом со статистикой. Декоративная (смысл несут
+               цифры в соседней колонке), поэтому alt пустой. Картинка
+               со своим тёмным фоном: --bare убирает рамку заглушки,
+               --fade растворяет края картинки в фоне секции. -->
+          <div class="trend__media media-placeholder media-placeholder--bare media-placeholder--fade reveal" data-reveal-delay="160">
+            <img src="assets/img/trend.png" alt="" width="1254" height="1254"
+                 loading="lazy" decoding="async">
+          </div>
+
+        </div>
+
+        <p class="trend__question reveal" data-reveal-delay="80">
+          Вопрос уже не в том, придут ли нейросети в вашу профессию.
+          Вопрос в том, освоите ли вы их раньше большинства – и научитесь ли
+          использовать по-настоящему, а не на уровне «ну открывал, вроде все понятно».
+        </p>
+
+        <!-- Тире-маркеры пунктов рисуются на ::before, в текст не пишутся -->
+        <div class="trend__audit reveal" data-reveal-delay="0">
+          <p class="trend__lead">Если искусственный интеллект прямо сейчас:</p>
+
+          <ul class="trend__list">
+            <li class="trend__item">не освобождает вам хотя бы 10–15 рабочих часов в неделю</li>
+            <li class="trend__item">не помогает быстрее закрывать привычные рабочие задачи</li>
+            <li class="trend__item">не дает понимания, какой сервис выбрать под каждую задачу</li>
+            <li class="trend__item">не позволяет найти способ заработать с его помощью</li>
+            <li class="trend__item">не делает вас более ценным специалистом на рынке</li>
+          </ul>
+
+          <p class="trend__verdict">
+            …то, скорее всего, вы используете
+            <span class="grad-text grad-text--h1">5–7%</span> его возможностей.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         5. PATH — за 8 недель: шесть шагов курса
+         ============================================================ -->
+    <section class="section section--dark path" id="path">
+      <div class="container">
+
+        <div class="section__head section__head--center path__head reveal">
+          <h2 class="section__title">
+            <span class="grad-text grad-text--h1">За 8 недель</span>
+            вы пройдете путь от первого промпта до готовой услуги
+          </h2>
+        </div>
+
+        <!-- Нумерация 01–06 рисуется CSS-счётчиком на .path-step__node.
+             Раскладка — вертикальная зигзаг-таймлайн, а не сетка карточек:
+             шесть шагов образуют маршрут курса, шаги стоят по очереди
+             слева/справа от центральной линии на десктопе. В каждой
+             карточке шага — заглушка под иллюстрацию/скриншот результата
+             (media-placeholder), пока изображений нет. -->
+        <ol class="path__timeline">
+
+          <li class="path-step reveal" data-reveal-delay="0">
+            <span class="path-step__node" aria-hidden="true"></span>
+            <div class="path-step__card">
+              <h3 class="path-step__title">Освоите инструменты</h3>
+              <p class="path-step__text">Поймете, какие нейросети использовать для текстов, визуалов, видео и озвучки – и перестанете хвататься за каждую новую.</p>
+              <div class="path-step__media media-placeholder media-placeholder--wide" aria-hidden="true"></div>
+            </div>
+          </li>
+
+          <li class="path-step reveal" data-reveal-delay="80">
+            <span class="path-step__node" aria-hidden="true"></span>
+            <div class="path-step__card">
+              <h3 class="path-step__title">Научитесь создавать результат</h3>
+              <p class="path-step__text">Не отдельные генерации, а законченные материалы, которые решают задачу клиента.</p>
+              <div class="path-step__media media-placeholder media-placeholder--wide" aria-hidden="true"></div>
+            </div>
+          </li>
+
+          <li class="path-step reveal" data-reveal-delay="160">
+            <span class="path-step__node" aria-hidden="true"></span>
+            <div class="path-step__card">
+              <h3 class="path-step__title">Выберете направление</h3>
+              <p class="path-step__text">Определите, какие ИИ-услуги подходят под ваш опыт, интересы и сильные стороны.</p>
+              <div class="path-step__media media-placeholder media-placeholder--wide" aria-hidden="true"></div>
+            </div>
+          </li>
+
+          <li class="path-step reveal" data-reveal-delay="0">
+            <span class="path-step__node" aria-hidden="true"></span>
+            <div class="path-step__card">
+              <h3 class="path-step__title">Соберете портфолио</h3>
+              <p class="path-step__text">Создадите примеры работ, даже если у вас еще не было коммерческих заказчиков.</p>
+              <div class="path-step__media media-placeholder media-placeholder--wide" aria-hidden="true"></div>
+            </div>
+          </li>
+
+          <li class="path-step reveal" data-reveal-delay="80">
+            <span class="path-step__node" aria-hidden="true"></span>
+            <div class="path-step__card">
+              <h3 class="path-step__title">Упакуете предложение</h3>
+              <p class="path-step__text">Сформулируете, что вы делаете, для кого, какой результат получает клиент и сколько стоит работа.</p>
+              <div class="path-step__media media-placeholder media-placeholder--wide" aria-hidden="true"></div>
+            </div>
+          </li>
+
+          <li class="path-step reveal" data-reveal-delay="160">
+            <span class="path-step__node" aria-hidden="true"></span>
+            <div class="path-step__card">
+              <h3 class="path-step__title">Начнете искать первые заказы</h3>
+              <p class="path-step__text">Получите пошаговый план на первые 30 дней и готовые материалы для выхода к клиентам.</p>
+              <div class="path-step__media media-placeholder media-placeholder--wide" aria-hidden="true"></div>
+            </div>
+          </li>
+
+        </ol>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         6. OFFERS — что можно предлагать и сколько это стоит
+         ============================================================ -->
+    <section class="section section--dark offers" id="offers">
+      <div class="container">
+
+        <div class="section__head section__head--center offers__head reveal">
+          <h2 class="section__title">
+            Что вы сможете предлагать после обучения –
+            и <span class="grad-text grad-text--h1">сколько это стоит на рынке</span>
+          </h2>
+          <p class="section__subtitle">
+            Не нужно становиться программистом или собирать сложные ИИ-системы.
+            Уже на первом уровне можно зарабатывать на понятных прикладных задачах.
+            Ниже – ориентировочные цены фриланс-рынка для начинающего специалиста.
+          </p>
+        </div>
+
+        <!-- Тире в начале пунктов рисуются на ::before, в текст не пишутся -->
+        <ul class="offers__grid">
+
+          <li class="offer-card reveal" data-reveal-delay="0">
+            <div class="offer-card__icon media-placeholder media-placeholder--icon media-placeholder--bare">
+              <img src="assets/img/offer-text.png" alt="" width="1254" height="1254" loading="lazy" decoding="async">
+            </div>
+            <h3 class="offer-card__title">Тексты и контент</h3>
+            <ul class="offer-card__list">
+              <li class="offer-card__item">пост для соцсетей – <span class="offer-card__price">500–2 000 ₽</span></li>
+              <li class="offer-card__item">контент-план на месяц – <span class="offer-card__price">5 000–15 000 ₽</span></li>
+              <li class="offer-card__item">текст для лендинга – <span class="offer-card__price">3 000–10 000 ₽</span></li>
+              <li class="offer-card__item">описания товаров, email-письма, сценарии коротких видео, рекламные объявления, редактирование готовых материалов</li>
+            </ul>
+          </li>
+
+          <li class="offer-card reveal" data-reveal-delay="80">
+            <div class="offer-card__icon media-placeholder media-placeholder--icon media-placeholder--bare">
+              <img src="assets/img/offer-image.png" alt="" width="1254" height="1254" loading="lazy" decoding="async">
+            </div>
+            <h3 class="offer-card__title">Изображения и дизайн-контент</h3>
+            <ul class="offer-card__list">
+              <li class="offer-card__item">отдельный макет: креатив, обложка, визуал для поста – <span class="offer-card__price">от 500–3 000 ₽</span></li>
+              <li class="offer-card__item">пакет визуалов в едином стиле – <span class="offer-card__price">от 5 000 ₽</span></li>
+              <li class="offer-card__item">карточки товаров, обработка и улучшение фото, замена фона, аватары, простые элементы фирменного стиля</li>
+            </ul>
+          </li>
+
+          <li class="offer-card reveal" data-reveal-delay="0">
+            <div class="offer-card__icon media-placeholder media-placeholder--icon media-placeholder--bare">
+              <img src="assets/img/offer-video.png" alt="" width="1254" height="1254" loading="lazy" decoding="async">
+            </div>
+            <h3 class="offer-card__title">Видео</h3>
+            <ul class="offer-card__list">
+              <li class="offer-card__item">короткий ролик для Reels или Shorts – <span class="offer-card__price">от 5 000 ₽</span> у фрилансера</li>
+              <li class="offer-card__item">нарезка вебинара или подкаста на серию клипов, автоматические субтитры</li>
+              <li class="offer-card__item">оживление фотографий, видео с ИИ-аватаром, перевод и переозвучка, пакеты контента для соцсетей</li>
+            </ul>
+          </li>
+
+          <li class="offer-card reveal" data-reveal-delay="80">
+            <div class="offer-card__icon media-placeholder media-placeholder--icon media-placeholder--bare">
+              <img src="assets/img/offer-audio.png" alt="" width="1254" height="1254" loading="lazy" decoding="async">
+            </div>
+            <h3 class="offer-card__title">Голос и аудио</h3>
+            <ul class="offer-card__list">
+              <li class="offer-card__item">озвучка ролика, презентации, аудиоверсия текста</li>
+              <li class="offer-card__item">музыкальный джингл, фоновая музыка, многоголосые диалоги</li>
+              <li class="offer-card__item">рекламный аудиоролик под ключ</li>
+            </ul>
+          </li>
+
+        </ul>
+
+        <!-- Самый доходный формат — отдельная панель, а не пятая карточка сетки -->
+        <div class="offers__combo reveal" data-reveal-delay="0">
+          <h3 class="offers__combo-title">
+            Комплексные услуги – <span class="grad-text grad-text--h1">самый доходный формат</span>
+          </h3>
+          <p class="offers__combo-lead">
+            Навыки можно объединять и продавать не отдельную картинку или текст,
+            а готовый результат:
+          </p>
+
+          <ul class="offers__combo-list">
+            <li class="offers__combo-item">контент-пакет для эксперта</li>
+            <li class="offers__combo-item">оформление Telegram-канала</li>
+            <li class="offers__combo-item">комплект материалов под запуск</li>
+            <li class="offers__combo-item">серия рекламных креативов</li>
+            <li class="offers__combo-item">визуалы и тексты для маркетплейса</li>
+            <li class="offers__combo-item">рекламный ролик под ключ</li>
+          </ul>
+        </div>
+
+        <p class="offers__note reveal" data-reveal-delay="80">
+          Вилки приведены по открытым данным фриланс-рынка (2025–2026).
+          Итоговый чек зависит от качества работ, ниши, региона и опыта специалиста.
+          Курс не гарантирует конкретный доход.
+        </p>
+
+        <div class="offers__cta reveal" data-reveal-delay="160">
+          <a class="btn btn--primary" href="#program">Посмотреть, чему я научусь</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         7. AUDIENCE — для кого этот курс
+         ============================================================ -->
+    <section class="section section--dark audience" id="audience">
+      <div class="container">
+
+        <div class="section__head section__head--center audience__head reveal">
+          <h2 class="section__title">
+            Курс для тех, кто хочет не просто узнать об ИИ,
+            а получить <span class="grad-text grad-text--h1">практический результат</span>
+          </h2>
+        </div>
+
+        <ul class="audience__grid">
+
+          <li class="audience-card reveal" data-reveal-delay="0">
+            <div class="audience-card__icon media-placeholder media-placeholder--icon" aria-hidden="true"></div>
+            <h3 class="audience-card__title">Вы начинаете с нуля</h3>
+            <p class="audience-card__text">Не знаете, какие нейросети выбрать, как зарегистрироваться и что писать в запросе. Курс начинается с базовых действий и объясняется без технического языка.</p>
+          </li>
+
+          <li class="audience-card reveal" data-reveal-delay="80">
+            <div class="audience-card__icon media-placeholder media-placeholder--icon" aria-hidden="true"></div>
+            <h3 class="audience-card__title">Вы уже пробовали нейросети</h3>
+            <p class="audience-card__text">Пользовались ChatGPT, создавали изображения, тестировали сервисы – но результат нестабильный. Вы систематизируете знания и научитесь доводить генерации до рабочего уровня.</p>
+          </li>
+
+          <li class="audience-card reveal" data-reveal-delay="160">
+            <div class="audience-card__icon media-placeholder media-placeholder--icon" aria-hidden="true"></div>
+            <h3 class="audience-card__title">Вы хотите дополнительный доход</h3>
+            <p class="audience-card__text">Ищете навык, который можно освоить параллельно с основной работой и постепенно превратить в источник заказов.</p>
+          </li>
+
+          <li class="audience-card reveal" data-reveal-delay="0">
+            <div class="audience-card__icon media-placeholder media-placeholder--icon" aria-hidden="true"></div>
+            <h3 class="audience-card__title">Вы хотите усилить свою профессию</h3>
+            <p class="audience-card__text">Работаете с текстами, продвижением, клиентами, контентом, продажами, обучением или своим проектом. ИИ поможет закрывать задачи быстрее и расширить перечень услуг.</p>
+          </li>
+
+          <li class="audience-card reveal" data-reveal-delay="80">
+            <div class="audience-card__icon media-placeholder media-placeholder--icon" aria-hidden="true"></div>
+            <h3 class="audience-card__title">Вы хотите сменить направление</h3>
+            <p class="audience-card__text">Не понимаете, какую профессию выбрать, и хотите сначала попробовать несколько прикладных ИИ-навыков. В процессе увидите, что получается лучше всего.</p>
+          </li>
+
+        </ul>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         8. METHOD — не изучаем сервисы ради сервисов
+         ============================================================ -->
+    <section class="section section--dark method" id="method">
+      <div class="container">
+
+        <div class="section__head section__head--center method__head reveal">
+          <h2 class="section__title">Не изучаем сервисы ради сервисов</h2>
+          <p class="section__subtitle">
+            Каждый навык вы проходите через четыре шага – и на выходе получаете
+            <span class="grad-text grad-text--h1">не конспект, а готовую работу</span>.
+          </p>
+        </div>
+
+        <!-- Нумерация 01–04 рисуется CSS-счётчиком на .method-card::before.
+             Между карточками на десктопе — стрелка-коннектор (::after),
+             как в цепочке .reason__path-item: четыре шага читаются как
+             один процесс со стрелками, а не как сетка независимых карточек.
+             В каждой карточке — заглушка под иконку шага. -->
+        <ol class="method__grid">
+
+          <li class="method-card reveal" data-reveal-delay="0">
+            <div class="method-card__icon media-placeholder media-placeholder--icon" aria-hidden="true"></div>
+            <h3 class="method-card__title">Разбираетесь</h3>
+            <p class="method-card__text">Получаете понятное объяснение инструмента и принципа его работы.</p>
+          </li>
+
+          <li class="method-card reveal" data-reveal-delay="80">
+            <div class="method-card__icon media-placeholder media-placeholder--icon" aria-hidden="true"></div>
+            <h3 class="method-card__title">Повторяете</h3>
+            <p class="method-card__text">Вместе с преподавателем проходите весь процесс на экране.</p>
+          </li>
+
+          <li class="method-card reveal" data-reveal-delay="160">
+            <div class="method-card__icon media-placeholder media-placeholder--icon" aria-hidden="true"></div>
+            <h3 class="method-card__title">Создаете</h3>
+            <p class="method-card__text">Выполняете свою работу: текст, визуал, ролик, аудио или комплексный проект.</p>
+          </li>
+
+          <li class="method-card reveal" data-reveal-delay="240">
+            <div class="method-card__icon media-placeholder media-placeholder--icon" aria-hidden="true"></div>
+            <h3 class="method-card__title">Упаковываете</h3>
+            <p class="method-card__text">Превращаете результат в кейс для портфолио или в услугу для клиента.</p>
+          </li>
+
+        </ol>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ДЕВЯТЫЙ ЭКРАН — сколько это займёт времени
+         ============================================================ -->
+    <section class="section section--dark timing" id="timing">
+      <div class="container">
+
+        <div class="section__head section__head--center timing__head reveal">
+          <h2 class="section__title">Сколько это займет времени</h2>
+        </div>
+
+        <!-- Разделители «·» из исходной строки — служебная пунктуация
+             перечисления: каждый пункт стал отдельной таблеткой -->
+        <ul class="timing__facts reveal" data-reveal-delay="80">
+          <li class="timing__fact">Старт сразу после оплаты</li>
+          <li class="timing__fact">8 недель</li>
+          <li class="timing__fact">32 урока</li>
+          <li class="timing__fact">Новый модуль каждую неделю</li>
+          <li class="timing__fact">3–5 часов в неделю</li>
+          <li class="timing__fact">Материалы остаются на 12 месяцев</li>
+        </ul>
+
+        <div class="timing__notes reveal" data-reveal-delay="160">
+          <p class="timing__text">
+            Ждать набора группы не нужно – обучение начинается сразу после оплаты.
+            Дальше каждую неделю открывается новый модуль: семь недель на программу
+            и восьмая на финальный проект. Такой темп не дает скатиться
+            в «посмотрю потом» и не заваливает вас всем курсом в первый день.
+          </p>
+          <p class="timing__text">
+            Если вы выпали на неделю,
+            <span class="grad-text grad-text--h1">догнать реально</span>:
+            открытые модули остаются с вами и никуда не пропадают, а доступ
+            к материалам сохраняется 12 месяцев.
+          </p>
+        </div>
+
+        <!-- Тире в начале пунктов рисуются на .timing__free-item::before -->
+        <div class="timing__free reveal" data-reveal-delay="240">
+          <h3 class="timing__free-title">Вам не понадобится</h3>
+          <ul class="timing__free-list">
+            <li class="timing__free-item">программировать</li>
+            <li class="timing__free-item">разбираться в сложных терминах</li>
+            <li class="timing__free-item">покупать профессиональное оборудование</li>
+            <li class="timing__free-item">оплачивать все платные сервисы – для большей части заданий хватит бесплатных версий и доступных аналогов</li>
+            <li class="timing__free-item">заранее уметь писать, рисовать или монтировать</li>
+            <li class="timing__free-item">иметь коммерческий опыт</li>
+          </ul>
+          <p class="timing__free-note">
+            Для доступа к зарубежным сервисам в курсе есть отдельные технические
+            инструкции и подобранные альтернативы.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ДЕСЯТЫЙ ЭКРАН — программа курса: модули 0–6 и финальный проект
+         ============================================================ -->
+    <section class="section section--dark program" id="program">
+      <div class="container">
+
+        <div class="section__head section__head--center program__head reveal">
+          <h2 class="section__title">
+            От основ работы с ИИ
+            <span class="grad-text grad-text--h1">до первых предложений клиентам</span>
+          </h2>
+        </div>
+
+        <!-- Аккордеон на нативных <details>: программа длинная, семь модулей
+             целиком развёрнутыми читаются как стена текста. Первый модуль
+             открыт, чтобы блок не выглядел пустым. Скрипты не нужны. -->
+        <ul class="program__list">
+
+          <li class="module-card reveal" data-reveal-delay="0">
+            <details class="module-card__box" open>
+              <summary class="module-card__summary">
+                <span class="module-card__meta">
+                  <span class="module-card__num">Модуль 0</span>
+                  <span class="module-card__lessons">3 урока</span>
+                </span>
+                <h3 class="module-card__title">Быстрый старт</h3>
+                <p class="module-card__promise">Получите первый результат и разберитесь, как устроено обучение</p>
+              </summary>
+
+              <div class="module-card__body">
+                <!-- Тире в начале пунктов рисуются на ::before, в текст не пишутся -->
+                <ul class="module-card__topics">
+                  <li class="module-card__topic">что такое нейросети простыми словами и какие задачи они уже закрывают</li>
+                  <li class="module-card__topic">что ИИ делает хорошо, а где стабильно ошибается</li>
+                  <li class="module-card__topic">какие сервисы понадобятся во время обучения и как к ним подключиться</li>
+                  <li class="module-card__topic">как организовать учебу так, чтобы не бросить на второй неделе</li>
+                </ul>
+
+                <div class="module-card__block">
+                  <h4 class="module-card__label">Практика</h4>
+                  <p class="module-card__text">Создадите первый материал с помощью ИИ и определите задачи, которые хотите научиться решать.</p>
+                </div>
+
+                <div class="module-card__block module-card__block--result">
+                  <h4 class="module-card__label">Результат модуля</h4>
+                  <p class="module-card__text">Вы перестаете бояться нейросетей и получаете первый осязаемый результат.</p>
+                </div>
+              </div>
+            </details>
+          </li>
+
+          <li class="module-card reveal" data-reveal-delay="80">
+            <details class="module-card__box">
+              <summary class="module-card__summary">
+                <span class="module-card__meta">
+                  <span class="module-card__num">Модуль 1</span>
+                  <span class="module-card__lessons">5 уроков</span>
+                </span>
+                <h3 class="module-card__title">Основы работы с нейросетями</h3>
+                <p class="module-card__promise">Научитесь выбирать инструменты и получать предсказуемый результат</p>
+              </summary>
+
+              <div class="module-card__body">
+                <ul class="module-card__topics">
+                  <li class="module-card__topic">обзор категорий нейросетей и сравнение ChatGPT, Claude, Gemini, GigaChat и других</li>
+                  <li class="module-card__topic">какие сервисы доступны пользователям из России, что бесплатно, а за что стоит платить</li>
+                  <li class="module-card__topic">структура сильного промпта и доработка ответа уточняющими запросами</li>
+                  <li class="module-card__topic">проверка фактов и борьба с выдуманными ответами</li>
+                  <li class="module-card__topic">безопасность и конфиденциальность данных</li>
+                  <li class="module-card__topic">создание собственной библиотеки промптов</li>
+                </ul>
+
+                <div class="module-card__block">
+                  <h4 class="module-card__label">Практика</h4>
+                  <p class="module-card__text">Протестируете несколько моделей, соберете свой набор сервисов и напишете рабочие промпты под реальные задачи.</p>
+                </div>
+
+                <div class="module-card__block module-card__block--result">
+                  <h4 class="module-card__label">Результат модуля</h4>
+                  <p class="module-card__text">Вы понимаете, какую нейросеть взять, как поставить ей задачу и как проверить результат.</p>
+                </div>
+              </div>
+            </details>
+          </li>
+
+          <li class="module-card reveal" data-reveal-delay="0">
+            <details class="module-card__box">
+              <summary class="module-card__summary">
+                <span class="module-card__meta">
+                  <span class="module-card__num">Модуль 2</span>
+                  <span class="module-card__lessons">6 уроков</span>
+                </span>
+                <h3 class="module-card__title">Тексты с помощью ИИ</h3>
+                <p class="module-card__promise">Создавайте тексты, которые можно публиковать и продавать клиентам</p>
+              </summary>
+
+              <div class="module-card__body">
+                <ul class="module-card__topics">
+                  <li class="module-card__topic">посты, статьи, письма и рассылки, сценарии коротких видео</li>
+                  <li class="module-card__topic">идеи и контент-планы, работа с большими документами</li>
+                  <li class="module-card__topic">продающие офферы, описания товаров, тексты для лендингов</li>
+                  <li class="module-card__topic">управление стилем, тоном и длиной – и обучение нейросети писать в вашей манере</li>
+                  <li class="module-card__topic">как убрать шаблонный «нейросетевой» стиль, по которому текст видно за версту</li>
+                </ul>
+
+                <div class="module-card__block">
+                  <h4 class="module-card__label">Практика</h4>
+                  <p class="module-card__text">Создадите пост, контент-план, продающее описание и персональный промпт-профиль.</p>
+                </div>
+
+                <div class="module-card__block module-card__block--sale">
+                  <h4 class="module-card__label">Можно предлагать клиентам</h4>
+                  <p class="module-card__text">Создание контента, контент-планы, сценарии, описания товаров, письма, продающие тексты, редактирование материалов.</p>
+                </div>
+
+                <div class="module-card__block module-card__block--result">
+                  <h4 class="module-card__label">Результат модуля</h4>
+                  <p class="module-card__text">Готовые текстовые работы для портфолио и понимание, какие текстовые услуги можно продавать.</p>
+                </div>
+              </div>
+            </details>
+          </li>
+
+          <li class="module-card reveal" data-reveal-delay="80">
+            <details class="module-card__box">
+              <summary class="module-card__summary">
+                <span class="module-card__meta">
+                  <span class="module-card__num">Модуль 3</span>
+                  <span class="module-card__lessons">6 уроков</span>
+                </span>
+                <h3 class="module-card__title">Изображения с помощью ИИ</h3>
+                <p class="module-card__promise">Создавайте коммерческие визуалы без фотостудии и сложных программ</p>
+              </summary>
+
+              <div class="module-card__body">
+                <ul class="module-card__topics">
+                  <li class="module-card__topic">выбор генератора под задачу и промпты для изображений</li>
+                  <li class="module-card__topic">управление стилем, светом, ракурсом и композицией</li>
+                  <li class="module-card__topic">серии изображений в единой стилистике</li>
+                  <li class="module-card__topic">улучшение фотографий, замена фона и объектов, расширение кадра</li>
+                  <li class="module-card__topic">предметные изображения, визуалы для соцсетей, аватары и обложки</li>
+                  <li class="module-card__topic">ограничения коммерческого использования – что можно продавать, а что нет</li>
+                </ul>
+
+                <div class="module-card__block">
+                  <h4 class="module-card__label">Практика</h4>
+                  <p class="module-card__text">Создадите серию изображений, обработаете фотографию и соберете визуальный комплект для реального проекта.</p>
+                </div>
+
+                <div class="module-card__block module-card__block--sale">
+                  <h4 class="module-card__label">Можно предлагать клиентам</h4>
+                  <p class="module-card__text">Рекламные креативы, оформление соцсетей, обложки, визуалы для постов, карточки товаров, обработку фото, аватары, визуальные контент-пакеты.</p>
+                </div>
+
+                <div class="module-card__block module-card__block--result">
+                  <h4 class="module-card__label">Результат модуля</h4>
+                  <p class="module-card__text">Готовый визуальный кейс для портфолио.</p>
+                </div>
+              </div>
+            </details>
+          </li>
+
+          <li class="module-card reveal" data-reveal-delay="0">
+            <details class="module-card__box">
+              <summary class="module-card__summary">
+                <span class="module-card__meta">
+                  <span class="module-card__num">Модуль 4</span>
+                  <span class="module-card__lessons">5 уроков</span>
+                </span>
+                <h3 class="module-card__title">Видео с помощью ИИ</h3>
+                <p class="module-card__promise">Создавайте короткие ролики без сложных съемок и долгого монтажа</p>
+              </summary>
+
+              <div class="module-card__body">
+                <ul class="module-card__topics">
+                  <li class="module-card__topic">видео из текста и из изображений, оживление фотографий, движение камеры</li>
+                  <li class="module-card__topic">монтаж с помощью ИИ: удаление пауз и слов-паразитов, автоматические субтитры</li>
+                  <li class="module-card__topic">нарезка длинных видео на Shorts и Reels</li>
+                  <li class="module-card__topic">видео с ИИ-аватаром, перевод и переозвучка роликов</li>
+                  <li class="module-card__topic">пакетная подготовка контента в едином стиле</li>
+                </ul>
+
+                <div class="module-card__block">
+                  <h4 class="module-card__label">Практика</h4>
+                  <p class="module-card__text">Создадите короткий ролик, видео с ИИ-аватаром и серию вертикальных видео для соцсетей.</p>
+                </div>
+
+                <div class="module-card__block module-card__block--sale">
+                  <h4 class="module-card__label">Можно предлагать клиентам</h4>
+                  <p class="module-card__text">Reels и Shorts, нарезку вебинаров и подкастов, ролики из фотографий, субтитры, видео с аватаром, перевод и переозвучку, пакетное производство контента.</p>
+                </div>
+
+                <div class="module-card__block module-card__block--result">
+                  <h4 class="module-card__label">Результат модуля</h4>
+                  <p class="module-card__text">Несколько готовых видео для портфолио.</p>
+                </div>
+              </div>
+            </details>
+          </li>
+
+          <li class="module-card reveal" data-reveal-delay="80">
+            <details class="module-card__box">
+              <summary class="module-card__summary">
+                <span class="module-card__meta">
+                  <span class="module-card__num">Модуль 5</span>
+                  <span class="module-card__lessons">4 урока</span>
+                </span>
+                <h3 class="module-card__title">Голос, озвучка и музыка</h3>
+                <p class="module-card__promise">Дополните свои проекты профессиональным звучанием</p>
+              </summary>
+
+              <div class="module-card__body">
+                <ul class="module-card__topics">
+                  <li class="module-card__topic">синтез голоса, выбор тембра и эмоциональной подачи, клонирование голоса</li>
+                  <li class="module-card__topic">озвучка текстов и презентаций, многоголосые диалоги</li>
+                  <li class="module-card__topic">музыкальные фрагменты, джинглы, подбор фоновой музыки</li>
+                  <li class="module-card__topic">сборка рекламного аудиоролика: сценарий + голос + музыка</li>
+                  <li class="module-card__topic">авторские права на голос и музыку – что учитывать при коммерческом использовании</li>
+                </ul>
+
+                <div class="module-card__block">
+                  <h4 class="module-card__label">Практика</h4>
+                  <p class="module-card__text">Создадите озвученный материал, музыкальный джингл и короткий рекламный аудиоролик.</p>
+                </div>
+
+                <div class="module-card__block module-card__block--sale">
+                  <h4 class="module-card__label">Можно предлагать клиентам</h4>
+                  <p class="module-card__text">Озвучку видео и презентаций, аудиорекламу, музыкальные заставки, комплексное звуковое оформление.</p>
+                </div>
+
+                <div class="module-card__block module-card__block--result">
+                  <h4 class="module-card__label">Результат модуля</h4>
+                  <p class="module-card__text">Готовый аудиокейс и дополнительная услуга, которой можно усилить текстовые и видеопроекты.</p>
+                </div>
+              </div>
+            </details>
+          </li>
+
+          <li class="module-card reveal" data-reveal-delay="0">
+            <details class="module-card__box">
+              <summary class="module-card__summary">
+                <span class="module-card__meta">
+                  <span class="module-card__num">Модуль 6</span>
+                  <span class="module-card__lessons">3 урока</span>
+                </span>
+                <h3 class="module-card__title">От навыка к заработку</h3>
+                <p class="module-card__promise">Выберите услугу, соберите портфолио и подготовьтесь к первым заказам</p>
+              </summary>
+
+              <div class="module-card__body">
+                <ul class="module-card__topics">
+                  <li class="module-card__topic">какие ИИ-услуги реально может продавать новичок и как выбрать одно направление, не распыляясь</li>
+                  <li class="module-card__topic">как связать ИИ с вашим предыдущим опытом – это ваше преимущество перед новичками без профессии</li>
+                  <li class="module-card__topic">как собрать портфолио, когда клиентов еще не было, и превратить учебную работу в коммерческий кейс</li>
+                  <li class="module-card__topic">как описать услугу понятным языком и сформулировать результат для клиента</li>
+                  <li class="module-card__topic">что включить в стоимость, как определить стартовую цену, сроки и количество правок</li>
+                  <li class="module-card__topic">где искать первые заказы и как обращаться к потенциальным клиентам</li>
+                  <li class="module-card__topic">как отвечать на вопрос об опыте, провести первый разговор и не пообещать лишнего</li>
+                  <li class="module-card__topic">как оформить результат и передать его клиенту</li>
+                </ul>
+
+                <div class="module-card__block">
+                  <h4 class="module-card__label">Практика</h4>
+                  <p class="module-card__text">Выберете основную услугу, подготовите ее описание, соберете портфолио и составите план поиска первых клиентов.</p>
+                </div>
+
+                <div class="module-card__block module-card__block--result">
+                  <h4 class="module-card__label">Результат модуля</h4>
+                  <p class="module-card__text">Выбранное направление, готовая услуга с описанием и стартовой ценой, портфолио, шаблон предложения клиенту и план действий на первые 30 дней.</p>
+                </div>
+              </div>
+            </details>
+          </li>
+
+        </ul>
+
+        <!-- Финальный проект — не восьмой модуль, а итог курса: отдельная
+             панель, как «вам не понадобится» на девятом экране -->
+        <div class="program__final reveal" data-reveal-delay="80">
+          <h3 class="program__final-title">Финальный проект</h3>
+          <p class="program__final-promise">Создайте работу, которую сможете показать потенциальному клиенту</p>
+
+          <p class="program__final-text">
+            Вы выберете реальную задачу и соберете законченный коммерческий проект:
+            контент-пакет для эксперта, оформление Telegram-канала, комплект материалов
+            под запуск, серию рекламных креативов, визуалы и тексты для товара, пакет
+            коротких видео или рекламный ролик.
+          </p>
+          <p class="program__final-text">
+            В финальном проекте вы объедините минимум три вида материалов:
+            текст, изображение и видео или аудио.
+          </p>
+
+          <div class="program__final-result">
+            <h4 class="module-card__label">Итог</h4>
+            <p class="module-card__text">
+              Готовый кейс, который можно включить в портфолио. На тарифах
+              с поддержкой вы получите обратную связь и доработаете результат.
+            </p>
+          </div>
+        </div>
+
+        <div class="program__cta reveal" data-reveal-delay="160">
+          <a class="btn btn--primary" href="#tariffs">Выбрать тариф</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ОДИННАДЦАТЫЙ ЭКРАН — примеры работ «было → стало»
+         ============================================================ -->
+    <section class="section section--dark works" id="works">
+      <div class="container">
+
+        <div class="section__head section__head--center works__head reveal">
+          <h2 class="section__title">
+            Посмотрите, что вы
+            <span class="grad-text grad-text--h1">научитесь создавать</span>
+          </h2>
+        </div>
+
+        <!-- Разделитель «·» в подписи «Пример 1 · Текст» — служебная
+             пунктуация перечисления, как в строке фактов девятого экрана:
+             номер и тип разделяет вёрстка.
+
+             ВАЖНО: в каждой карточке .work-card__media стоит пустая рамка —
+             место под НАСТОЯЩУЮ работу (требование автора блока). Пока работ
+             учеников нет, сюда кладутся работы тестовой группы и команды,
+             каждая с подписью авторства в .work-card__credit. -->
+        <ul class="works__grid">
+
+          <li class="work-card reveal" data-reveal-delay="0">
+            <div class="work-card__head">
+              <span class="work-card__num">Пример 1</span>
+              <span class="work-card__kind">Текст</span>
+            </div>
+
+            <div class="work-card__media" aria-hidden="true"></div>
+
+            <dl class="work-card__pair">
+              <div class="work-card__row">
+                <dt class="work-card__label">Было:</dt>
+                <dd class="work-card__value">краткое описание продукта.</dd>
+              </div>
+              <div class="work-card__row work-card__row--after">
+                <dt class="work-card__label">Стало:</dt>
+                <dd class="work-card__value">готовый оффер, пост и сценарий короткого видео.</dd>
+              </div>
+            </dl>
+          </li>
+
+          <li class="work-card reveal" data-reveal-delay="80">
+            <div class="work-card__head">
+              <span class="work-card__num">Пример 2</span>
+              <span class="work-card__kind">Изображение</span>
+            </div>
+
+            <div class="work-card__media" aria-hidden="true"></div>
+
+            <dl class="work-card__pair">
+              <div class="work-card__row">
+                <dt class="work-card__label">Было:</dt>
+                <dd class="work-card__value">обычная фотография товара на телефон.</dd>
+              </div>
+              <div class="work-card__row work-card__row--after">
+                <dt class="work-card__label">Стало:</dt>
+                <dd class="work-card__value">коммерческий визуал с новым фоном и светом.</dd>
+              </div>
+            </dl>
+          </li>
+
+          <li class="work-card reveal" data-reveal-delay="160">
+            <div class="work-card__head">
+              <span class="work-card__num">Пример 3</span>
+              <span class="work-card__kind">Контент-пакет</span>
+            </div>
+
+            <div class="work-card__media" aria-hidden="true"></div>
+
+            <dl class="work-card__pair">
+              <div class="work-card__row">
+                <dt class="work-card__label">Было:</dt>
+                <dd class="work-card__value">одна тема.</dd>
+              </div>
+              <div class="work-card__row work-card__row--after">
+                <dt class="work-card__label">Стало:</dt>
+                <dd class="work-card__value">пост, обложка и несколько визуалов в едином стиле.</dd>
+              </div>
+            </dl>
+          </li>
+
+          <li class="work-card reveal" data-reveal-delay="0">
+            <div class="work-card__head">
+              <span class="work-card__num">Пример 4</span>
+              <span class="work-card__kind">Видео</span>
+            </div>
+
+            <div class="work-card__media" aria-hidden="true"></div>
+
+            <dl class="work-card__pair">
+              <div class="work-card__row">
+                <dt class="work-card__label">Было:</dt>
+                <dd class="work-card__value">длинная запись вебинара.</dd>
+              </div>
+              <div class="work-card__row work-card__row--after">
+                <dt class="work-card__label">Стало:</dt>
+                <dd class="work-card__value">несколько коротких роликов с субтитрами.</dd>
+              </div>
+            </dl>
+          </li>
+
+          <li class="work-card reveal" data-reveal-delay="80">
+            <div class="work-card__head">
+              <span class="work-card__num">Пример 5</span>
+              <span class="work-card__kind">Аудио</span>
+            </div>
+
+            <div class="work-card__media" aria-hidden="true"></div>
+
+            <dl class="work-card__pair">
+              <div class="work-card__row">
+                <dt class="work-card__label">Было:</dt>
+                <dd class="work-card__value">текст рекламного сообщения.</dd>
+              </div>
+              <div class="work-card__row work-card__row--after">
+                <dt class="work-card__label">Стало:</dt>
+                <dd class="work-card__value">озвученный ролик с музыкой.</dd>
+              </div>
+            </dl>
+          </li>
+
+          <li class="work-card reveal" data-reveal-delay="160">
+            <div class="work-card__head">
+              <span class="work-card__num">Пример 6</span>
+              <span class="work-card__kind">Комплексный проект</span>
+            </div>
+
+            <div class="work-card__media" aria-hidden="true"></div>
+
+            <dl class="work-card__pair">
+              <div class="work-card__row">
+                <dt class="work-card__label">Было:</dt>
+                <dd class="work-card__value">задача малого бизнеса.</dd>
+              </div>
+              <div class="work-card__row work-card__row--after">
+                <dt class="work-card__label">Стало:</dt>
+                <dd class="work-card__value">готовый пакет материалов для продвижения.</dd>
+              </div>
+            </dl>
+          </li>
+
+        </ul>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ДВЕНАДЦАТЫЙ ЭКРАН — результаты участников
+         ============================================================ -->
+    <section class="section section--dark results" id="results">
+      <div class="container">
+
+        <div class="section__head section__head--center results__head reveal">
+          <h2 class="section__title">Результаты участников</h2>
+          <p class="section__subtitle">Структура каждого кейса:</p>
+        </div>
+
+        <!-- В документе даны только четыре шага кейса, самих кейсов нет.
+             Тире внутри пункта («До курса – что человек умел…») разделяет
+             название шага и его расшифровку: название становится заголовком
+             карточки, расшифровка — текстом, тире не выводится. Точки
+             с запятой в конце пунктов сняты — служебная пунктуация
+             перечисления, как на остальных экранах.
+
+             ВАЖНО: блок не готов к публикации, пока сюда не встанут сами
+             кейсы участников по этой структуре — четыре шага показывают
+             только форму рассказа. Карточки кейсов добавляются после
+             этого списка. Нумерация 01–04 рисуется CSS-счётчиком
+             на .case-step::before. -->
+        <ol class="results__grid">
+
+          <li class="case-step reveal" data-reveal-delay="0">
+            <h3 class="case-step__title">До курса</h3>
+            <p class="case-step__text">что человек умел и почему решил учиться</p>
+          </li>
+
+          <li class="case-step reveal" data-reveal-delay="80">
+            <h3 class="case-step__title">Во время курса</h3>
+            <p class="case-step__text">какие инструменты освоил и какую работу создал</p>
+          </li>
+
+          <li class="case-step reveal" data-reveal-delay="160">
+            <h3 class="case-step__title">Результат</h3>
+            <p class="case-step__text">что вошло в портфолио, какую услугу выбрал, где начал применять навык</p>
+          </li>
+
+          <li class="case-step case-step--money reveal" data-reveal-delay="240">
+            <h3 class="case-step__title">Коммерческий результат</h3>
+            <p class="case-step__text">первый заказ, отклик клиента, экономия на подрядчиках или применение в текущей работе</p>
+          </li>
+
+        </ol>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ТРИНАДЦАТЫЙ ЭКРАН — эксперт
+         ============================================================ -->
+    <section class="section section--dark expert" id="expert">
+      <div class="container">
+
+        <div class="section__head section__head--center expert__head reveal">
+          <h2 class="section__title">
+            Учитесь у практиков, которые
+            <span class="grad-text grad-text--h1">сами работают с ИИ</span>
+          </h2>
+        </div>
+
+        <!-- Позиционирование эксперта в исходнике не закрыто: в строке 343
+             content/sales-copy.txt вместо него стоит «· [Краткое позиционирование
+             в одной строке]». Плейсхолдер на страницу не выводится вместе
+             со служебной «·»; строка встаёт в .expert-card__role, когда автор
+             её пришлёт.
+
+             Фотографии эксперта в assets/img нет, поэтому в .expert-card__photo
+             стоит пустая рамка со штриховой границей — как место под работу
+             на одиннадцатом экране. Внутрь кладётся <img>. -->
+        <article class="expert-card reveal">
+
+          <div class="expert-card__aside">
+            <div class="expert-card__photo"></div>
+            <h3 class="expert-card__name">Алексей Кадочников</h3>
+          </div>
+
+          <ul class="expert-card__facts">
+            <li class="expert-card__fact">10+ лет в IT и веб-разработке: запуск продуктов, проектирование архитектуры, fullstack-решения.</li>
+            <li class="expert-card__fact">Практик вайб-кодинга и разработки с LLM с 2022 года (Claude, ChatGPT, Cursor, Copilot).</li>
+            <li class="expert-card__fact">Автор и разработчик образовательных программ по AI и веб-разработке: 10+ лет в IT-образовании.</li>
+            <li class="expert-card__fact">Эксперт по промпт-инжинирингу и интеграции AI в продуктовую разработку.</li>
+            <li class="expert-card__fact">Вел и разрабатывал десятки курсов по фронтенду, JavaScript, React, Vue и нейросетям.</li>
+            <li class="expert-card__fact">Создал 5+ AI-продуктов от идеи до работающего MVP – лично и в команде.</li>
+            <li class="expert-card__fact">Понимает, как доводить AI-решения от идеи и прототипа до продукта в проде.</li>
+          </ul>
+
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ЧЕТЫРНАДЦАТЫЙ ЭКРАН — сопровождение куратора и Тесса
+         ============================================================ -->
+    <section class="section section--dark support" id="support">
+      <div class="container">
+
+        <div class="section__head section__head--center support__head reveal">
+          <h2 class="section__title">Вы не останетесь один на один с уроками</h2>
+        </div>
+
+        <!-- Первый абзац блока — одна длинная строка исходника, она идёт
+             как текст карточки. Второй абзац («Проверяются шесть ключевых
+             модульных работ…») — не продолжение мысли, а условие проверки
+             работ, поэтому вынесен в отдельную выделенную плашку. -->
+        <article class="support-card reveal" data-reveal-delay="80">
+          <p class="support-card__text">
+            На тарифах с сопровождением куратор поможет разобраться в задании,
+            выбрать инструмент, улучшить промпт, увидеть ошибки, довести результат
+            до профессионального уровня, отобрать лучшие работы в портфолио,
+            оформить итоговый проект и сформулировать свою услугу.
+          </p>
+          <p class="support-card__note">
+            Проверяются шесть ключевых модульных работ и финальный проект.
+            После обратной связи работу можно доработать и сдать снова.
+          </p>
+        </article>
+
+        <!-- Вторая половина блока — про Тессу. В документе это отдельный
+             заголовок внутри того же блока, поэтому он идёт h3, а не h2. -->
+        <div class="section__head section__head--center support__head support__head--tessa reveal" data-reveal-delay="160">
+          <h3 class="support__subtitle">
+            Тесса покажет, <span class="grad-text grad-text--h1">как растут ваши навыки</span>
+          </h3>
+        </div>
+
+        <!-- Иллюстрации Тессы в assets/img нет: место под неё —
+             .tessa-card__visual, пустая рамка со штриховой границей,
+             как место под фото эксперта на тринадцатом экране.
+             Внутрь кладётся <img>. -->
+        <article class="support-card support-card--tessa reveal" data-reveal-delay="240">
+
+          <div class="tessa-card__visual"></div>
+
+          <div class="tessa-card__body">
+            <p class="support-card__lead">Тесса – нейромозг и проводник по курсу.</p>
+            <p class="support-card__text">
+              В начале обучения она только знакомится с миром нейросетей вместе с вами.
+              По мере прохождения уроков и выполнения заданий у Тессы появляются новые
+              нейронные связи, растет уровень знаний и открываются следующие этапы.
+            </p>
+
+            <p class="support-card__list-title">С ее помощью вы сможете:</p>
+            <ul class="support-card__list">
+              <li class="support-card__item">видеть, сколько уже пройдено</li>
+              <li class="support-card__item">отслеживать выполненные задания</li>
+              <li class="support-card__item">замечать свой прогресс</li>
+              <li class="support-card__item">понимать, какой навык осваиваете сейчас</li>
+              <li class="support-card__item">двигаться к итоговому проекту без ощущения, что курс бесконечный</li>
+            </ul>
+          </div>
+
+        </article>
+
+        <p class="support__closing reveal" data-reveal-delay="320">
+          Вы развиваете навыки – <span class="grad-text grad-text--h1">Тесса меняется вместе с вами</span>
+        </p>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ПЯТНАДЦАТЫЙ ЭКРАН — тарифы
+         ============================================================ -->
+    <section class="section section--dark tariffs" id="tariffs">
+      <div class="container">
+
+        <div class="section__head section__head--center tariffs__head reveal">
+          <h2 class="section__title">Выберите <span class="grad-text grad-text--h1">формат обучения</span></h2>
+        </div>
+
+        <!-- Тире в начале пунктов рисуются на ::before, в текст не пишутся -->
+        <div class="tariffs__grid">
+
+          <article class="tariff-card reveal" data-reveal-delay="0">
+
+            <div class="tariff-card__head">
+              <h3 class="tariff-card__name">Тариф «Самостоятельный»</h3>
+              <p class="tariff-card__for">Для тех, кто умеет организовать обучение сам.</p>
+            </div>
+
+            <ul class="tariff-card__list">
+              <li class="tariff-card__item">полная программа и все видеоуроки</li>
+              <li class="tariff-card__item">практические задания и модульные работы</li>
+              <li class="tariff-card__item">библиотека промптов, шаблоны и чек-листы</li>
+              <li class="tariff-card__item">технические инструкции и таблица актуальных нейросетей</li>
+              <li class="tariff-card__item">материалы по созданию портфолио</li>
+              <li class="tariff-card__item">модуль по выходу на первые заказы</li>
+              <li class="tariff-card__item">финальный проект по готовому шаблону</li>
+              <li class="tariff-card__item">доступ к ИИ-боту</li>
+              <li class="tariff-card__item">электронный сертификат</li>
+              <li class="tariff-card__item">доступ к материалам 12 месяцев</li>
+            </ul>
+
+            <p class="tariff-card__note">Проверка работ – самостоятельно по чек-листам.</p>
+
+            <div class="tariff-card__price">
+              <p class="tariff-card__price-now">19 900 ₽</p>
+              <p class="tariff-card__price-old">Регулярная стоимость – <s>23 900 ₽</s></p>
+              <p class="tariff-card__price-split">или от 3 317 ₽/мес при рассрочке на 6 месяцев</p>
+            </div>
+
+            <a class="btn btn--secondary-dark btn--block" href="#">Выбрать самостоятельный тариф</a>
+
+          </article>
+
+          <!-- «Самый популярный» из исходника — не часть описания, а метка
+               тарифа, поэтому вынесена в таблетку над названием -->
+          <article class="tariff-card tariff-card--popular reveal" data-reveal-delay="80">
+
+            <div class="tariff-card__head">
+              <span class="tariff-card__badge">Самый популярный</span>
+              <h3 class="tariff-card__name">Тариф «С поддержкой»</h3>
+              <p class="tariff-card__for">Для тех, кому важно дойти до результата, а не до середины.</p>
+            </div>
+
+            <p class="tariff-card__list-title">Все из тарифа «Самостоятельный», а также:</p>
+
+            <!-- Пункт про живые встречи не выведен: в строке 409
+                 content/sales-copy.txt их количество не закрыто
+                 («[4–6] живых встреч»). Строка встаёт сюда, когда
+                 автор пришлёт число. -->
+            <ul class="tariff-card__list">
+              <li class="tariff-card__item">чат с куратором и общий студенческий чат</li>
+              <li class="tariff-card__item">проверка шести ключевых модульных работ с развернутой обратной связью</li>
+              <li class="tariff-card__item">возможность доработать работу и сдать повторно</li>
+              <li class="tariff-card__item">помощь с выбором инструментов под ваши задачи</li>
+              <li class="tariff-card__item">проверка финального проекта</li>
+              <li class="tariff-card__item">помощь с оформлением портфолио</li>
+              <li class="tariff-card__item">поддержка во время курса и две недели после завершения</li>
+            </ul>
+
+            <div class="tariff-card__price">
+              <p class="tariff-card__price-now">24 900 ₽</p>
+              <p class="tariff-card__price-old">Регулярная стоимость – <s>29 900 ₽</s></p>
+              <p class="tariff-card__price-split">или от 4 150 ₽/мес при рассрочке на 6 месяцев</p>
+            </div>
+
+            <p class="tariff-card__note">
+              Разница с самостоятельным тарифом – всего 5 000 ₽. Рекомендуем,
+              если вы начинаете с нуля и хотите дойти до готового портфолио.
+            </p>
+
+            <a class="btn btn--primary btn--block" href="#">Выбрать тариф с поддержкой</a>
+
+          </article>
+
+          <article class="tariff-card reveal" data-reveal-delay="160">
+
+            <div class="tariff-card__head">
+              <h3 class="tariff-card__name">Тариф «Персональный»</h3>
+              <p class="tariff-card__for">Для тех, кому нужен индивидуальный маршрут.</p>
+            </div>
+
+            <p class="tariff-card__list-title">Все из тарифа «С поддержкой», а также:</p>
+
+            <ul class="tariff-card__list">
+              <li class="tariff-card__item">стартовая диагностика: разбор опыта, задач и целей</li>
+              <li class="tariff-card__item">персональный подбор направления</li>
+              <li class="tariff-card__item">аудит текущих рабочих процессов</li>
+              <li class="tariff-card__item">две личные консультации с экспертом</li>
+              <li class="tariff-card__item">приоритетная поддержка</li>
+              <li class="tariff-card__item">индивидуальная помощь с упаковкой услуги и разбор портфолио</li>
+              <li class="tariff-card__item">индивидуальная защита проекта</li>
+              <li class="tariff-card__item">дополнительный период сопровождения</li>
+            </ul>
+
+            <div class="tariff-card__price">
+              <p class="tariff-card__price-now">49 900 ₽</p>
+              <p class="tariff-card__price-old">Регулярная стоимость – <s>59 900 ₽</s></p>
+              <p class="tariff-card__price-split">или от 8 317 ₽/мес при рассрочке на 6 месяцев</p>
+            </div>
+
+            <!-- Строка про ограничение мест не выведена: в строке 443
+                 content/sales-copy.txt их число не закрыто («Осталось
+                 [10] мест»). Строка встаёт в .tariff-card__note, когда
+                 автор пришлёт число. -->
+
+            <a class="btn btn--secondary-dark btn--block" href="#">Выбрать персональный тариф</a>
+
+          </article>
+
+        </div>
+
+        <!-- FORM SLOT: заявка после выбора тарифа — сюда встраивается
+             виджет GetCourse (лид-форма/кнопка записи), привязанный
+             к выбранному тарифу. -->
+        <div class="form-slot" data-form-slot="tariffs-lead" aria-hidden="true"></div>
+
+      </div>
+    </section>
+
+    <section class="section section--dark guarantee" id="guarantee">
+      <div class="container">
+
+        <div class="guarantee__panel reveal">
+
+          <h2 class="section__title guarantee__title">Если курс вам не подойдет – <span class="grad-text grad-text--h1">вернем деньги</span></h2>
+
+          <p class="guarantee__text">В течение 14 дней с момента открытия доступа вы можете отказаться от обучения и получить возврат. Без объяснения причин и без переписки на три страницы – достаточно написать в поддержку.</p>
+
+          <p class="guarantee__text">Мы уверены в программе и не хотим держать в ней людей, которым она не подходит. Условия возврата описаны в оферте.</p>
+
+          <p class="guarantee__note">При этом мы не обещаем конкретную сумму заработка. Курс дает навык, готовые работы для портфолио, описание услуги и план поиска заказов. Дальше результат зависит от того, сколько вы делаете.</p>
+
+          <!-- Заглушка под печать/бейдж гарантии -->
+          <div class="guarantee__media media-placeholder media-placeholder--square" aria-hidden="true"></div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <section class="section section--dark timer" id="timer">
+      <div class="container">
+
+        <div class="timer__panel reveal">
+
+          <h2 class="section__title timer__title">Стоимость для участников вебинара действует <span class="grad-text grad-text--h1">24 часа</span></h2>
+
+          <div class="timer__clock" data-countdown aria-live="polite" aria-atomic="true">
+            <div class="timer__unit">
+              <span class="timer__value" data-countdown-hours>24</span>
+              <span class="timer__unit-label">часов</span>
+            </div>
+            <div class="timer__colon" aria-hidden="true">
+              <span class="timer__colon-mark">:</span>
+              <span class="timer__colon-spacer">&nbsp;</span>
+            </div>
+            <div class="timer__unit">
+              <span class="timer__value" data-countdown-minutes>00</span>
+              <span class="timer__unit-label">минут</span>
+            </div>
+            <div class="timer__colon" aria-hidden="true">
+              <span class="timer__colon-mark">:</span>
+              <span class="timer__colon-spacer">&nbsp;</span>
+            </div>
+            <div class="timer__unit">
+              <span class="timer__value" data-countdown-seconds>00</span>
+              <span class="timer__unit-label">секунд</span>
+            </div>
+          </div>
+
+          <p class="timer__lead">После завершения предложения цена вырастет:</p>
+
+          <ul class="timer__list">
+            <li class="timer__item">«Самостоятельный» – до 23 900 ₽</li>
+            <li class="timer__item">«С поддержкой» – до 29 900 ₽</li>
+            <li class="timer__item">«Персональный» – до 59 900 ₽</li>
+          </ul>
+
+          <p class="timer__note">На персональном тарифе количество мест ограничено возможностью эксперта проводить индивидуальные консультации.</p>
+
+          <!-- Заглушка под иллюстрацию к таймеру -->
+          <div class="timer__media media-placeholder media-placeholder--square" aria-hidden="true"></div>
+
+          <a class="btn btn--primary timer__cta" href="#tariffs">Зафиксировать стартовую цену</a>
+
+        </div>
+
+      </div>
+    </section>
+
+    <section class="section section--dark faq" id="faq">
+      <div class="container">
+
+        <div class="section__head section__head--center faq__head reveal">
+          <h2 class="section__title">Частые вопросы</h2>
+        </div>
+
+        <!-- Аккордеон на нативных <details>: четырнадцать вопросов, целиком
+             развёрнутыми они читаются как стена текста. Первый вопрос
+             открыт, чтобы блок не выглядел пустым. Скриптов не требует. -->
+        <ul class="faq__list">
+
+          <li class="faq-item reveal" data-reveal-delay="0">
+            <details class="faq-item__box" open>
+              <summary class="faq-item__q">Я никогда не пользовался нейросетями. Справлюсь?</summary>
+              <div class="faq-item__a">
+                <p class="faq-item__text">Да. Программа начинается с основ: выбора сервиса, регистрации и первого запроса. Все основные действия показываются на экране.</p>
+              </div>
+            </details>
+          </li>
+
+          <li class="faq-item reveal" data-reveal-delay="80">
+            <details class="faq-item__box">
+              <summary class="faq-item__q">У меня нет творческих способностей</summary>
+              <div class="faq-item__a">
+                <p class="faq-item__text">Они не обязательны. Вы работаете по понятным структурам, примерам и чек-листам. Ваша задача – научиться ставить задачу, отбирать результат и дорабатывать его.</p>
+              </div>
+            </details>
+          </li>
+
+          <li class="faq-item reveal" data-reveal-delay="0">
+            <details class="faq-item__box">
+              <summary class="faq-item__q">Нужно ли знать английский?</summary>
+              <div class="faq-item__a">
+                <p class="faq-item__text">Нет. Основные запросы можно писать по-русски. Действия в англоязычных интерфейсах показаны в технических инструкциях.</p>
+              </div>
+            </details>
+          </li>
+
+          <li class="faq-item reveal" data-reveal-delay="80">
+            <details class="faq-item__box">
+              <summary class="faq-item__q">Нужен ли VPN?</summary>
+              <div class="faq-item__a">
+                <p class="faq-item__text">Часть сервисов доступна напрямую, часть – через агрегаторы или дополнительные способы подключения. В курсе есть инструкции и подобранные доступные альтернативы.</p>
+              </div>
+            </details>
+          </li>
+
+          <li class="faq-item reveal" data-reveal-delay="0">
+            <details class="faq-item__box">
+              <summary class="faq-item__q">Нужно ли оплачивать нейросети отдельно?</summary>
+              <div class="faq-item__a">
+                <p class="faq-item__text">Большую часть заданий можно выполнить в бесплатных версиях или через доступные сервисы. Отдельные расширенные возможности могут потребовать платной подписки – стоимость сторонних инструментов не входит в цену курса.</p>
+              </div>
+            </details>
+          </li>
+
+          <li class="faq-item reveal" data-reveal-delay="80">
+            <details class="faq-item__box">
+              <summary class="faq-item__q">Можно ли учиться с телефона?</summary>
+              <div class="faq-item__a">
+                <p class="faq-item__text">Смотреть уроки и выполнять простые задания – да. Для полноценной работы с видео, изображениями и несколькими сервисами удобнее компьютер или ноутбук.</p>
+              </div>
+            </details>
+          </li>
+
+          <li class="faq-item reveal" data-reveal-delay="0">
+            <details class="faq-item__box">
+              <summary class="faq-item__q">Когда старт? Нужно ли ждать поток?</summary>
+              <div class="faq-item__a">
+                <p class="faq-item__text">Ждать набора группы не нужно – обучение начинается сразу после оплаты. Дальше каждую неделю открывается новый модуль: семь недель на программу и восьмая на финальный проект. Нагрузка – 3–5 часов в неделю.</p>
+              </div>
+            </details>
+          </li>
+
+          <li class="faq-item reveal" data-reveal-delay="80">
+            <details class="faq-item__box">
+              <summary class="faq-item__q">Что делать, если я не успеваю проходить курс?</summary>
+              <div class="faq-item__a">
+                <p class="faq-item__text">Ничего страшного: уже открытые модули остаются с вами и не закрываются, а доступ к материалам сохраняется 12 месяцев – вернуться и догнать можно в любой момент. На тарифах с поддержкой куратор помогает во время курса и две недели после его завершения.</p>
+              </div>
+            </details>
+          </li>
+
+          <li class="faq-item reveal" data-reveal-delay="0">
+            <details class="faq-item__box">
+              <summary class="faq-item__q">Как оплатить?</summary>
+              <div class="faq-item__a">
+                <p class="faq-item__text">Российские карты/зарубежные карты · СБП · банковская рассрочка · оплата от юрлица.</p>
+              </div>
+            </details>
+          </li>
+
+          <li class="faq-item reveal" data-reveal-delay="80">
+            <details class="faq-item__box">
+              <summary class="faq-item__q">Можно ли вернуть деньги?</summary>
+              <div class="faq-item__a">
+                <p class="faq-item__text">Да. В течение 14 дней с момента открытия доступа – по заявлению в поддержку. Полные условия в оферте.</p>
+              </div>
+            </details>
+          </li>
+
+          <li class="faq-item reveal" data-reveal-delay="0">
+            <details class="faq-item__box">
+              <summary class="faq-item__q">Гарантирует ли курс заработок?</summary>
+              <div class="faq-item__a">
+                <p class="faq-item__text">Курс дает навыки, работы для портфолио, описание услуги и план поиска заказов. Фактический заработок зависит от качества работ, вашей активности, выбранного направления и ситуации на рынке.</p>
+              </div>
+            </details>
+          </li>
+
+          <li class="faq-item reveal" data-reveal-delay="80">
+            <details class="faq-item__box">
+              <summary class="faq-item__q">Что за сертификат и где он пригодится?</summary>
+              <div class="faq-item__a">
+                <p class="faq-item__text">Электронный сертификат школы об окончании курса. Не является ли документом об образовании.</p>
+              </div>
+            </details>
+          </li>
+
+          <li class="faq-item reveal" data-reveal-delay="0">
+            <details class="faq-item__box">
+              <summary class="faq-item__q">У меня уже есть небольшой опыт. Не будет ли скучно?</summary>
+              <div class="faq-item__a">
+                <p class="faq-item__text">Вы систематизируете знания, освоите новые форматы и научитесь создавать законченные продукты. Курс подойдет, если вы уже пробовали отдельные нейросети, но пока не умеете стабильно получать качественный результат и продавать его.</p>
+              </div>
+            </details>
+          </li>
+
+          <li class="faq-item reveal" data-reveal-delay="80">
+            <details class="faq-item__box">
+              <summary class="faq-item__q">Какой тариф выбрать?</summary>
+              <div class="faq-item__a">
+                <p class="faq-item__text">«Самостоятельный» – если вы умеете учиться без внешнего контроля. «С поддержкой» – если важны проверка, обратная связь и помощь с портфолио. «Персональный» – если нужно адаптировать ИИ под вашу профессию или бизнес.</p>
+              </div>
+            </details>
+          </li>
+
+        </ul>
+
+      </div>
+    </section>
+
+    <section class="section section--dark cta" id="cta">
+      <div class="container">
+
+        <div class="cta__head reveal">
+          <h2 class="section__title cta__title">Превратите интерес к нейросетям в навык, а навык – <span class="grad-text grad-text--h1">в готовую услугу</span></h2>
+          <p class="cta__intro">Можно еще несколько месяцев сохранять бесплатные инструкции и пробовать случайные сервисы.</p>
+        </div>
+
+        <!-- Заглушка под закрывающий визуал финального экрана -->
+        <div class="cta__media media-placeholder media-placeholder--wide" aria-hidden="true"></div>
+
+        <div class="cta__panel reveal" data-reveal-delay="80">
+
+          <p class="cta__panel-lead">А можно за 8 недель:</p>
+
+          <ul class="cta__list">
+            <li class="cta__item">уверенно работать с нейросетями</li>
+            <li class="cta__item">создавать тексты, изображения, видео и аудио</li>
+            <li class="cta__item">выбрать востребованное направление</li>
+            <li class="cta__item">собрать портфолио</li>
+            <li class="cta__item">упаковать свою услугу</li>
+            <li class="cta__item">начать предлагать ее клиентам</li>
+          </ul>
+
+        </div>
+
+        <div class="cta__offer reveal" data-reveal-delay="160">
+
+          <p class="cta__course">Курс «Нейросети 2027: от навыка к заработку»</p>
+
+          <ul class="cta__facts">
+            <li class="cta__fact">Старт сразу после оплаты</li>
+            <li class="cta__fact">32 урока</li>
+            <li class="cta__fact">8 недель</li>
+            <li class="cta__fact">Цена на вебинаре – от 19 900 ₽ или от 3 317 ₽/мес</li>
+            <li class="cta__fact cta__fact--urgent">Предложение действует 24 часа</li>
+          </ul>
+
+          <div class="cta__actions">
+            <a class="btn btn--primary" href="#tariffs">Выбрать тариф</a>
+            <a class="btn btn--secondary-dark" href="#">Задать вопрос о курсе</a>
+          </div>
+
+          <p class="cta__trust">
+            <span class="cta__trust-item">Без опыта в IT</span>
+            <span class="cta__trust-item">Доступ 12 месяцев</span>
+            <span class="cta__trust-item">Практические проекты</span>
+            <span class="cta__trust-item">Возврат в течение 14 дней</span>
+          </p>
+
+          <!-- FORM SLOT: форма/кнопка последнего шанса записаться —
+               сюда встраивается виджет GetCourse. -->
+          <div class="form-slot" data-form-slot="final-cta-lead" aria-hidden="true"></div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Следующие экраны добавляются сюда по одному -->
+
+  </main>
+
+  <script src="js/main.js" defer></script>
+  <script src="js/animations.js" defer></script>
+</body>
+</html>

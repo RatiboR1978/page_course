@@ -1,0 +1,2751 @@
+/* ============================================================
+   SECTIONS — стили секций лендинга
+   Сейчас реализован только первый экран.
+   Остальные секции добавляются сюда по одной.
+
+   Десктоп (≥1200px) свёрстан по референсу шириной 1250px.
+   Размеры и отступы заданы в vw от этой ширины, чтобы текст
+   масштабировался вместе с фоновым изображением (1920×1080).
+   Формула: value_px / 1250 * 100 = value_vw.
+   Выше 1920px значения фиксируются через min().
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   ЛОГОТИП — лежит внутри контейнера первого экрана,
+   отдельной прилипающей шапки нет
+   ------------------------------------------------------------ */
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--cloud-white);
+}
+
+.logo__img {
+  height: 44px;
+  width: auto;
+  flex: 0 0 auto;
+}
+
+.logo__text {
+  font-size: 0.75rem;
+  font-weight: var(--fw-bold);
+  line-height: 1.35;
+}
+
+.hero__content .logo {
+  margin-bottom: var(--space-8);
+}
+
+/* ------------------------------------------------------------
+   HERO — первый экран
+   ------------------------------------------------------------ */
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-top: var(--space-8);
+  padding-bottom: var(--space-16);
+  background: var(--grad-hero-bg);
+  color: var(--text-on-dark);
+  overflow: hidden;
+}
+
+.hero__inner {
+  position: relative;
+  z-index: 1;
+}
+
+
+.hero__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.hero__eyebrow {
+  font-size: var(--fs-eyebrow);
+  font-weight: var(--fw-extrabold);
+  letter-spacing: 0.06em;
+  line-height: 1.35;
+  text-transform: uppercase;
+  color: var(--hero-eyebrow);
+  margin-bottom: var(--space-6);
+}
+
+.hero__title {
+  font-size: var(--fs-h1);
+  line-height: 1.03;
+  letter-spacing: normal;
+  margin-bottom: var(--space-6);
+  /* переносы заданы вручную через <br> — балансировка строк не нужна */
+  text-wrap: normal;
+}
+
+.hero__title .grad-text {
+  background: var(--grad-h1);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero__text {
+  font-size: var(--fs-lead);
+  line-height: 1.3;
+  color: var(--hero-text);
+  max-width: 21em;
+  margin-bottom: var(--space-8);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+/* Иллюстрация: показывается на мобильных и планшетах,
+   на десктопе её роль выполняет фон секции */
+.hero__media {
+  width: 100%;
+  margin-top: var(--space-8);
+}
+
+.hero__img {
+  width: 100%;
+  border-radius: var(--radius-lg);
+}
+
+/* ---------- Мобильные и планшеты: сборка по макету 375px ----------
+   Порядок блоков отличается от десктопного: иллюстрация встаёт между
+   заголовком и кнопками, поэтому .hero__content раскрывается через
+   display:contents, а порядок задаётся через order. */
+
+@media (max-width: 1199px) {
+  /* Плоский тёмный фон вместо десктопного градиента — под цвет
+     мобильной иллюстрации, чтобы она сливалась с секцией */
+  .hero {
+    padding-top: var(--space-4);
+    padding-bottom: var(--space-8);
+    background: var(--night-950);
+    text-align: center;
+  }
+
+  .hero__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero__content {
+    display: contents;
+  }
+
+  .hero__content .logo { order: 1; }
+  .hero__eyebrow       { order: 2; }
+  .hero__title         { order: 3; }
+  .hero__media         { order: 4; }
+  .hero__actions       { order: 5; }
+  .hero__text          { order: 6; }
+
+  /* Логотип: знак над подписью, подпись в одну строку */
+  .hero__content .logo {
+    flex-direction: column;
+    gap: var(--space-2);
+    margin-bottom: var(--space-6);
+  }
+
+  .logo__img {
+    height: 48px;
+  }
+
+  .logo__text br {
+    display: none;
+  }
+
+  /* На макете надзаголовок белый и без капса */
+  .hero__eyebrow {
+    font-size: clamp(0.9375rem, 0.83rem + 0.5vw, 1.25rem);
+    text-transform: none;
+    letter-spacing: normal;
+    color: var(--cloud-white);
+    margin-bottom: var(--space-4);
+  }
+
+  .hero__title {
+    margin-bottom: var(--space-3);
+  }
+
+  /* Иллюстрация во всю ширину экрана, без полей контейнера */
+  .hero__media {
+    width: 100vw;
+    max-width: none;
+    margin-top: 0;
+  }
+
+  .hero__img {
+    border-radius: 0;
+  }
+
+  .hero__actions {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  /* обе кнопки одной ширины, как на макете */
+  .hero .btn {
+    width: min(17rem, 84%);
+    padding-inline: var(--space-4);
+    font-size: 0.875rem;
+  }
+
+  .hero__text {
+    max-width: 26em;
+    margin-top: var(--space-4);
+    margin-bottom: 0;
+    font-weight: var(--fw-bold);
+    color: var(--cloud-white);
+  }
+}
+
+/* Телефоны: кнопки лишь слегка заходят на низ иллюстрации — так они
+   не закрывают стол с персонажем. Пропорции картинки 877×808 → высота ≈ 92vw. */
+@media (max-width: 767px) {
+  .hero__actions {
+    margin-top: -8vw;
+  }
+}
+
+/* Планшеты: полноэкранная картинка была бы слишком крупной — ограничиваем */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .hero__media {
+    width: min(100vw, 620px);
+    margin-block: var(--space-4);
+  }
+}
+
+/* ------------------------------------------------------------
+   PAINS — второй экран: почему результата всё ещё нет.
+   Продолжение тёмной сцены hero, но спокойнее: без фотографии,
+   с двумя приглушёнными пятнами подсветки по углам.
+   Референса нет, поэтому размеры — на токенах и clamp(),
+   без пересчёта в vw, как в hero.
+   ------------------------------------------------------------ */
+
+.pains {
+  position: relative;
+  background: var(--night-900);
+  overflow: hidden;
+}
+
+/* Подсветки нет: любое пятно у верхней кромки подчёркивало стык с hero,
+   а фон секции должен ровно продолжать тёмную сцену первого экрана. */
+
+.pains > .container {
+  position: relative;
+  z-index: 1;
+}
+
+.pains .section__head {
+  max-width: 900px;
+  margin-bottom: var(--space-8);
+}
+
+/* Заголовок длинный (целое предложение), поэтому без капса
+   и чуть мельче базового h2 — иначе экран превращается в крик. */
+.pains .section__title {
+  font-size: clamp(1.5rem, 1.05rem + 1.9vw, 2.5rem);
+  line-height: 1.22;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  color: var(--cloud-white);
+  text-wrap: balance;
+}
+
+/* Акцент в заголовке — тот же градиент, что у H1 первого экрана.
+   Только background-image: шорткат background сбросил бы background-clip: text,
+   который приходит из .grad-text, и градиент лёг бы сплошной плашкой. */
+.grad-text--h1 {
+  background-image: var(--grad-h1);
+}
+
+.pains .section__subtitle {
+  max-width: 42em;
+  margin-inline: auto;
+}
+
+/* Подводка к списку + тонкая градиентная черта под ней */
+.pains__lead {
+  position: relative;
+  margin-bottom: var(--space-12);
+  padding-bottom: var(--space-4);
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-bold);
+  line-height: 1.2;
+  text-align: center;
+  color: var(--cloud-white);
+}
+
+.pains__lead::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 96px;
+  height: 2px;
+  transform: translateX(-50%);
+  border-radius: 2px;
+  background: var(--grad-primary);
+}
+
+/* Список пунктов: 1 → 2 → 3 колонки. Вертикального зазора между
+   строками нет — пункты разделяет линия (border-top на .pain-item),
+   а не пустота: девять коротких пунктов так занимают вдвое меньше
+   высоты, чем прежние карточки-боксы с полями и зазорами. */
+.pains__list {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: start;
+  column-gap: var(--space-8);
+  row-gap: 0;
+}
+
+/* Линия-разделитель нужна только МЕЖДУ строками: у верхней строки
+   она бы встала сразу под градиентный подчёрк подводки — две
+   горизонтали подряд. Сколько пунктов в верхней строке, зависит
+   от числа колонок, поэтому правило повторяется в каждом брейкпоинте. */
+.pain-item:first-child {
+  border-top: none;
+}
+
+/* Иллюстрация — ячейка той же сетки, а не отдельный блок под списком.
+   Пока колонок меньше трёх, она занимает всю ширину и идёт последней
+   строкой: втискивать её в узкую колонку рядом с текстом смысла нет. */
+/* width + justify-self, а не margin-inline: auto: авто-поля в сетке
+   отключают растягивание, и пустая заглушка схлопнулась бы в полоску */
+.pains__media {
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 4 / 3;
+  margin-top: var(--space-8);
+}
+
+@media (min-width: 768px) {
+  .pains__list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pain-item:nth-child(-n + 2) {
+    border-top: none;
+  }
+}
+
+@media (min-width: 1200px) {
+  .pains__list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .pain-item:nth-child(-n + 3) {
+    border-top: none;
+  }
+
+  /* Три колонки — иллюстрация встаёт в правую, со 2-й строки до низа.
+     Девять пунктов раскладываются вокруг неё ровно: 3 в первой строке
+     (во всю ширину) + по 2 в трёх следующих. Пустых ячеек не остаётся,
+     а картинка читается как часть блока, а не довесок под ним.
+     Высоту задаёт сетка, поэтому aspect-ratio здесь снимается. */
+  .pains__media {
+    grid-column: 3;
+    grid-row: 2 / span 3;
+    /* align-self обязателен: у списка стоит align-items: start, иначе
+       ячейка не растянется на три строки и схлопнется в полоску */
+    align-self: stretch;
+    /* justify-self и width сбрасываются из базового правила, иначе
+       центрирование по fit-content схлопнет пустую заглушку по ширине */
+    justify-self: stretch;
+    width: auto;
+    max-width: none;
+    aspect-ratio: auto;
+    margin: var(--space-4) 0;
+  }
+}
+
+/* ---------- Десктоп: точная сборка по референсу 1250px ---------- */
+
+@media (min-width: 1200px) {
+  :root {
+    /* Опорная ширина раскладки. Обычно равна ширине окна, но ограничена так,
+       чтобы высота секции (54.8% от опоры контента) не превышала высоту окна.
+       1.82 чуть меньше 1250/685 = 1.8248 — запас на округление. */
+    --hw: min(100vw, 100svh * 1.82);
+
+    /* Опора раскладки контента. До 1280px совпадает с --hw (всё
+       пропорционально, как в референсе), дальше замирает на ширине
+       контейнера — контент не растёт бесконечно и не наезжает на персонажа. */
+    --cw: min(var(--hw), var(--container));
+    --u: calc(var(--cw) / 100); /* 1% опоры контента — аналог vw */
+  }
+
+  /* Высота — по блоку контента, без лишнего воздуха сверху и снизу.
+     На макете 1250 блок равен 685px, то есть ровно пропорции картинки
+     1920×1052 — там фон виден целиком, обрезки нет. На более широких
+     окнах контент упирается в ширину контейнера, секция остаётся такой же
+     невысокой, а фон подрезается по вертикали (см. background-position). */
+  .hero {
+    padding: 0;
+  }
+
+  /* Подложка + фон.
+     Верхний слой — заливка #2B2143: слева полностью непрозрачная (картинка
+     под ней не просвечивает), к персонажу плавно уходит в прозрачность.
+     Картинка по ширине всегда ложится ровно в секцию (обрезка только по
+     вертикали), поэтому проценты градиента совпадают с процентами кадра.
+     Замерено по PNG: баблы начинаются на 57.3% ширины, до 50% кадр чистый.
+     Текст заканчивается на ~47%, поэтому затухание идёт в окне 44–60%:
+     подложка плотная под текстом и полностью прозрачная под баблами. */
+  .hero--with-bg {
+    background-image:
+      /* Низ кадра растворяется в общем фоне сайта — без него картинка
+         обрывалась ровной горизонтальной линией на стыке с .pains */
+      linear-gradient(
+        180deg,
+        rgba(var(--hero-glow-rgb), 0) 72%,
+        rgba(var(--hero-glow-rgb), 0.30) 85%,
+        rgba(var(--hero-glow-rgb), 0.72) 94%,
+        rgba(var(--hero-glow-rgb), 1) 100%
+      ),
+      linear-gradient(
+        90deg,
+        rgba(var(--hero-glow-rgb), 1) 0%,
+        rgba(var(--hero-glow-rgb), 1) 22%,
+        rgba(var(--hero-glow-rgb), 0.90) 34%,
+        rgba(var(--hero-glow-rgb), 0.66) 44%,
+        rgba(var(--hero-glow-rgb), 0.36) 50%,
+        rgba(var(--hero-glow-rgb), 0.12) 55%,
+        rgba(var(--hero-glow-rgb), 0) 60%
+      ),
+      url('../assets/img/hero-desktop.png');
+    background-size: cover, cover, cover;
+    /* по вертикали кадр смещён вниз: при обрезке на широких окнах
+       срезается пустое небо сверху, а персонаж остаётся целиком */
+    background-position: center, center, center 60%;
+    background-repeat: no-repeat, no-repeat, no-repeat;
+  }
+
+  .hero--with-bg .hero__media {
+    display: none;
+  }
+
+  /* Контейнер обычный (max-width и центрирование из base.css),
+     поля 45/1250 = 3.6% опоры — при ширине окна до 1280px это даёт ровно
+     позицию референса, дальше контент центрируется вместе с контейнером. */
+  .hero .container {
+    padding-inline: calc(var(--u) * 3.6);
+  }
+
+  /* Логотип — первый элемент блока контента.
+     Низ на 106, надзаголовок на 125 → отступ 19/1250 = 1.52% */
+  .hero__content .logo {
+    margin-bottom: calc(var(--u) * 1.52);
+  }
+
+  .logo__img {
+    height: calc(var(--u) * 3.52);   /* 44px на макете 1250 */
+  }
+
+  .logo__text {
+    font-size: calc(var(--u) * 0.9); /* 11.25px на макете 1250 */
+  }
+
+  /* Блок контента. Размеры получены обратным пересчётом ширин строк
+     референса: три строки H1 сходятся на 58px, абзац — на 22px.
+     Логотип начинается на 62, кнопки заканчиваются на 613:
+     62 + 551 + 72 = 685 — ровно высота секции на макете 1250,
+     поэтому там вертикальное центрирование ничего не сдвигает. */
+  .hero__inner {
+    padding-top: calc(var(--u) * 4.96);    /* 62px */
+    padding-bottom: calc(var(--u) * 5.76); /* 72px */
+  }
+
+  .hero__eyebrow {
+    font-size: calc(var(--u) * 1.04);      /* 13px */
+    line-height: 1.3;
+    margin-bottom: calc(var(--u) * 0.69);  /* 8.6px */
+  }
+
+  .hero__title {
+    font-size: calc(var(--u) * 4.64);      /* 58px */
+    line-height: 1.03;
+    margin-bottom: calc(var(--u) * 2.72);  /* 34px */
+  }
+
+  .hero__text {
+    font-size: calc(var(--u) * 1.76);      /* 22px */
+    line-height: 1.3;
+    max-width: calc(var(--u) * 37.2);      /* 465px — даёт те же 5 строк */
+    margin-bottom: calc(var(--u) * 2.24);  /* 28px */
+  }
+
+  .hero__actions {
+    gap: calc(var(--u) * 0.96);            /* 12px */
+  }
+
+  .hero .btn {
+    font-size: calc(var(--u) * 1.28);                        /* 16px */
+    padding: calc(var(--u) * 1.52) calc(var(--u) * 2.88);    /* высота 56px */
+    border-radius: calc(var(--u) * 0.8);
+  }
+}
+
+/* ------------------------------------------------------------
+   REASON — третий экран: почему так происходит.
+   Ответ на девять «болей» предыдущего экрана: причина, четыре
+   пункта «что нужно знать», обещание курса и первый на странице
+   промежуточный CTA.
+
+   Та же тёмная сцена, что и у pains, но с собственным фоном:
+   картинка reason-bg.png с нейросетевым узором по левому и правому
+   краям и пустой серединой под текст. Размеры на токенах и clamp().
+   ------------------------------------------------------------ */
+
+.reason {
+  position: relative;
+  background: var(--night-900);
+  overflow: hidden;
+}
+
+/* Фон секции. На узких экранах картинка не подключается: она широкая
+   (16:9), в высокую колонку cover обрезал бы её до пустой середины —
+   весь узор ушёл бы за края, а 1.5 МБ всё равно скачались. Там остаётся
+   прежняя подсветка градиентами: циан сверху справа, лаванда снизу слева. */
+.reason::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(58% 52% at 88% 0%, rgba(127, 232, 255, 0.14) 0%, rgba(127, 232, 255, 0) 70%),
+    radial-gradient(58% 55% at 8% 100%, rgba(184, 140, 255, 0.16) 0%, rgba(184, 140, 255, 0) 70%);
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  /* Верхний слой — вертикальное затухание в общий фон сайта: у картинки
+     края чуть светлее #0B0426, и без него на стыках с соседними тёмными
+     секциями была бы заметна горизонтальная граница. */
+  .reason::before {
+    background-image:
+      linear-gradient(
+        180deg,
+        rgba(11, 4, 38, 1) 0%,
+        rgba(11, 4, 38, 0) 14%,
+        rgba(11, 4, 38, 0) 86%,
+        rgba(11, 4, 38, 1) 100%
+      ),
+      url('../assets/img/reason-bg.png');
+    background-size: cover, cover;
+    background-position: center, center;
+    background-repeat: no-repeat, no-repeat;
+  }
+}
+
+.reason > .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Заголовок короткий («Почему так происходит?»), поэтому базовый h2
+   с капсом оставлен как есть — в отличие от pains, где заголовок
+   занимает три строки и капс превратил бы его в крик. */
+.reason .section__head {
+  max-width: 820px;
+  margin-bottom: var(--space-8);
+}
+
+.reason .section__title {
+  color: var(--cloud-white);
+}
+
+.reason .section__subtitle {
+  max-width: 42em;
+  margin-inline: auto;
+}
+
+/* Подводка к списку + тонкая градиентная черта под ней — как у pains */
+.reason__lead {
+  position: relative;
+  margin-bottom: var(--space-12);
+  padding-bottom: var(--space-4);
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-bold);
+  line-height: 1.2;
+  text-align: center;
+  color: var(--cloud-white);
+}
+
+.reason__lead::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 96px;
+  height: 2px;
+  transform: translateX(-50%);
+  border-radius: 2px;
+  background: var(--grad-primary);
+}
+
+/* Таймлайн вместо сетки карточек: на узких экранах — колонка узлов
+   слева от текста, на десктопе (≥1200px, когда все четыре встают
+   одной строкой) — горизонтальный ряд с узлами по центру и общей
+   соединительной чертой. Счётчик обнуляется здесь, инкремент —
+   на .reason-step__node. */
+.reason__timeline {
+  counter-reset: reason;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* На самых узких экранах (одна колонка, узлы друг под другом) соединяем
+   их короткой чертой, чтобы «путь» читался и здесь, а не только в ряду.
+   При 2 колонках (768–1199px) сосед по разметке не всегда сосед по
+   экрану, поэтому черта не рисуется — только узлы и общий счётчик. */
+@media (max-width: 767px) {
+  .reason-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 56px;
+    left: 27px;
+    width: 2px;
+    height: var(--space-6);
+    background: var(--grad-primary);
+    opacity: 0.35;
+  }
+}
+
+@media (min-width: 768px) {
+  .reason__timeline {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-8);
+  }
+}
+
+@media (min-width: 1200px) {
+  .reason__timeline {
+    grid-template-columns: repeat(4, 1fr);
+    align-items: start;
+  }
+
+  /* Общая линия под рядом узлов: по центру круга (56px), плюс отступ
+     контейнера от верха ряда до центра узла */
+  .reason-step::after {
+    content: '';
+    position: absolute;
+    top: 28px;
+    left: 100%;
+    width: var(--space-8);
+    height: 2px;
+    background: var(--grad-primary);
+    opacity: 0.45;
+  }
+
+  .reason-step:last-child::after {
+    display: none;
+  }
+}
+
+/* ---------- Вывод: от инструмента к пути курса ---------- */
+
+.reason__outro {
+  max-width: 46em;
+  margin: var(--space-12) auto 0;
+  text-align: center;
+}
+
+.reason__result {
+  font-size: var(--fs-lead);
+  line-height: var(--lh-body);
+  color: var(--text-on-dark-muted);
+}
+
+.reason__path-title {
+  margin-top: var(--space-8);
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-bold);
+  color: var(--cloud-white);
+}
+
+/* Цепочка шагов: таблетки со стрелками между ними.
+   Стрелка живёт на ::after, поэтому не попадает в копируемый текст.
+   Зазор между таблетками увеличен: стрелка стоит не внутри таблетки,
+   а в промежутке между ними — как связка, а не как часть кнопки. */
+.reason__path {
+  /* Длина стрелки-связки. Зазор = длина + воздух по 10px с каждой стороны,
+     чтобы стрелка не упиралась в бордеры соседних таблеток. */
+  --path-arrow: 2.25rem;
+  --path-arrow-inset: 0.625rem;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--path-arrow) + var(--path-arrow-inset) * 2);
+  margin-top: var(--space-6);
+}
+
+.reason__path-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.625rem 1.125rem;
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.04);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--cloud-white);
+}
+
+/* Стрелка вынесена за границу таблетки и нарисована на CSS, а не глифом:
+   у символа «→» длину не задать, а связка между шагами должна тянуться.
+   ::after — древко, ::before — наконечник; вместе дают --path-arrow. */
+.reason__path-item::after,
+.reason__path-item::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  pointer-events: none;
+}
+
+/* Древко */
+.reason__path-item::after {
+  left: calc(100% + var(--path-arrow-inset));
+  width: calc(var(--path-arrow) - 0.5rem);   /* минус наконечник */
+  height: 2px;
+  transform: translateY(-50%);
+  border-radius: 2px;
+  background: var(--tessa-lavender);
+}
+
+/* Наконечник — треугольник на бордерах, 8px в длину */
+.reason__path-item::before {
+  left: calc(100% + var(--path-arrow-inset) + var(--path-arrow) - 0.5rem);
+  width: 0;
+  height: 0;
+  transform: translateY(-50%);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 8px solid var(--tessa-lavender);
+}
+
+/* У последнего шага стрелки нет — цепочка на нём заканчивается */
+.reason__path-item:last-child::after,
+.reason__path-item:last-child::before {
+  content: none;
+}
+
+.reason__cta {
+  margin-top: var(--space-12);
+  text-align: center;
+}
+
+/* У .btn стоит white-space: nowrap, а надпись здесь длинная —
+   на узких экранах она обязана переноситься, иначе уедет за контейнер. */
+.reason__cta .btn {
+  max-width: 100%;
+  white-space: normal;
+  text-align: center;
+}
+
+@media (max-width: 479px) {
+  /* Цепочка встаёт в колонку, стрелки разворачиваются вниз */
+  .reason__path {
+    flex-direction: column;
+    gap: calc(var(--path-arrow) + var(--path-arrow-inset) * 2);
+  }
+
+  .reason__path-item {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Та же стрелка, повёрнутая вниз: древко вертикальное,
+     наконечник — треугольник вершиной вниз */
+  .reason__path-item::after {
+    top: calc(100% + var(--path-arrow-inset));
+    left: 50%;
+    width: 2px;
+    height: calc(var(--path-arrow) - 0.5rem);
+    transform: translateX(-50%);
+  }
+
+  .reason__path-item::before {
+    top: calc(100% + var(--path-arrow-inset) + var(--path-arrow) - 0.5rem);
+    left: 50%;
+    transform: translateX(-50%);
+    border-top: 8px solid var(--tessa-lavender);
+    border-right: 5px solid transparent;
+    border-bottom: 0;
+    border-left: 5px solid transparent;
+  }
+
+  .reason__cta .btn {
+    width: min(20rem, 100%);
+  }
+}
+
+/* ------------------------------------------------------------
+   TREND — четвёртый экран: ИИ становится нормой.
+   Аналогия с компьютерами тридцать лет назад, две цифры
+   исследований и чек-лист «если ИИ прямо сейчас не…».
+
+   Та же тёмная сцена и те же токены, что у pains и reason,
+   без собственной подсветки: фон ровный.
+   ------------------------------------------------------------ */
+
+.trend {
+  position: relative;
+  background: var(--night-900);
+  overflow: hidden;
+}
+
+/* Подсветки нет: пятно у верхней кромки подчёркивало стык с reason,
+   у которого свой фон-картинка. Фон секции — ровный --night-900. */
+
+.trend > .container {
+  position: relative;
+  z-index: 1;
+}
+
+.trend .section__head {
+  max-width: 900px;
+  margin-bottom: var(--space-12);
+}
+
+/* Своего заголовка у блока в тексте нет — его роль берёт первая фраза.
+   Это два целых предложения, поэтому капс базового h2 снимается,
+   как и на втором экране. */
+.trend .section__title {
+  font-size: clamp(1.5rem, 1.05rem + 1.9vw, 2.5rem);
+  line-height: 1.22;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  color: var(--cloud-white);
+  text-wrap: balance;
+}
+
+.trend .section__subtitle {
+  max-width: 42em;
+  margin-inline: auto;
+}
+
+/* Иллюстрация + цифры. До 768px — одна колонка: цифры, под ними картинка.
+   Дальше две равные колонки, картинка слева, цифры справа друг под другом.
+   Порядок в разметке обратный (цифры первыми), колонки расставляет
+   grid-column — так на мобильном наверх попадает главное, а на десктопе
+   раскладка нужная. */
+.trend__facts {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+}
+
+@media (min-width: 768px) {
+  .trend__facts {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-8);
+    /* не stretch: картинка квадратная и задаёт высоту строки сама,
+       а колонка с цифрами центрируется по ней */
+    align-items: center;
+  }
+
+  .trend__media {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .trend__stats {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}
+
+/* Две цифры исследований — всегда друг под другом внутри своей колонки */
+.trend__stats {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-content: start;
+  gap: var(--space-6);
+}
+
+/* Пропорция 1:1 — как у самой картинки, поэтому object-fit: cover
+   ничего не обрезает: и звезда сверху, и иконки снизу остаются в кадре. */
+.trend__media {
+  width: 100%;
+  max-width: 640px;
+  margin-inline: auto;
+  aspect-ratio: 1 / 1;
+}
+
+@media (min-width: 768px) {
+  .trend__media {
+    max-width: none;
+  }
+}
+
+.trend__question {
+  max-width: 46em;
+  margin: var(--space-12) auto;
+  font-size: var(--fs-lead);
+  line-height: var(--lh-body);
+  text-align: center;
+  color: var(--text-on-dark-muted);
+}
+
+/* Чек-лист — одна стеклянная панель, а не третья подряд сетка карточек:
+   пять пунктов читаются как единый список условий, а не как отдельные тезисы. */
+.trend__audit {
+  max-width: 56em;
+  margin-inline: auto;
+  padding: clamp(1.5rem, 0.9rem + 2.4vw, 3rem);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+}
+
+/* Подводка к списку + тонкая градиентная черта под ней — как на 2 и 3 экранах */
+.trend__lead {
+  position: relative;
+  margin-bottom: var(--space-8);
+  padding-bottom: var(--space-4);
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-bold);
+  line-height: 1.2;
+  text-align: center;
+  color: var(--cloud-white);
+}
+
+.trend__lead::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 96px;
+  height: 2px;
+  transform: translateX(-50%);
+  border-radius: 2px;
+  background: var(--grad-primary);
+}
+
+.trend__item {
+  position: relative;
+  padding: var(--space-4) 0 var(--space-4) var(--space-8);
+  border-bottom: 1px solid var(--border-dark);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-on-dark-muted);
+}
+
+.trend__item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* Тире-маркер из исходного списка — на псевдоэлементе,
+   чтобы не попадать в копируемый текст */
+.trend__item::before {
+  content: '–';
+  position: absolute;
+  left: var(--space-3);
+  font-weight: var(--fw-bold);
+  color: var(--tessa-lavender);
+}
+
+.trend__verdict {
+  margin-top: var(--space-8);
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-bold);
+  line-height: 1.35;
+  text-align: center;
+  color: var(--cloud-white);
+}
+
+@media (max-width: 479px) {
+  .trend__item {
+    padding-left: var(--space-6);
+  }
+
+  .trend__item::before {
+    left: 0;
+  }
+}
+
+/* ------------------------------------------------------------
+   PATH — пятый экран: за 8 недель от первого промпта до услуги.
+   Шесть шагов курса 01–06 — ответ на вопрос предыдущего экрана
+   «а что делать, если использую 5–7% возможностей».
+
+   Та же тёмная сцена и те же токены, что у pains, reason и trend,
+   и собственный фон-картинка — как на третьем экране.
+   ------------------------------------------------------------ */
+
+.path {
+  position: relative;
+  background: var(--night-900);
+  overflow: hidden;
+}
+
+/* Фон секции — по той же схеме, что у .reason: на узких экранах картинка
+   не подключается (она широкая, в высокую колонку cover обрезал бы её до
+   пустой середины), там остаётся подсветка градиентами. */
+.path::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(58% 52% at 86% 0%, rgba(127, 232, 255, 0.14) 0%, rgba(127, 232, 255, 0) 70%),
+    radial-gradient(58% 55% at 10% 100%, rgba(184, 140, 255, 0.16) 0%, rgba(184, 140, 255, 0) 70%);
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  /* Верхний слой — затухание в общий фон сайта, чтобы на стыках
+     с соседними тёмными секциями не было горизонтальной границы */
+  .path::before {
+    background-image:
+      linear-gradient(
+        180deg,
+        rgba(11, 4, 38, 1) 0%,
+        rgba(11, 4, 38, 0) 14%,
+        rgba(11, 4, 38, 0) 86%,
+        rgba(11, 4, 38, 1) 100%
+      ),
+      url('../assets/img/path-bg.png');
+    background-size: cover, cover;
+    background-position: center, center;
+    background-repeat: no-repeat, no-repeat;
+  }
+}
+
+.path > .container {
+  position: relative;
+  z-index: 1;
+}
+
+.path .section__head {
+  max-width: 900px;
+}
+
+/* Заголовок — целая фраза, поэтому капс базового h2 снят,
+   как на втором и четвёртом экранах. */
+.path .section__title {
+  margin-bottom: 0;
+  font-size: clamp(1.5rem, 1.05rem + 1.9vw, 2.5rem);
+  line-height: 1.22;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  color: var(--cloud-white);
+  text-wrap: balance;
+}
+
+/* Вертикальная зигзаг-таймлайн вместо сетки карточек: шесть шагов —
+   самая длинная последовательность на странице, и путь читается лучше
+   вдоль общей линии, чем в 3×2 сетке одинаковых плиток. На узких
+   экранах линия и узлы стоят слева, карточки — одной колонкой справа.
+   На десктопе (≥1200px) карточки уходят зигзагом влево/вправо от
+   центральной линии. Счётчик обнуляется здесь, инкремент —
+   на .path-step__node. */
+.path__timeline {
+  counter-reset: step;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+/* Вертикальная линия слева, за узлами (мобильные и планшет) */
+.path__timeline::before {
+  content: '';
+  position: absolute;
+  top: 24px;
+  bottom: 24px;
+  left: 23px;
+  width: 2px;
+  background: var(--grad-primary);
+  opacity: 0.3;
+}
+
+@media (min-width: 1200px) {
+  /* Линия переезжает в центр — зигзаг разворачивается по обе стороны */
+  .path__timeline::before {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* Соседние шаги стоят по разные стороны линии и по вертикали не
+     сталкиваются — значит, строки можно подтянуть друг на друга.
+     Зазор уходит в минус: карточки одной стороны становятся вдвое ближе,
+     а пустой половины строки напротив каждой карточки почти не остаётся. */
+  .path__timeline {
+    gap: 0;
+  }
+
+  .path-step + .path-step {
+    margin-top: calc(var(--space-8) * -1);
+  }
+
+  .path-step {
+    display: grid;
+    grid-template-columns: 1fr 64px 1fr;
+    align-items: center;
+    gap: var(--space-8);
+  }
+
+  /* grid-row: 1 обязателен обоим. Без него авторазмещение ставит узел
+     в первую строку, а карточку с grid-column: 1 не возвращает назад
+     в ту же строку (это было бы dense-упаковкой) и переносит во вторую:
+     у нечётных шагов номер оказывался над карточкой, а не напротив неё,
+     и каждый такой шаг тянул за собой лишнюю пустую строку. */
+  .path-step__node {
+    grid-column: 2;
+    grid-row: 1;
+    margin-inline: auto;
+  }
+
+  .path-step__card {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  /* Чётные шаги — карточка справа от линии, зигзаг */
+  .path-step:nth-child(even) .path-step__card {
+    grid-column: 3;
+  }
+}
+
+/* ------------------------------------------------------------
+   OFFERS — шестой экран: что можно предлагать после обучения
+   и сколько это стоит на рынке. Четыре направления услуг
+   с вилками цен + комплексный формат как самый доходный.
+
+   Та же тёмная сцена и те же токены, что у pains, reason,
+   trend и path, без собственной подсветки: фон ровный.
+   ------------------------------------------------------------ */
+
+.offers {
+  position: relative;
+  background: var(--night-900);
+  overflow: hidden;
+}
+
+/* Подсветки нет: пятно у верхней кромки подчёркивало стык с path,
+   у которого свой фон-картинка. Фон секции — ровный --night-900. */
+
+.offers > .container {
+  position: relative;
+  z-index: 1;
+}
+
+.offers .section__head {
+  max-width: 900px;
+}
+
+/* Заголовок — целая фраза, поэтому капс базового h2 снят,
+   как на втором, четвёртом и пятом экранах. */
+.offers .section__title {
+  font-size: clamp(1.5rem, 1.05rem + 1.9vw, 2.5rem);
+  line-height: 1.22;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  color: var(--cloud-white);
+  text-wrap: balance;
+}
+
+.offers .section__subtitle {
+  max-width: 46em;
+  margin-inline: auto;
+}
+
+/* Сетка направлений: 1 → 2 колонки. Внутри карточек длинные
+   перечисления, поэтому третьей колонки нет даже на десктопе. */
+.offers__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: stretch;
+  gap: var(--space-6);
+}
+
+@media (min-width: 768px) {
+  .offers__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Комплексные услуги — одна стеклянная панель, а не пятая карточка сетки:
+   это не ещё одно направление, а способ объединить предыдущие четыре. */
+.offers__combo {
+  margin-top: var(--space-12);
+  padding: clamp(1.5rem, 0.9rem + 2.4vw, 3rem);
+  border: 1px solid rgba(184, 140, 255, 0.45);
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(135deg, rgba(184, 140, 255, 0.12) 0%, rgba(127, 232, 255, 0.08) 100%),
+    rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+}
+
+.offers__combo-title {
+  margin-bottom: var(--space-4);
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-extrabold);
+  line-height: 1.25;
+  text-align: center;
+  color: var(--cloud-white);
+}
+
+.offers__combo-lead {
+  max-width: 46em;
+  margin: 0 auto var(--space-8);
+  font-size: var(--fs-lead);
+  line-height: var(--lh-body);
+  text-align: center;
+  color: var(--text-on-dark-muted);
+}
+
+/* Шесть готовых результатов: 1 → 2 → 3 колонки */
+.offers__combo-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3) var(--space-6);
+}
+
+@media (min-width: 600px) {
+  .offers__combo-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .offers__combo-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.offers__combo-item {
+  position: relative;
+  padding: var(--space-3) 0 var(--space-3) var(--space-6);
+  border-bottom: 1px solid var(--border-dark);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--cloud-white);
+}
+
+/* Тире-маркер из исходного списка — на псевдоэлементе,
+   чтобы не попадать в копируемый текст */
+.offers__combo-item::before {
+  content: '–';
+  position: absolute;
+  left: 0;
+  font-weight: var(--fw-bold);
+  color: var(--tessa-lavender);
+}
+
+/* Сноска об источнике вилок — мельче основного текста,
+   как строка источника в карточках четвёртого экрана */
+.offers__note {
+  max-width: 56em;
+  margin: var(--space-8) auto 0;
+  font-size: var(--fs-small);
+  line-height: 1.5;
+  text-align: center;
+  color: var(--text-on-dark-muted);
+}
+
+.offers__cta {
+  margin-top: var(--space-12);
+  text-align: center;
+}
+
+/* У .btn стоит white-space: nowrap, а надпись здесь длинная —
+   на узких экранах она переносится и кнопка становится блочной */
+@media (max-width: 479px) {
+  .offers__cta .btn {
+    width: 100%;
+    padding-inline: var(--space-4);
+    white-space: normal;
+    text-align: center;
+  }
+}
+
+/* ------------------------------------------------------------
+   AUDIENCE — седьмой экран: для кого этот курс.
+   Пять типов участников — ответ на вопрос «а мне это подойдёт?»,
+   который остаётся после блока с ценами.
+
+   Та же тёмная сцена и те же токены, что у pains, reason, trend,
+   path и offers. Подсветка зеркальна шестому экрану (циан сверху
+   справа, лаванда снизу слева) — чередование продолжается.
+   ------------------------------------------------------------ */
+
+.audience {
+  position: relative;
+  background: var(--night-900);
+  overflow: hidden;
+}
+
+.audience::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(56% 50% at 88% 0%, rgba(127, 232, 255, 0.14) 0%, rgba(127, 232, 255, 0) 70%),
+    radial-gradient(58% 54% at 12% 100%, rgba(184, 140, 255, 0.15) 0%, rgba(184, 140, 255, 0) 70%);
+  pointer-events: none;
+}
+
+.audience > .container {
+  position: relative;
+  z-index: 1;
+}
+
+.audience .section__head {
+  max-width: 900px;
+}
+
+/* Заголовок — целая фраза, поэтому капс базового h2 снят,
+   как на втором, четвёртом, пятом и шестом экранах.
+   Подзаголовка у блока в тексте нет, поэтому нижний отступ
+   заголовка снят: отбивку до сетки даёт .section__head. */
+.audience .section__title {
+  margin-bottom: 0;
+  font-size: clamp(1.5rem, 1.05rem + 1.9vw, 2.5rem);
+  line-height: 1.22;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  color: var(--cloud-white);
+  text-wrap: balance;
+}
+
+/* Сетка участников: 1 → 2 → 3 колонки. Карточек пять, поэтому
+   колонки набираются из долей: 4 доли на планшете и 6 на десктопе,
+   карточка занимает две. Хвостовой ряд (одна карточка на планшете,
+   две на десктопе) сдвигается на долю вправо и встаёт по центру. */
+.audience__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: stretch;
+  gap: var(--space-6);
+}
+
+@media (min-width: 768px) {
+  .audience__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .audience-card {
+    grid-column: span 2;
+  }
+
+  /* пятая карточка одна в ряду — центрируем */
+  .audience-card:nth-child(5) {
+    grid-column: 2 / span 2;
+  }
+}
+
+@media (min-width: 1200px) {
+  .audience__grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  /* четвёртая и пятая — вдвоём во втором ряду, центрируем пару */
+  .audience-card:nth-child(4) {
+    grid-column: 2 / span 2;
+  }
+
+  .audience-card:nth-child(5) {
+    grid-column: 4 / span 2;
+  }
+}
+
+/* ------------------------------------------------------------
+   METHOD — восьмой экран: не изучаем сервисы ради сервисов.
+   Четыре шага, через которые проходит каждый навык, — ответ на
+   вопрос «а как именно устроено обучение?», который появляется
+   сразу после блока «мне это подойдёт».
+
+   Та же тёмная сцена и те же токены, что у pains, reason, trend,
+   path, offers и audience. Подсветка зеркальна седьмому экрану
+   (лаванда сверху слева, циан снизу справа) — чередование
+   по странице продолжается.
+   ------------------------------------------------------------ */
+
+.method {
+  position: relative;
+  background: var(--night-900);
+  overflow: hidden;
+}
+
+.method::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(56% 50% at 12% 0%, rgba(184, 140, 255, 0.16) 0%, rgba(184, 140, 255, 0) 70%),
+    radial-gradient(58% 54% at 88% 100%, rgba(127, 232, 255, 0.13) 0%, rgba(127, 232, 255, 0) 70%);
+  pointer-events: none;
+}
+
+.method > .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Заголовок короткий, в одну строку, поэтому капс базового h2
+   оставлен как есть — как на третьем экране. Акцент .grad-text--h1
+   перенесён в подзаголовок, на «не конспект, а готовую работу»:
+   ради этого обещания блок и написан. */
+.method .section__subtitle {
+  max-width: 42em;
+  margin-inline: auto;
+}
+
+/* Сетка шагов: 1 → 2 → 4 колонки. Шаги короткие и на десктопе
+   встают одним рядом, читаясь как последовательность.
+   Счётчик обнуляется здесь, инкремент — на .method-card. */
+.method__grid {
+  counter-reset: method;
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: stretch;
+  gap: var(--space-6);
+}
+
+@media (min-width: 768px) {
+  .method__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .method__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ------------------------------------------------------------
+   TIMING — девятый экран: сколько это займёт времени.
+   Сроки и нагрузка, режим выдачи модулей и список «вам
+   не понадобится» — ответ на вопрос «сколько это стоит мне
+   времени и что нужно иметь на старте», который появляется
+   сразу после блока про устройство обучения.
+
+   Та же тёмная сцена и те же токены, что у pains, reason, trend,
+   path, offers, audience и method. Подсветка зеркальна восьмому
+   экрану (циан сверху справа, лаванда снизу слева) — чередование
+   по странице продолжается.
+   ------------------------------------------------------------ */
+
+.timing {
+  position: relative;
+  background: var(--night-900);
+  overflow: hidden;
+}
+
+.timing::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(56% 50% at 88% 0%, rgba(127, 232, 255, 0.14) 0%, rgba(127, 232, 255, 0) 70%),
+    radial-gradient(58% 54% at 12% 100%, rgba(184, 140, 255, 0.15) 0%, rgba(184, 140, 255, 0) 70%);
+  pointer-events: none;
+}
+
+.timing > .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Заголовок короткий и встаёт в одну строку, поэтому капс базового h2
+   оставлен как есть — как на третьем и восьмом экранах. Подзаголовка
+   у блока в тексте нет, поэтому нижний отступ заголовка снят:
+   отбивку до таблеток даёт .section__head. */
+.timing .section__title {
+  margin-bottom: 0;
+}
+
+/* Строка фактов — шесть таблеток вместо одной длинной строки через «·».
+   Разделители были служебной пунктуацией перечисления и сняты:
+   таблетки разделяются вёрсткой. Строка центрируется и переносится
+   сама, отдельных брейкпоинтов не требует. */
+.timing__facts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  max-width: 60em;
+  margin-inline: auto;
+}
+
+.timing__fact {
+  padding: var(--space-3) var(--space-6);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semibold);
+  line-height: 1.3;
+  color: var(--cloud-white);
+  transition: border-color var(--transition), background-color var(--transition),
+    box-shadow var(--transition);
+}
+
+.timing__fact:hover {
+  border-color: rgba(184, 140, 255, 0.55);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: var(--glow-lavender);
+}
+
+/* Два абзаца режима обучения. Акцент .grad-text--h1 стоит
+   на «догнать реально» — на снятии главного страха читателя
+   про «выпал на неделю и всё пропало». */
+.timing__notes {
+  max-width: 46em;
+  margin: var(--space-12) auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.timing__text {
+  font-size: var(--fs-lead);
+  line-height: var(--lh-body);
+  text-align: center;
+  color: var(--text-on-dark-muted);
+}
+
+/* «Вам не понадобится» — одна стеклянная панель, как чек-лист
+   четвёртого экрана: шесть пунктов читаются как единый список
+   снятых требований, а не как шесть отдельных тезисов. */
+.timing__free {
+  max-width: 56em;
+  margin: var(--space-16) auto 0;
+  padding: clamp(1.5rem, 0.9rem + 2.4vw, 3rem);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+}
+
+/* Заголовок панели + тонкая градиентная черта под ним — как .trend__lead */
+.timing__free-title {
+  position: relative;
+  margin-bottom: var(--space-8);
+  padding-bottom: var(--space-4);
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-bold);
+  line-height: 1.2;
+  text-transform: none;
+  letter-spacing: normal;
+  text-align: center;
+  color: var(--cloud-white);
+}
+
+.timing__free-title::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 96px;
+  height: 2px;
+  transform: translateX(-50%);
+  border-radius: 2px;
+  background: var(--grad-primary);
+}
+
+/* Список в две колонки на десктопе: пункты короткие, в одну колонку
+   панель растягивалась бы пустотой справа. */
+.timing__free-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0 var(--space-8);
+}
+
+@media (min-width: 768px) {
+  .timing__free-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.timing__free-item {
+  position: relative;
+  padding: var(--space-4) 0 var(--space-4) var(--space-8);
+  border-bottom: 1px solid var(--border-dark);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-on-dark-muted);
+}
+
+/* Тире-маркер из исходного списка — на псевдоэлементе,
+   чтобы не попадать в копируемый текст */
+.timing__free-item::before {
+  content: '–';
+  position: absolute;
+  left: var(--space-3);
+  font-weight: var(--fw-bold);
+  color: var(--tessa-lavender);
+}
+
+/* В одну колонку нижнюю границу снимает последний пункт,
+   в две — последний в каждом столбце */
+.timing__free-item:last-child {
+  border-bottom: none;
+}
+
+@media (min-width: 768px) {
+  .timing__free-item:nth-last-child(-n + 2) {
+    border-bottom: none;
+  }
+}
+
+.timing__free-note {
+  margin-top: var(--space-8);
+  font-size: var(--fs-small);
+  line-height: var(--lh-body);
+  text-align: center;
+  color: var(--text-on-dark-muted);
+}
+
+@media (max-width: 479px) {
+  .timing__fact {
+    padding-inline: var(--space-4);
+  }
+
+  .timing__free-item {
+    padding-left: var(--space-6);
+  }
+
+  .timing__free-item::before {
+    left: 0;
+  }
+}
+
+/* ------------------------------------------------------------
+   PROGRAM — десятый экран: программа курса, модули 0–6
+   и финальный проект. Подробный ответ на вопрос «а что конкретно
+   внутри», который появляется сразу после сроков и нагрузки.
+
+   Та же тёмная сцена и те же токены, что у pains, reason, trend,
+   path, offers, audience, method и timing. Подсветка зеркальна
+   девятому экрану (лаванда сверху слева, циан снизу справа) —
+   чередование по странице продолжается.
+   ------------------------------------------------------------ */
+
+.program {
+  position: relative;
+  background: var(--night-900);
+  overflow: hidden;
+}
+
+.program::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(56% 50% at 12% 0%, rgba(184, 140, 255, 0.16) 0%, rgba(184, 140, 255, 0) 70%),
+    radial-gradient(58% 54% at 88% 100%, rgba(127, 232, 255, 0.13) 0%, rgba(127, 232, 255, 0) 70%);
+  pointer-events: none;
+}
+
+.program > .container {
+  position: relative;
+  z-index: 1;
+}
+
+.program .section__head {
+  max-width: 900px;
+}
+
+/* Заголовок — целая фраза, поэтому капс базового h2 снят,
+   как на втором, четвёртом, пятом, шестом и седьмом экранах.
+   Подзаголовка у блока в тексте нет, поэтому нижний отступ снят:
+   отбивку до аккордеона даёт .section__head. */
+.program .section__title {
+  margin-bottom: 0;
+  font-size: clamp(1.5rem, 1.05rem + 1.9vw, 2.5rem);
+  line-height: 1.22;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  color: var(--cloud-white);
+  text-wrap: balance;
+}
+
+/* Аккордеон — колонка строк во всю ширину контента, а не сетка:
+   у модулей разный объём, в плитках они выравнивались бы пустотой.
+   Ширина ограничена, чтобы строки тем не растягивались на 1280px. */
+.program__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 60em;
+  margin-inline: auto;
+}
+
+/* Финальный проект — не восьмой модуль, а итог курса, поэтому
+   отдельная стеклянная панель без раскрытия, как «вам
+   не понадобится» на девятом экране. */
+.program__final {
+  max-width: 60em;
+  margin: var(--space-16) auto 0;
+  padding: clamp(1.5rem, 0.9rem + 2.4vw, 3rem);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+}
+
+/* Заголовок панели + тонкая градиентная черта под ним — как .trend__lead
+   и .timing__free-title */
+.program__final-title {
+  position: relative;
+  padding-bottom: var(--space-4);
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-bold);
+  line-height: 1.2;
+  text-transform: none;
+  letter-spacing: normal;
+  text-align: center;
+  color: var(--cloud-white);
+}
+
+.program__final-title::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 96px;
+  height: 2px;
+  transform: translateX(-50%);
+  border-radius: 2px;
+  background: var(--grad-primary);
+}
+
+.program__final-promise {
+  margin-top: var(--space-6);
+  font-size: var(--fs-lead);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-body);
+  text-align: center;
+  color: var(--cloud-white);
+}
+
+.program__final-text {
+  margin-top: var(--space-4);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-on-dark-muted);
+}
+
+/* «Итог» набран теми же подписью и текстом, что блоки внутри модулей */
+.program__final-result {
+  margin-top: var(--space-8);
+  padding-left: var(--space-4);
+  border-left: 2px solid var(--tessa-lavender);
+}
+
+.program__cta {
+  margin-top: var(--space-12);
+  text-align: center;
+}
+
+@media (max-width: 479px) {
+  .program__cta .btn {
+    width: 100%;
+    padding-inline: var(--space-4);
+    white-space: normal;
+    text-align: center;
+  }
+}
+
+/* ------------------------------------------------------------
+   WORKS — одиннадцатый экран: примеры работ «было → стало».
+   Идёт сразу после программы: она рассказала, чему учат,
+   а этот блок показывает, что получается на выходе.
+
+   Та же тёмная сцена и те же токены, что у pains, reason, trend,
+   path, offers, audience, method, timing и program. Подсветка
+   зеркальна десятому экрану (циан сверху справа, лаванда снизу
+   слева) — чередование по странице продолжается.
+   ------------------------------------------------------------ */
+
+.works {
+  position: relative;
+  background: var(--night-900);
+  overflow: hidden;
+}
+
+.works::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(56% 50% at 88% 0%, rgba(127, 232, 255, 0.14) 0%, rgba(127, 232, 255, 0) 70%),
+    radial-gradient(58% 54% at 12% 100%, rgba(184, 140, 255, 0.15) 0%, rgba(184, 140, 255, 0) 70%);
+  pointer-events: none;
+}
+
+.works > .container {
+  position: relative;
+  z-index: 1;
+}
+
+.works .section__head {
+  max-width: 900px;
+}
+
+/* Заголовок — целая фраза, поэтому капс базового h2 снят, как на втором,
+   четвёртом, пятом, шестом, седьмом и десятом экранах. Подзаголовка
+   у блока в тексте нет, поэтому нижний отступ снят: отбивку до сетки
+   даёт .section__head. */
+.works .section__title {
+  margin-bottom: 0;
+  font-size: clamp(1.5rem, 1.05rem + 1.9vw, 2.5rem);
+  line-height: 1.22;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  color: var(--cloud-white);
+  text-wrap: balance;
+}
+
+/* Сетка примеров: 1 → 2 → 3 колонки. Карточки равнозначны и коротки,
+   поэтому на десктопе идут по три в ряд — шесть работ ложатся
+   в два ровных ряда. */
+.works__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: stretch;
+  gap: var(--space-6);
+}
+
+@media (min-width: 768px) {
+  .works__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .works__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ------------------------------------------------------------
+   RESULTS — двенадцатый экран: результаты участников.
+   Идёт после примеров работ: там показано, что получается
+   на выходе, здесь — что это дало конкретным людям.
+
+   Та же тёмная сцена и те же токены, что у pains, reason, trend,
+   path, offers, audience, method, timing, program и works.
+   Подсветка зеркальна одиннадцатому экрану (лаванда сверху слева,
+   циан снизу справа) — чередование по странице продолжается.
+   ------------------------------------------------------------ */
+
+.results {
+  position: relative;
+  background: var(--night-900);
+  overflow: hidden;
+}
+
+.results::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(56% 50% at 12% 0%, rgba(184, 140, 255, 0.16) 0%, rgba(184, 140, 255, 0) 70%),
+    radial-gradient(58% 54% at 88% 100%, rgba(127, 232, 255, 0.13) 0%, rgba(127, 232, 255, 0) 70%);
+  pointer-events: none;
+}
+
+.results > .container {
+  position: relative;
+  z-index: 1;
+}
+
+.results .section__head {
+  max-width: 900px;
+}
+
+/* Заголовок — целая фраза, поэтому капс базового h2 снят, как
+   на остальных экранах со второго по одиннадцатый */
+.results .section__title {
+  font-size: clamp(1.5rem, 1.05rem + 1.9vw, 2.5rem);
+  line-height: 1.22;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  color: var(--cloud-white);
+  text-wrap: balance;
+}
+
+/* «Структура каждого кейса:» — не подводка, а подпись к списку:
+   набрана мельче обычного подзаголовка и стоит вплотную к сетке */
+.results .section__subtitle {
+  margin-top: var(--space-4);
+  font-size: var(--fs-lead);
+  color: var(--text-on-dark-muted);
+}
+
+/* Сетка шагов кейса: 1 → 2 → 4 колонки, как у шагов метода
+   на восьмом экране — это такой же короткий порядок из четырёх пунктов. */
+.results__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: stretch;
+  gap: var(--space-6);
+}
+
+@media (min-width: 768px) {
+  .results__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .results__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ------------------------------------------------------------
+   EXPERT — тринадцатый экран: у кого учиться.
+   Идёт после результатов участников: там показано, к чему
+   приводит курс, здесь — кто его ведёт.
+
+   Та же тёмная сцена и те же токены, что у pains, reason, trend,
+   path, offers, audience, method, timing, program, works и results.
+   Подсветка зеркальна двенадцатому экрану (циан сверху справа,
+   лаванда снизу слева) — чередование по странице продолжается.
+   ------------------------------------------------------------ */
+
+.expert {
+  position: relative;
+  background: var(--night-900);
+  overflow: hidden;
+}
+
+.expert::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(56% 50% at 88% 0%, rgba(127, 232, 255, 0.14) 0%, rgba(127, 232, 255, 0) 70%),
+    radial-gradient(58% 54% at 12% 100%, rgba(184, 140, 255, 0.15) 0%, rgba(184, 140, 255, 0) 70%);
+  pointer-events: none;
+}
+
+.expert > .container {
+  position: relative;
+  z-index: 1;
+}
+
+.expert .section__head {
+  max-width: 900px;
+}
+
+/* Заголовок — целая фраза, поэтому капс базового h2 снят, как
+   на остальных экранах со второго по двенадцатый. Подзаголовка
+   у блока в тексте нет, поэтому нижний отступ снят: отбивку
+   до карточки даёт .section__head. */
+.expert .section__title {
+  margin-bottom: 0;
+  font-size: clamp(1.5rem, 1.05rem + 1.9vw, 2.5rem);
+  line-height: 1.22;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  color: var(--cloud-white);
+  text-wrap: balance;
+}
+
+/* ------------------------------------------------------------
+   SUPPORT — четырнадцатый экран: сопровождение куратора и Тесса.
+   Идёт после эксперта: там показано, кто ведёт курс, здесь —
+   кто помогает участнику внутри курса.
+
+   Та же тёмная сцена и те же токены, что у pains, reason, trend,
+   path, offers, audience, method, timing, program, works, results
+   и expert. Подсветка зеркальна тринадцатому экрану (лаванда
+   сверху слева, циан снизу справа) — чередование продолжается.
+   ------------------------------------------------------------ */
+
+.support {
+  position: relative;
+  background: var(--night-900);
+  overflow: hidden;
+}
+
+.support::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(56% 50% at 12% 0%, rgba(184, 140, 255, 0.16) 0%, rgba(184, 140, 255, 0) 70%),
+    radial-gradient(58% 54% at 88% 100%, rgba(127, 232, 255, 0.13) 0%, rgba(127, 232, 255, 0) 70%);
+  pointer-events: none;
+}
+
+.support > .container {
+  position: relative;
+  z-index: 1;
+}
+
+.support .section__head {
+  max-width: 900px;
+}
+
+/* Заголовок — целая фраза, поэтому капс базового h2 снят, как
+   на остальных экранах со второго по тринадцатый. Подзаголовка
+   у блока в тексте нет, отбивку до карточки даёт .section__head. */
+.support .section__title {
+  margin-bottom: 0;
+  font-size: clamp(1.5rem, 1.05rem + 1.9vw, 2.5rem);
+  line-height: 1.22;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  color: var(--cloud-white);
+  text-wrap: balance;
+}
+
+/* Вторая половина экрана начинается новым заголовком внутри того же
+   блока документа: он набран мельче h2, но крупнее заголовков карточек,
+   и отбит сверху, чтобы читался как начало новой части, а не подпись
+   к предыдущей карточке */
+.support__head--tessa {
+  margin-top: var(--space-16);
+}
+
+.support__subtitle {
+  margin-bottom: 0;
+  font-size: clamp(1.35rem, 1.05rem + 1.2vw, 2rem);
+  line-height: 1.25;
+  font-weight: var(--fw-bold);
+  text-transform: none;
+  letter-spacing: -0.01em;
+  color: var(--cloud-white);
+  text-wrap: balance;
+}
+
+/* Финальная строка блока — вывод из всего сказанного выше, поэтому
+   стоит отдельно под карточкой и по центру, без плашки */
+.support__closing {
+  margin-top: var(--space-12);
+  font-size: var(--fs-lead);
+  font-weight: var(--fw-semibold);
+  line-height: 1.4;
+  text-align: center;
+  text-wrap: balance;
+  color: var(--cloud-white);
+}
+
+/* ------------------------------------------------------------
+   TARIFFS — пятнадцатый экран: три формата обучения.
+   Идёт после сопровождения: там показано, что участник получает
+   внутри курса, здесь — в каком объёме это можно купить.
+
+   Та же тёмная сцена и те же токены, что у pains, reason, trend,
+   path, offers, audience, method, timing, program, works, results,
+   expert и support. Подсветка зеркальна четырнадцатому экрану
+   (циан сверху справа, лаванда снизу слева) — чередование
+   по странице продолжается.
+   ------------------------------------------------------------ */
+
+.tariffs {
+  position: relative;
+  background: var(--night-900);
+  overflow: hidden;
+}
+
+.tariffs::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(56% 50% at 88% 0%, rgba(127, 232, 255, 0.14) 0%, rgba(127, 232, 255, 0) 70%),
+    radial-gradient(58% 54% at 12% 100%, rgba(184, 140, 255, 0.15) 0%, rgba(184, 140, 255, 0) 70%);
+  pointer-events: none;
+}
+
+.tariffs > .container {
+  position: relative;
+  z-index: 1;
+}
+
+.tariffs .section__head {
+  max-width: 900px;
+}
+
+/* Заголовок — целая фраза, поэтому капс базового h2 снят, как
+   на остальных экранах со второго по четырнадцатый. Подзаголовка
+   у блока в тексте нет, поэтому нижний отступ снят: отбивку
+   до карточек даёт .section__head. */
+.tariffs .section__title {
+  margin-bottom: 0;
+  font-size: clamp(1.5rem, 1.05rem + 1.9vw, 2.5rem);
+  line-height: 1.22;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  color: var(--cloud-white);
+  text-wrap: balance;
+}
+
+/* Сетка тарифов: 1 → 3 колонки. Промежуточной раскладки в две колонки
+   нет — тарифов три, и пара «две карточки + сирота» ломает сравнение,
+   ради которого они и стоят рядом. Три колонки включаются с 1000px,
+   когда колонке хватает ширины на список из десяти пунктов. */
+.tariffs__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+  align-items: stretch;
+}
+
+@media (min-width: 1000px) {
+  .tariffs__grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-8);
+  }
+}
+
+/* ------------------------------------------------------------
+   GUARANTEE — шестнадцатый экран: гарантия возврата денег.
+   Идёт после тарифов: там выбирают формат и платят, здесь снимают
+   главный страх перед оплатой — риск потратить деньги напрасно.
+
+   Та же тёмная сцена и те же токены, что у pains, reason, trend,
+   path, offers, audience, method, timing, program, works, results,
+   expert, support и tariffs. Подсветка зеркальна пятнадцатому экрану
+   (лаванда сверху слева, циан снизу справа), как у четырнадцатого —
+   чередование по странице продолжается.
+   ------------------------------------------------------------ */
+
+.guarantee {
+  position: relative;
+  background: var(--night-900);
+  overflow: hidden;
+}
+
+.guarantee::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(56% 50% at 12% 0%, rgba(184, 140, 255, 0.16) 0%, rgba(184, 140, 255, 0) 70%),
+    radial-gradient(58% 54% at 88% 100%, rgba(127, 232, 255, 0.13) 0%, rgba(127, 232, 255, 0) 70%);
+  pointer-events: none;
+}
+
+.guarantee > .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Блок короткий — заголовок, два абзаца и оговорка, поэтому вся
+   секция собрана одной стеклянной панелью, а не заголовком отдельно
+   от текста: три мысли читаются как один цельный ответ на вопрос
+   «а что, если не понравится», а не как самостоятельный экран с
+   собственной структурой. Панель — то же тёмное стекло, что у
+   .trend__audit. */
+.guarantee__panel {
+  max-width: 52em;
+  margin-inline: auto;
+  padding: clamp(1.5rem, 0.9rem + 2.4vw, 3rem);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+  text-align: center;
+}
+
+/* Заголовок — целая фраза, поэтому капс базового h2 снят, как на
+   остальных экранах со второго по пятнадцатый. Акцент .grad-text--h1
+   стоит на «вернем деньги» — сути обещания. */
+.guarantee__title {
+  margin-bottom: var(--space-6);
+  font-size: clamp(1.5rem, 1.05rem + 1.9vw, 2.5rem);
+  line-height: 1.22;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  color: var(--cloud-white);
+  text-wrap: balance;
+}
+
+.guarantee__text {
+  margin-bottom: var(--space-4);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-on-dark-muted);
+}
+
+.guarantee__text:last-of-type {
+  margin-bottom: var(--space-6);
+}
+
+/* Оговорка про заработок — не продолжение обещания гарантии,
+   а отдельное условие курса, поэтому вынесена в плашку с акцентной
+   чертой слева, как .tariff-card__note и .support-card__note:
+   однородный фон, черта — отдельный псевдоэлемент шириной 2px
+   (двойной фон padding-box/border-box на прозрачной плашке гасит
+   текст градиентом на плашках с непрозрачностью фона всего 10% —
+   решение уже исправлено на четырнадцатом и пятнадцатом экранах,
+   здесь применено сразу в верном виде). */
+.guarantee__note {
+  position: relative;
+  max-width: 40em;
+  margin-inline: auto;
+  padding: var(--space-4) var(--space-6);
+  padding-left: calc(var(--space-6) + 2px);
+  border-radius: var(--radius-sm);
+  background: rgba(184, 140, 255, 0.12);
+  font-size: var(--fs-small);
+  line-height: var(--lh-body);
+  text-align: left;
+  color: var(--cloud-white);
+}
+
+.guarantee__note::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 2px;
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+  background: var(--grad-primary);
+}
+
+/* ------------------------------------------------------------
+   TIMER — семнадцатый экран: таймер и рост цены после вебинара.
+   Идёт после гарантии: там снят страх «а вдруг не подойдет»,
+   здесь — счётчик времени до конца стартовой цены. Раньше блок
+   был пропущен (обратный отсчёт требовал скрипта), теперь собран
+   на localStorage-таймере из js/main.js: дедлайн — 24 часа
+   от первого визита конкретного посетителя, переживает перезагрузку
+   страницы. Текст взят из документа дословно (блок 16); регулярные
+   цены тарифов совпадают с зачёркнутыми ценами на пятнадцатом
+   экране — это не совпадение, а один и тот же факт с двух сторон.
+
+   Та же тёмная сцена и те же токены, что у pains, reason, trend,
+   path, offers, audience, method, timing, program, works, results,
+   expert, support, tariffs и guarantee. Подсветка зеркальна
+   шестнадцатому экрану (циан сверху справа, лаванда снизу слева),
+   как у пятнадцатого, — чередование по странице продолжается.
+   ------------------------------------------------------------ */
+
+.timer {
+  position: relative;
+  background: var(--night-900);
+  overflow: hidden;
+}
+
+.timer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(56% 50% at 88% 0%, rgba(127, 232, 255, 0.15) 0%, rgba(127, 232, 255, 0) 70%),
+    radial-gradient(58% 54% at 12% 100%, rgba(184, 140, 255, 0.16) 0%, rgba(184, 140, 255, 0) 70%);
+  pointer-events: none;
+}
+
+.timer > .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Блок короткий — заголовок, часы, три цены и оговорка, поэтому вся
+   секция собрана одной стеклянной панелью, как .guarantee__panel:
+   таймер и три пункта читаются как один цельный отсчёт, а не как
+   самостоятельный экран со своей структурой. */
+.timer__panel {
+  max-width: 52em;
+  margin-inline: auto;
+  padding: clamp(1.5rem, 0.9rem + 2.4vw, 3rem);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+  text-align: center;
+}
+
+/* Заголовок — целая фраза, поэтому капс базового h2 снят, как на
+   остальных экранах со второго по шестнадцатый. Акцент .grad-text--h1
+   стоит на «24 часа» — на сроке действия цены, ради которого блок
+   и написан. */
+.timer__title {
+  margin-bottom: var(--space-8);
+  font-size: clamp(1.5rem, 1.05rem + 1.9vw, 2.5rem);
+  line-height: 1.22;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  color: var(--cloud-white);
+  text-wrap: balance;
+}
+
+/* Часы — три числа-таблетки, тот же приём, что .stat-card__value:
+   градиент только через background-image, иначе сбросился бы
+   background-clip. Цифры дополняет JS (js/main.js), без него
+   в разметке остаётся честный первый кадр — 24:00:00. */
+.timer__clock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.timer__unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 4.5em;
+}
+
+.timer__value {
+  font-size: clamp(2rem, 1.5rem + 2.2vw, 3rem);
+  font-weight: var(--fw-extrabold);
+  line-height: 1;
+  letter-spacing: var(--ls-tight);
+  font-variant-numeric: tabular-nums;
+  background-image: var(--grad-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.timer__unit-label {
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wide);
+  color: var(--text-on-dark-muted);
+}
+
+/* Двоеточие — та же колонка «число + подпись», что .timer__unit,
+   только подпись скрыта и служит только распоркой: так двоеточие
+   центрируется по цифре средствами flex, без translateY на глаз. */
+.timer__colon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.timer__colon-mark {
+  font-size: clamp(2rem, 1.5rem + 2.2vw, 3rem);
+  font-weight: var(--fw-extrabold);
+  line-height: 1;
+  color: var(--border-dark);
+}
+
+.timer__colon-spacer {
+  visibility: hidden;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semibold);
+  line-height: 1;
+}
+
+.timer__lead {
+  margin-bottom: var(--space-4);
+  font-size: var(--fs-lead);
+  font-weight: var(--fw-semibold);
+  color: var(--cloud-white);
+}
+
+/* Три пункта роста цены — короткий список, поэтому одной колонкой,
+   без сетки: тот же приём, что .trend__item, только без max-width
+   на всю ширину панели — панель здесь уже узкая (52em). */
+.timer__list {
+  max-width: 28em;
+  margin: 0 auto var(--space-8);
+  text-align: left;
+}
+
+.timer__item {
+  position: relative;
+  padding: var(--space-3) 0 var(--space-3) var(--space-6);
+  border-bottom: 1px solid var(--border-dark);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-on-dark-muted);
+}
+
+.timer__item:last-child {
+  border-bottom: none;
+}
+
+/* Тире-маркер из исходного списка — на псевдоэлементе,
+   чтобы не попадать в копируемый текст. Дефис внутри пункта
+   («– до 23 900 ₽») — обычный текст документа, как в
+   .tariff-card__price-old, и остаётся в разметке. */
+.timer__item::before {
+  content: '–';
+  position: absolute;
+  left: 0;
+  font-weight: var(--fw-bold);
+  color: var(--tessa-lavender);
+}
+
+/* Оговорка про места на персональном тарифе — плашка с акцентной
+   чертой слева, тот же приём, что .guarantee__note: фон — однородная
+   заливка, черта — отдельный псевдоэлемент шириной 2px, а не двойной
+   фон padding-box/border-box (гасил бы текст на прозрачности 10%). */
+.timer__note {
+  position: relative;
+  max-width: 40em;
+  margin: 0 auto var(--space-8);
+  padding: var(--space-4) var(--space-6);
+  padding-left: calc(var(--space-6) + 2px);
+  border-radius: var(--radius-sm);
+  background: rgba(184, 140, 255, 0.12);
+  font-size: var(--fs-small);
+  line-height: var(--lh-body);
+  text-align: left;
+  color: var(--cloud-white);
+}
+
+.timer__note::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 2px;
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+  background: var(--grad-primary);
+}
+
+@media (max-width: 479px) {
+  .timer__clock {
+    gap: var(--space-2);
+  }
+
+  .timer__unit {
+    min-width: 3.6em;
+  }
+
+  .timer__cta {
+    width: min(20rem, 100%);
+  }
+}
+
+/* ------------------------------------------------------------
+   FAQ — восемнадцатый экран: частые вопросы.
+   Идёт после таймера: там закрывается страх «упущу стартовую
+   цену», здесь закрываются оставшиеся частные возражения перед
+   оплатой.
+
+   Та же тёмная сцена и те же токены, что у pains, reason, trend,
+   path, offers, audience, method, timing, program, works, results,
+   expert, support, tariffs, guarantee и timer. Подсветка зеркальна
+   семнадцатому экрану (лаванда сверху слева, циан снизу справа),
+   как у шестнадцатого и четырнадцатого, — чередование по странице
+   продолжается.
+   ------------------------------------------------------------ */
+
+.faq {
+  position: relative;
+  background: var(--night-900);
+  overflow: hidden;
+}
+
+.faq::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(56% 50% at 12% 0%, rgba(184, 140, 255, 0.16) 0%, rgba(184, 140, 255, 0) 70%),
+    radial-gradient(58% 54% at 88% 100%, rgba(127, 232, 255, 0.13) 0%, rgba(127, 232, 255, 0) 70%);
+  pointer-events: none;
+}
+
+.faq > .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Заголовок короткий и встаёт в одну строку, поэтому капс базового h2
+   оставлен как есть — как на третьем, восьмом и девятом экранах.
+   Подзаголовка и своего CTA у блока в тексте нет, поэтому у
+   .section__title снят нижний отступ, а отбивку до списка даёт
+   .section__head, как на пятом, седьмом и девятом экранах. */
+.faq__head .section__title {
+  margin-bottom: 0;
+}
+
+/* Аккордеон — колонка строк во всю ширину контента, как .program__list:
+   вопросы разной длины, в плитках сетки они выравнивались бы пустотой. */
+.faq__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 60em;
+  margin-inline: auto;
+}
+
+/* ------------------------------------------------------------
+   CTA — девятнадцатый экран: финальный призыв к действию.
+   Идёт после частых вопросов: там сняты последние частные
+   возражения, здесь читателю остаётся один выбор — оставить всё
+   как есть или пройти курс за 8 недель. Строка про 24 часа здесь
+   выведена текстом факта, а не обратным отсчётом — сам счётчик
+   уже отработал на семнадцатом экране (#timer).
+
+   Та же тёмная сцена и те же токены, что у pains, reason, trend,
+   path, offers, audience, method, timing, program, works, results,
+   expert, support, tariffs, guarantee, timer и faq. Подсветка
+   зеркальна восемнадцатому экрану (циан сверху справа, лаванда
+   снизу слева), как у пятнадцатого и семнадцатого, — чередование
+   по странице продолжается.
+   ------------------------------------------------------------ */
+
+.cta {
+  position: relative;
+  background: var(--night-900);
+  overflow: hidden;
+}
+
+.cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(56% 50% at 88% 0%, rgba(127, 232, 255, 0.15) 0%, rgba(127, 232, 255, 0) 70%),
+    radial-gradient(58% 54% at 12% 100%, rgba(184, 140, 255, 0.16) 0%, rgba(184, 140, 255, 0) 70%);
+  pointer-events: none;
+}
+
+.cta > .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Заголовок — целая фраза, поэтому капс базового h2 снят, как на
+   остальных экранах со второго по восемнадцатый (кроме коротких
+   однострочных). Акцент .grad-text--h1 стоит на «в готовую
+   услугу» — на итоге, ради которого написан весь лендинг. */
+.cta__head {
+  max-width: 46em;
+  margin-inline: auto;
+  margin-bottom: var(--space-12);
+  text-align: center;
+}
+
+.cta__title {
+  margin-bottom: var(--space-6);
+  font-size: clamp(1.5rem, 1.05rem + 1.9vw, 2.5rem);
+  line-height: 1.22;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  color: var(--cloud-white);
+  text-wrap: balance;
+}
+
+.cta__intro {
+  font-size: var(--fs-lead);
+  line-height: var(--lh-body);
+  color: var(--text-on-dark-muted);
+}
+
+/* Заглушка стоит между шапкой экрана и чек-листом — .cta__head уже
+   даёт отступ сверху, поэтому здесь только нижний */
+.cta__media {
+  margin-bottom: var(--space-12);
+}
+
+/* Чек-лист «а можно за 8 недель» — одна стеклянная панель, как
+   .trend__audit и .timing__free: шесть пунктов читаются как единый
+   список того, что даёт курс, а не как отдельные тезисы. Список
+   в две колонки на десктопе, как .timing__free-list, — те же шесть
+   коротких пунктов, в одну колонку панель растягивалась бы пустотой. */
+.cta__panel {
+  max-width: 56em;
+  margin: 0 auto var(--space-16);
+  padding: clamp(1.5rem, 0.9rem + 2.4vw, 3rem);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+}
+
+.cta__panel-lead {
+  position: relative;
+  margin-bottom: var(--space-8);
+  padding-bottom: var(--space-4);
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-bold);
+  line-height: 1.2;
+  text-align: center;
+  color: var(--cloud-white);
+}
+
+.cta__panel-lead::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 96px;
+  height: 2px;
+  transform: translateX(-50%);
+  border-radius: 2px;
+  background: var(--grad-primary);
+}
+
+.cta__list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0 var(--space-8);
+}
+
+@media (min-width: 768px) {
+  .cta__list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.cta__item {
+  position: relative;
+  padding: var(--space-4) 0 var(--space-4) var(--space-8);
+  border-bottom: 1px solid var(--border-dark);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-on-dark-muted);
+}
+
+/* Тире-маркер из исходного списка — на псевдоэлементе,
+   чтобы не попадать в копируемый текст */
+.cta__item::before {
+  content: '–';
+  position: absolute;
+  left: var(--space-3);
+  font-weight: var(--fw-bold);
+  color: var(--tessa-lavender);
+}
+
+/* В одну колонку нижнюю границу снимает последний пункт,
+   в две — последний в каждом столбце */
+.cta__item:last-child {
+  border-bottom: none;
+}
+
+@media (min-width: 768px) {
+  .cta__item:nth-last-child(-n + 2) {
+    border-bottom: none;
+  }
+}
+
+/* Итоговый оффер — без стеклянной панели, в отличие от чек-листа
+   выше: это не ещё один список тезисов, а закрывающая карточка
+   курса с ценой и кнопками, ей нужен воздух вокруг, а не рамка. */
+.cta__offer {
+  max-width: 46em;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.cta__course {
+  margin-bottom: var(--space-6);
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-bold);
+  line-height: 1.3;
+  color: var(--cloud-white);
+}
+
+/* Факты курса — те же таблетки, что .timing__fact на девятом
+   экране: строка через «·» в исходнике разложена на отдельные
+   элементы, разделители — служебная пунктуация перечисления
+   и в разметку не идут. */
+.cta__facts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-8);
+}
+
+.cta__fact {
+  padding: var(--space-3) var(--space-6);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semibold);
+  line-height: 1.3;
+  color: var(--cloud-white);
+  transition: border-color var(--transition), background-color var(--transition),
+    box-shadow var(--transition);
+}
+
+.cta__fact:hover {
+  border-color: rgba(184, 140, 255, 0.55);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: var(--glow-lavender);
+}
+
+/* «Предложение действует 24 часа» — единственный факт про срочность,
+   а не про содержание курса, поэтому выделен циановым, как деньги
+   выделены циановым в .method-card__lead и .case-step--money. */
+.cta__fact--urgent {
+  border-color: rgba(127, 232, 255, 0.5);
+  background: rgba(127, 232, 255, 0.1);
+  color: var(--ai-glow);
+  box-shadow: var(--glow-cyan);
+}
+
+.cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-8);
+}
+
+/* Строка доверия — короче и тише факта курса, поэтому не таблетки,
+   а простой ряд с тонкими разделителями: рядом с уже двумя рядами
+   стеклянных пилюль выше третий ряд пилюль был бы избыточным. */
+.cta__trust {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  row-gap: var(--space-2);
+  font-size: var(--fs-small);
+  color: var(--text-on-dark-muted);
+}
+
+.cta__trust-item:not(:first-child) {
+  padding-left: var(--space-4);
+  margin-left: var(--space-4);
+  border-left: 1px solid var(--border-dark);
+}
+
+@media (max-width: 479px) {
+  .cta__item {
+    padding-left: var(--space-6);
+  }
+
+  .cta__item::before {
+    left: 0;
+  }
+
+  .cta__fact {
+    padding-inline: var(--space-4);
+  }
+
+  .cta__actions .btn {
+    width: min(20rem, 100%);
+  }
+}

@@ -1,0 +1,1798 @@
+/* ============================================================
+   COMPONENTS — переиспользуемые элементы интерфейса
+   Пока только то, что нужно первому экрану.
+   ============================================================ */
+
+/* ---------- Кнопки ---------- */
+
+/* На первом экране кнопки — скруглённые прямоугольники (по референсу).
+   Пилюльный вариант из брендбука доступен модификатором .btn--pill */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 1.25rem 2.25rem;
+  /* прозрачная граница — чтобы кнопки с обводкой и без были одной высоты */
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font-size: 0.9375rem;
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.06em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform var(--transition), box-shadow var(--transition),
+    background-color var(--transition), border-color var(--transition),
+    color var(--transition), filter var(--transition);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn--pill {
+  border-radius: var(--radius-pill);
+}
+
+/* Основная — светлый градиент lilac → cyan, тёмный текст.
+   Свечение по контуру + мягкий ореол снизу, как на референсе. */
+.btn--primary {
+  background: var(--grad-btn);
+  color: var(--deep-night-plum);
+  box-shadow:
+    0 0 24px rgba(184, 140, 255, 0.45),
+    0 8px 28px rgba(184, 140, 255, 0.3);
+}
+
+.btn--primary:hover {
+  filter: brightness(1.06);
+  box-shadow:
+    0 0 32px rgba(184, 140, 255, 0.65),
+    0 12px 34px rgba(184, 140, 255, 0.45);
+}
+
+/* Вторичная на светлом фоне — обводка */
+.btn--secondary {
+  background: transparent;
+  color: var(--text-on-light);
+  border-color: var(--pastel-lilac);
+}
+
+.btn--secondary:hover {
+  border-color: var(--tessa-lavender);
+  background: rgba(184, 140, 255, 0.08);
+}
+
+/* Вторичная на тёмном фоне — приглушённая заливка с тонкой границей */
+.btn--secondary-dark {
+  background: rgba(120, 120, 170, 0.22);
+  color: var(--cloud-white);
+  border-color: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(6px);
+}
+
+.btn--secondary-dark:hover {
+  border-color: rgba(184, 140, 255, 0.7);
+  background: rgba(140, 130, 200, 0.32);
+}
+
+/* ---------- Заглушка под изображение — общий паттерн ----------
+   Тот же приём, что и в .work-card__media/.expert-card__photo/
+   .tessa-card__visual: пустая рамка с тонкой штриховой границей на месте
+   будущей картинки/иконки, честно показывает, что здесь появится
+   медиа, и не подменяет его текстом. Граница становится сплошной,
+   когда внутрь подставлен <img>/<video> (:has). Конкретный блок
+   (offer-card__icon, pains__media и т.д.) добавляет только отступ/
+   позицию в разметке — размер и пропорция задаются модификатором. */
+.media-placeholder {
+  position: relative;
+  overflow: hidden;
+  border: 1px dashed rgba(184, 140, 255, 0.35);
+  border-radius: var(--radius-sm);
+  background:
+    linear-gradient(135deg, rgba(184, 140, 255, 0.10) 0%, rgba(127, 232, 255, 0.06) 100%),
+    rgba(11, 4, 38, 0.35);
+}
+
+.media-placeholder:has(img, video) {
+  border-style: solid;
+}
+
+.media-placeholder img,
+.media-placeholder video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Модификатор для картинок с прозрачным фоном: рамка и подложка не нужны —
+   вокруг вырезанной иллюстрации они читаются как лишний прямоугольник.
+   Размер/пропорцию задаёт конкретный блок, здесь снимается только оформление.
+   Вместе с рамкой уходит и cover: у прозрачного PNG поля не видны, зато
+   обрезка съела бы свечение по краям. */
+.media-placeholder--bare,
+.media-placeholder--bare:has(img, video) {
+  border: 0;
+  background: none;
+}
+
+.media-placeholder--bare img,
+.media-placeholder--bare video {
+  object-fit: contain;
+}
+
+/* Модификатор для картинок с собственным фоном: на тёмной сцене их
+   прямоугольный край виден как чужая плашка. Внешние 12% растворяются
+   маской — по обеим осям сразу, поэтому градиента два, а mask-composite
+   их пересекает: мягко гаснут все четыре стороны, а не одна. */
+.media-placeholder--fade img,
+.media-placeholder--fade video {
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 12%, #000 88%, transparent 100%);
+  mask-image:
+    linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 12%, #000 88%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+/* Широкая иллюстрация под сеткой/списком (PAINS, TREND, CTA).
+   max-width обязателен: без него на всю ширину контейнера (1280px)
+   это ~700px пустоты, которая перевешивает сам контент секции.
+   Внутри узких карточек (шаги PATH) ограничение не срабатывает —
+   там ширина и так меньше. */
+.media-placeholder--wide {
+  aspect-ratio: 16 / 9;
+  max-width: 640px;
+  margin-inline: auto;
+}
+
+/* Квадратная иллюстрация/бейдж (GUARANTEE, TIMER) */
+.media-placeholder--square {
+  aspect-ratio: 1 / 1;
+  max-width: 220px;
+  margin-inline: auto;
+}
+
+/* Маленькая круглая иконка на карточке (OFFERS, AUDIENCE, METHOD) */
+.media-placeholder--icon {
+  flex: none;
+  width: 48px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+}
+
+/* OFFERS крупнее остальных: там уже стоят настоящие иллюстрации
+   (--bare, без круглой подложки), и в паре с заголовком карточки
+   48px терялись. AUDIENCE и METHOD остаются на базовом размере,
+   пока там заглушки без картинок.
+   overflow: visible обязателен — свечение на ::before шире самой
+   иконки и без сброса базового overflow: hidden обрезалось бы вровень. */
+.offer-card__icon.media-placeholder--icon {
+  width: 96px;
+  overflow: visible;
+}
+
+/* Мягкое свечение под иконкой — размытое пятно чуть шире круга.
+   ::before уходит под <img> за счёт отрицательного z-index (родитель
+   уже position: relative от .media-placeholder), поэтому свечение видно
+   только по краям, а не поверх картинки. Цвет чередуется лавандой/цианом
+   по нечётным/чётным карточкам — тот же приём, что у соседних секций. */
+.offer-card__icon.media-placeholder--icon::before {
+  content: '';
+  position: absolute;
+  inset: -18px;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(184, 140, 255, 0.4) 0%, rgba(184, 140, 255, 0.14) 55%, transparent 76%);
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+.offer-card:nth-child(even) .offer-card__icon.media-placeholder--icon::before {
+  background: radial-gradient(circle, rgba(127, 232, 255, 0.36) 0%, rgba(127, 232, 255, 0.13) 55%, transparent 76%);
+}
+
+/* ---------- Место под форму GetCourse ----------
+   Пустой слот-заглушка: сама форма верстается позже виджетом GetCourse,
+   здесь только зона, куда его нужно встроить. Пунктир того же цвета,
+   что у media-placeholder, чтобы оба вида заглушек читались как одна
+   система «здесь появится контент, которого пока нет». */
+.form-slot {
+  min-height: 96px;
+  margin-top: var(--space-8);
+  border: 1px dashed rgba(127, 232, 255, 0.35);
+  border-radius: var(--radius-md);
+  background: rgba(127, 232, 255, 0.04);
+}
+
+/* ---------- Строка «боли» — компактный пункт без бокса ----------
+   Живёт на тёмной сцене (.section--dark). Раньше это была карточка-стекло
+   с полями 24px и рамкой — девять таких боксов подряд занимали почти
+   два экрана и утомляли ещё до того, как читатель дойдёт до сути.
+   Здесь бокса нет: пунктов много и они короткие, поэтому им хватает
+   точки-маркера и тонкой линии-разделителя сверху. Маркер нарисован
+   градиентом на ::before, отдельных иконок не требует. */
+
+.pain-item {
+  position: relative;
+  padding: var(--space-4) 0 var(--space-4) var(--space-6);
+  border-top: 1px solid var(--border-dark);
+}
+
+/* точка-маркер: 8px, градиент бренда, с мягким ореолом.
+   По первой строке заголовка, а не по верху блока. */
+.pain-item::before {
+  content: '';
+  position: absolute;
+  top: calc(var(--space-4) + 0.5em);
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--grad-primary);
+  box-shadow: 0 0 10px rgba(184, 140, 255, 0.7);
+}
+
+.pain-item__title {
+  margin-bottom: 2px;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-bold);
+  line-height: 1.35;
+  color: var(--cloud-white);
+}
+
+.pain-item__text {
+  font-size: var(--fs-small);
+  line-height: 1.5;
+  color: var(--text-on-dark-muted);
+}
+
+.btn--sm {
+  padding: 0.8125rem 1.5rem;
+  font-size: 0.8125rem;
+}
+
+.btn--block {
+  width: 100%;
+}
+
+/* ---------- Таймлайн «что нужно знать» ----------
+   Раньше это была сетка карточек (.reason-card), визуально неотличимая
+   от pain-card/step-card/method-card ниже по странице. Четыре пункта —
+   это очередность понимания, а не независимые тезисы, поэтому вместо
+   карточек — пронумерованные узлы на общей линии (счётчик на .reason__timeline
+   в sections.css) и текст под каждым. На узких экранах линия становится
+   вертикальной (см. .reason__timeline в sections.css). */
+
+.reason-step {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  text-align: left;
+}
+
+.reason-step__node {
+  counter-increment: reason;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 1px solid rgba(184, 140, 255, 0.45);
+  background: var(--night-900);
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-extrabold);
+  letter-spacing: var(--ls-tight);
+  color: var(--pastel-lilac);
+}
+
+.reason-step__node::before {
+  content: counter(reason, decimal-leading-zero); /* 01, 02, 03, 04 */
+}
+
+.reason-step__text {
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-semibold);
+  line-height: 1.35;
+  color: var(--cloud-white);
+}
+
+@media (min-width: 1200px) {
+  .reason-step {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .reason-step__text {
+    font-size: var(--fs-body);
+  }
+}
+
+/* ---------- Карточка статистики — тёмное стекло с крупным числом ----------
+   То же стекло, что у .pain-card и .reason-card. В отличие от номеров 01–04
+   третьего экрана, число здесь — часть текста документа, а не декор:
+   пишется в разметке, чтобы копироваться и читаться скринридером. */
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-6);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+  transition: transform var(--transition), border-color var(--transition),
+    background-color var(--transition), box-shadow var(--transition);
+}
+
+.stat-card__value {
+  font-size: clamp(2.75rem, 1.6rem + 4.6vw, 4.5rem);
+  font-weight: var(--fw-extrabold);
+  line-height: 1;
+  letter-spacing: var(--ls-tight);
+  /* только background-image: шорткат background сбросил бы background-clip */
+  background-image: var(--grad-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.stat-card__text {
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-semibold);
+  line-height: 1.35;
+  color: var(--cloud-white);
+}
+
+/* margin-top: auto прижимает источник к низу, чтобы в обеих карточках
+   строки источников стояли на одной линии при разной длине текста */
+.stat-card__source {
+  margin-top: auto;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-dark);
+  font-size: var(--fs-small);
+  line-height: 1.4;
+  color: var(--text-on-dark-muted);
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(184, 140, 255, 0.55);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 14px 34px rgba(11, 4, 38, 0.55), var(--glow-lavender);
+}
+
+/* На узких экранах карточка отдаёт поля тексту */
+@media (max-width: 479px) {
+  .stat-card {
+    padding: var(--space-4);
+  }
+}
+
+/* ---------- Зигзаг-таймлайн шагов курса ----------
+   Раньше это была сетка карточек (.step-card) — тот же приём, что
+   .pain-card/.reason-card/.audience-card и т.д. Шесть шагов — самая
+   длинная последовательность на странице ("путь за 8 недель"), поэтому
+   вместо сетки — вертикальная линия с узлами (счётчик — на .path__timeline
+   в sections.css), карточки шагов чередуются слева/справа от неё на
+   десктопе (см. .path__timeline в sections.css) и идут одной колонкой
+   на узких экранах. */
+
+.path-step {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-6);
+}
+
+.path-step__node {
+  counter-increment: step;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid rgba(184, 140, 255, 0.45);
+  background: var(--night-900);
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-extrabold);
+  letter-spacing: var(--ls-tight);
+  color: var(--pastel-lilac);
+}
+
+.path-step__node::before {
+  content: counter(step, decimal-leading-zero); /* 01 … 06 */
+}
+
+.path-step__card {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+  transition: transform var(--transition), border-color var(--transition),
+    background-color var(--transition), box-shadow var(--transition);
+}
+
+.path-step__card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(184, 140, 255, 0.55);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 14px 34px rgba(11, 4, 38, 0.55), var(--glow-lavender);
+}
+
+.path-step__title {
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-bold);
+  line-height: 1.3;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--cloud-white);
+}
+
+.path-step__text {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-on-dark-muted);
+}
+
+/* margin-inline: 0 сбрасывает авто-поля из .media-placeholder--wide.
+   Карточка — колоночный флекс, а авто-поля по горизонтали отменяют
+   растягивание флекс-элемента: заглушка сжималась по содержимому,
+   то есть в ноль, и от неё оставалась точка 4×2px. */
+.path-step__media {
+  margin-top: var(--space-2);
+  margin-inline: 0;
+}
+
+/* Пока картинки нет, заглушка не показывается: шагов шесть, и шесть пустых
+   боксов 16:9 подряд растянули бы таймлайн вдвое ради пустоты. Как только
+   внутрь попадёт <img>, блок появится сам — правило снимется. */
+.path-step__media:not(:has(img, video)) {
+  display: none;
+}
+
+/* На узких экранах карточка отдаёт поля тексту */
+@media (max-width: 479px) {
+  .path-step__card {
+    padding: var(--space-4);
+  }
+}
+
+/* ---------- Карточка направления услуг — тёмное стекло со списком цен ----------
+   То же стекло, что у .pain-card, .reason-card, .stat-card и .step-card.
+   Тире в начале пунктов — служебная пунктуация перечисления, рисуется
+   на ::before и не попадает в копируемый текст. Цена внутри пункта —
+   часть текста документа, пишется в разметке и только подсвечивается. */
+
+.offer-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+  transition: transform var(--transition), border-color var(--transition),
+    background-color var(--transition), box-shadow var(--transition);
+}
+
+.offer-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(184, 140, 255, 0.55);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 14px 34px rgba(11, 4, 38, 0.55), var(--glow-lavender);
+}
+
+/* Заголовок направления + короткая градиентная черта под ним —
+   как номер шага на пятом экране */
+.offer-card__title {
+  position: relative;
+  padding-bottom: var(--space-4);
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-bold);
+  line-height: 1.3;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--cloud-white);
+}
+
+.offer-card__title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 40px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--grad-primary);
+}
+
+.offer-card__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.offer-card__item {
+  position: relative;
+  padding-left: var(--space-6);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-on-dark-muted);
+}
+
+/* Тире-маркер из исходного списка — на псевдоэлементе,
+   чтобы не попадать в копируемый текст */
+.offer-card__item::before {
+  content: '–';
+  position: absolute;
+  left: 0;
+  font-weight: var(--fw-bold);
+  color: var(--tessa-lavender);
+}
+
+.offer-card__price {
+  font-weight: var(--fw-bold);
+  white-space: nowrap;
+  color: var(--cloud-white);
+}
+
+/* На узких экранах карточка отдаёт поля тексту */
+@media (max-width: 479px) {
+  .offer-card {
+    padding: var(--space-4);
+  }
+}
+
+/* ---------- Карточка типа участника — тёмное стекло с заглушкой под иконку ----------
+   То же стекло, что у .pain-card, .reason-card, .stat-card, .step-card
+   и .offer-card. Ни номера, ни последовательности: это пять равнозначных
+   портретов участника, поэтому маркер — не порядковый бейдж, а заглушка
+   под иконку персонажа (.audience-card__icon, media-placeholder). Раньше
+   вместо неё была декоративная черта — с иконкой она стала избыточной. */
+
+.audience-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-6);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+  transition: transform var(--transition), border-color var(--transition),
+    background-color var(--transition), box-shadow var(--transition);
+}
+
+.audience-card__icon {
+  margin-bottom: var(--space-4);
+}
+
+.audience-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(184, 140, 255, 0.55);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 14px 34px rgba(11, 4, 38, 0.55), var(--glow-lavender);
+}
+
+.audience-card__title {
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-bold);
+  line-height: 1.3;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--cloud-white);
+}
+
+.audience-card__text {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-on-dark-muted);
+}
+
+/* На узких экранах карточка отдаёт поля тексту */
+@media (max-width: 479px) {
+  .audience-card {
+    padding: var(--space-4);
+  }
+}
+
+/* ---------- Карточка шага метода — тёмное стекло с номером в круге ----------
+   То же стекло, что у .pain-card, .reason-card, .stat-card, .step-card,
+   .offer-card и .audience-card. Номер 01–04 печатает CSS-счётчик
+   (см. .method__grid в sections.css): в исходнике «1.» — служебная нумерация
+   перечисления, а не часть формулировки, поэтому в разметку она не пишется
+   и в копируемый текст не попадает.
+
+   От номера карточки шага курса (пятый экран) отличается формой: там крупная
+   цифра градиентом и черта под ней, здесь — цифра в круглом бейдже, а шаги
+   на десктопе соединены короткой чертой в гапе. Четыре шага читаются как
+   один процесс, а не как четыре независимых пункта. */
+
+.method-card {
+  counter-increment: method;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-6);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+  transition: transform var(--transition), border-color var(--transition),
+    background-color var(--transition), box-shadow var(--transition);
+}
+
+.method-card::before {
+  content: counter(method, decimal-leading-zero); /* 01 … 04 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  margin-bottom: var(--space-4);
+  border: 1px solid rgba(184, 140, 255, 0.45);
+  border-radius: 50%;
+  background: rgba(184, 140, 255, 0.10);
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-extrabold);
+  line-height: 1;
+  letter-spacing: var(--ls-tight);
+  color: var(--pastel-lilac);
+}
+
+.method-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(184, 140, 255, 0.55);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 14px 34px rgba(11, 4, 38, 0.55), var(--glow-lavender);
+}
+
+.method-card__title {
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-bold);
+  line-height: 1.3;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--cloud-white);
+}
+
+.method-card__text {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-on-dark-muted);
+}
+
+/* Заглушка под иконку шага — маленький значок в углу карточки, а не
+   ещё один кружок над номером: номер остаётся единственным акцентным
+   маркером последовательности */
+.method-card__icon {
+  position: absolute;
+  top: var(--space-6);
+  right: var(--space-6);
+  width: 32px;
+  margin-bottom: 0;
+}
+
+/* Стрелка-коннектор между шагами — та же идея, что в цепочке
+   .reason__path-item::after: символ «→», а не голая линия, читается
+   как явный переход от шага к шагу. Только там, где все четыре стоят
+   одним рядом. По центру бейджа: отступ карточки + половина круга. */
+@media (min-width: 1200px) {
+  .method-card::after {
+    content: '→';
+    position: absolute;
+    top: calc(var(--space-6) + 24px);
+    left: calc(100% + 2px);
+    transform: translateY(-50%);
+    font-size: 1.25rem;
+    line-height: 1;
+    color: var(--tessa-lavender);
+  }
+
+  .method-card:last-child::after {
+    display: none;
+  }
+}
+
+/* На узких экранах карточка отдаёт поля тексту */
+@media (max-width: 479px) {
+  .method-card {
+    padding: var(--space-4);
+  }
+}
+
+/* ---------- Карточка модуля программы — тёмное стекло с раскрытием ----------
+   То же стекло, что у остальных карточек, но карточка не плитка сетки,
+   а строка аккордеона во всю ширину: программа длинная, семь модулей
+   развёрнутыми читаются как стена текста. Раскрытие — нативные
+   <details>/<summary>, без скриптов и без ARIA-обвязки.
+   Номер модуля («Модуль 0») — часть формулировки документа, поэтому
+   пишется в разметку, в отличие от служебной нумерации на третьем,
+   пятом и восьмом экранах. */
+
+.module-card__box {
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+  transition: border-color var(--transition), background-color var(--transition),
+    box-shadow var(--transition);
+}
+
+.module-card__box:hover {
+  border-color: rgba(184, 140, 255, 0.55);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Открытая карточка держит подсветку и без курсора — так видно,
+   какой модуль читаешь, когда открыто несколько */
+.module-card__box[open] {
+  border-color: rgba(184, 140, 255, 0.55);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 14px 34px rgba(11, 4, 38, 0.55), var(--glow-lavender);
+}
+
+/* Шапка карточки: слева номер, число уроков, название и обещание,
+   справа — шеврон. Маркер списка <summary> снимается в обоих
+   движках: display: none для WebKit, list-style для остальных. */
+.module-card__summary {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  gap: var(--space-2) var(--space-6);
+  padding: var(--space-6);
+  cursor: pointer;
+  list-style: none;
+}
+
+.module-card__summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Шеврон — не иконка, а два бордера квадрата, повёрнутого на 45°:
+   отдельного SVG ради стрелки не нужно */
+.module-card__summary::after {
+  content: '';
+  grid-column: 2;
+  grid-row: 1 / span 3;
+  align-self: center;
+  width: 10px;
+  height: 10px;
+  margin-right: 4px;
+  border-right: 2px solid var(--tessa-lavender);
+  border-bottom: 2px solid var(--tessa-lavender);
+  transform: rotate(45deg) translate(-2px, -2px);
+  transition: transform var(--transition), border-color var(--transition);
+}
+
+.module-card__box[open] .module-card__summary::after {
+  transform: rotate(225deg) translate(-2px, -2px);
+  border-color: var(--ai-glow);
+}
+
+/* Фокус ловит вся шапка, а не текст внутри неё */
+.module-card__summary:focus-visible {
+  outline: 2px solid var(--tessa-lavender);
+  outline-offset: -4px;
+  border-radius: var(--radius-md);
+}
+
+.module-card__meta {
+  grid-column: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* Номер модуля — таблетка с градиентной обводкой на псевдоэлементе:
+   градиент по border не задаётся, а второй фон испортил бы стекло */
+.module-card__num {
+  position: relative;
+  padding: 2px var(--space-3);
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-eyebrow);
+  font-weight: var(--fw-extrabold);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--pastel-lilac);
+}
+
+.module-card__num::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(184, 140, 255, 0.55);
+}
+
+.module-card__lessons {
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semibold);
+  color: var(--ai-glow);
+}
+
+.module-card__title {
+  grid-column: 1;
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-bold);
+  line-height: 1.3;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--cloud-white);
+}
+
+.module-card__promise {
+  grid-column: 1;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-on-dark-muted);
+}
+
+/* Тело раскрытия. Верхняя граница отделяет его от шапки, но не идёт
+   в край карточки — отступ тот же, что у полей. */
+.module-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  margin: 0 var(--space-6);
+  padding: var(--space-6) 0;
+  border-top: 1px solid var(--border-dark);
+}
+
+.module-card__topics {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* Тире-маркер из исходного списка — на псевдоэлементе, чтобы
+   не попадать в копируемый текст. В шестом модуле в документе
+   стоят звёздочки, но это та же служебная пунктуация перечисления,
+   поэтому маркер везде одинаковый. */
+.module-card__topic {
+  position: relative;
+  padding-left: var(--space-6);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-on-dark-muted);
+}
+
+.module-card__topic::before {
+  content: '–';
+  position: absolute;
+  left: 0;
+  font-weight: var(--fw-bold);
+  color: var(--tessa-lavender);
+}
+
+/* «Практика», «Можно предлагать клиентам», «Результат модуля» — подписи
+   документа, а не выдумка вёрстки, поэтому остаются заголовками блоков.
+   Черта слева отделяет их от списка тем. */
+.module-card__block {
+  padding-left: var(--space-4);
+  border-left: 2px solid rgba(184, 140, 255, 0.35);
+}
+
+.module-card__block--sale {
+  border-left-color: var(--ai-glow);
+}
+
+.module-card__block--result {
+  border-left-color: var(--tessa-lavender);
+}
+
+.module-card__label {
+  margin-bottom: var(--space-2);
+  font-size: var(--fs-eyebrow);
+  font-weight: var(--fw-extrabold);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--pastel-lilac);
+}
+
+.module-card__block--sale .module-card__label {
+  color: var(--ai-glow);
+}
+
+.module-card__text {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-on-dark-muted);
+}
+
+/* На узких экранах карточка отдаёт поля тексту */
+@media (max-width: 479px) {
+  .module-card__summary {
+    padding: var(--space-4);
+  }
+
+  .module-card__body {
+    margin-inline: var(--space-4);
+    padding-block: var(--space-4);
+  }
+
+  .module-card__topic {
+    padding-left: var(--space-4);
+  }
+}
+
+/* ---------- Карточка примера работы — тёмное стекло с местом под работу ----------
+   То же стекло, что у .pain-card, .reason-card, .stat-card, .step-card,
+   .offer-card, .audience-card и .module-card. Главное в карточке — не текст,
+   а сама работа: рамка .work-card__media стоит первой после подписи примера
+   и держит постоянную пропорцию, чтобы шесть карточек не прыгали по высоте,
+   пока файлы не подставлены. Подпись «Пример N · Тип» разложена на номер
+   и тип: «·» — служебная пунктуация перечисления, её рисует вёрстка. */
+
+.work-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+  transition: transform var(--transition), border-color var(--transition),
+    background-color var(--transition), box-shadow var(--transition);
+}
+
+.work-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(184, 140, 255, 0.55);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 14px 34px rgba(11, 4, 38, 0.55), var(--glow-lavender);
+}
+
+.work-card__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-3);
+}
+
+.work-card__num {
+  font-size: var(--fs-eyebrow);
+  font-weight: var(--fw-extrabold);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--pastel-lilac);
+}
+
+/* Тип работы — таблетка: она отличает карточки друг от друга
+   быстрее, чем номер примера */
+.work-card__kind {
+  padding: 2px var(--space-3);
+  border: 1px solid rgba(127, 232, 255, 0.35);
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semibold);
+  line-height: 1.4;
+  color: var(--ai-glow);
+}
+
+/* Место под настоящую работу. Пока файла нет — пустая рамка с тонкой
+   штриховой границей: она честно показывает, что здесь будет картинка,
+   и не подменяет работу её текстовым описанием. Заполняется <img> или
+   <video> внутри; пропорция 4/3 остаётся за рамкой. */
+.work-card__media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border: 1px dashed rgba(184, 140, 255, 0.35);
+  border-radius: var(--radius-sm);
+  background:
+    linear-gradient(135deg, rgba(184, 140, 255, 0.10) 0%, rgba(127, 232, 255, 0.06) 100%),
+    rgba(11, 4, 38, 0.35);
+}
+
+/* Когда работа подставлена, штриховая рамка не нужна */
+.work-card__media:has(img, video) {
+  border-style: solid;
+}
+
+.work-card__media img,
+.work-card__media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Подпись авторства работы — обязательна, пока в примерах стоят
+   работы тестовой группы и команды, а не учеников */
+.work-card__credit {
+  font-size: var(--fs-small);
+  line-height: var(--lh-body);
+  color: var(--text-on-light-muted);
+}
+
+.work-card__pair {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* «Было» и «Стало» — пара строк, а не абзац: контраст между ними
+   и есть содержание блока. Черта слева у «Стало» цианом — это
+   результат, к которому приводит курс. */
+.work-card__row {
+  padding-left: var(--space-4);
+  border-left: 2px solid rgba(184, 140, 255, 0.35);
+}
+
+.work-card__row--after {
+  border-left-color: var(--ai-glow);
+}
+
+.work-card__label {
+  margin-bottom: var(--space-2);
+  font-size: var(--fs-eyebrow);
+  font-weight: var(--fw-extrabold);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--pastel-lilac);
+}
+
+.work-card__row--after .work-card__label {
+  color: var(--ai-glow);
+}
+
+.work-card__value {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-on-dark-muted);
+}
+
+.work-card__row--after .work-card__value {
+  color: var(--cloud-white);
+}
+
+/* На узких экранах карточка отдаёт поля тексту */
+@media (max-width: 479px) {
+  .work-card {
+    padding: var(--space-4);
+  }
+}
+
+/* ---------- Шаг кейса участника — тёмное стекло с номером ----------
+   То же стекло, что у .pain-card, .method-card, .work-card и остальных.
+   Четыре шага — это порядок рассказа о кейсе, поэтому карточки
+   пронумерованы CSS-счётчиком и связаны чертой, как шаги метода
+   на восьмом экране. Последний шаг единственный говорит о деньгах,
+   поэтому набран цианом — то же правило, что у «Можно предлагать
+   клиентам» в модулях программы. */
+
+.results__grid {
+  counter-reset: case-step;
+}
+
+.case-step {
+  counter-increment: case-step;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-6);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+  transition: transform var(--transition), border-color var(--transition),
+    background-color var(--transition), box-shadow var(--transition);
+}
+
+.case-step::before {
+  content: counter(case-step, decimal-leading-zero); /* 01 … 04 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  margin-bottom: var(--space-4);
+  border: 1px solid rgba(184, 140, 255, 0.45);
+  border-radius: 50%;
+  background: rgba(184, 140, 255, 0.10);
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-extrabold);
+  line-height: 1;
+  color: var(--pastel-lilac);
+}
+
+.case-step:hover {
+  transform: translateY(-3px);
+  border-color: rgba(184, 140, 255, 0.55);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 14px 34px rgba(11, 4, 38, 0.55), var(--glow-lavender);
+}
+
+/* Коммерческий результат — единственный шаг про деньги */
+.case-step--money::before {
+  border-color: rgba(127, 232, 255, 0.55);
+  background: rgba(127, 232, 255, 0.10);
+  color: var(--ai-glow);
+}
+
+.case-step--money:hover {
+  border-color: rgba(127, 232, 255, 0.55);
+  box-shadow: 0 14px 34px rgba(11, 4, 38, 0.55), var(--glow-cyan);
+}
+
+.case-step__title {
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-bold);
+  line-height: 1.3;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--cloud-white);
+}
+
+.case-step--money .case-step__title {
+  color: var(--ai-glow);
+}
+
+.case-step__text {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-on-dark-muted);
+}
+
+/* Соединительная черта между шагами — только там, где все четыре
+   стоят одним рядом. По центру бейджа: отступ карточки + половина круга. */
+@media (min-width: 1200px) {
+  .case-step::after {
+    content: '';
+    position: absolute;
+    top: calc(var(--space-6) + 24px);
+    left: 100%;
+    width: var(--space-6);
+    height: 2px;
+    background: var(--grad-primary);
+    opacity: 0.45;
+  }
+
+  .case-step:last-child::after {
+    display: none;
+  }
+}
+
+/* На узких экранах карточка отдаёт поля тексту */
+@media (max-width: 479px) {
+  .case-step {
+    padding: var(--space-4);
+  }
+}
+
+/* ---------- Карточка эксперта — тёмное стекло с местом под фото ----------
+   То же стекло, что у .pain-card, .work-card, .case-step и остальных.
+   Эксперт на странице один, поэтому это не сетка карточек, а одна
+   панель: слева фото и имя, справа факты о практике. Факты —
+   маркированный список: это семь равнозначных строк документа,
+   а не абзац и не отдельные плитки. */
+
+.expert-card {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+  padding: var(--space-8);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+  transition: border-color var(--transition), background-color var(--transition),
+    box-shadow var(--transition);
+}
+
+.expert-card:hover {
+  border-color: rgba(184, 140, 255, 0.55);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 14px 34px rgba(11, 4, 38, 0.55), var(--glow-lavender);
+}
+
+/* В две колонки — только когда колонке фактов остаётся достаточно ширины:
+   на 768px фото и семь строк текста рядом уже теснят друг друга */
+@media (min-width: 900px) {
+  .expert-card {
+    grid-template-columns: 260px 1fr;
+    gap: var(--space-12);
+    align-items: start;
+  }
+}
+
+@media (min-width: 1200px) {
+  .expert-card {
+    grid-template-columns: 300px 1fr;
+  }
+}
+
+.expert-card__aside {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* Место под фото эксперта. Пока файла нет — пустая рамка с тонкой
+   штриховой границей, как место под работу на одиннадцатом экране:
+   она честно показывает, что здесь будет фотография. Заполняется
+   <img> внутри; пропорция 1/1 остаётся за рамкой. */
+.expert-card__photo {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border: 1px dashed rgba(184, 140, 255, 0.35);
+  border-radius: var(--radius-sm);
+  background:
+    linear-gradient(135deg, rgba(184, 140, 255, 0.10) 0%, rgba(127, 232, 255, 0.06) 100%),
+    rgba(11, 4, 38, 0.35);
+}
+
+/* Когда фото подставлено, штриховая рамка не нужна */
+.expert-card__photo:has(img) {
+  border-style: solid;
+}
+
+.expert-card__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.expert-card__name {
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-bold);
+  line-height: 1.25;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--cloud-white);
+}
+
+/* Позиционирование эксперта в исходнике не закрыто — строка появится,
+   когда автор её пришлёт */
+.expert-card__role {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--ai-glow);
+}
+
+.expert-card__facts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* Маркер списка рисует вёрстка: в документе пункты идут без знаков */
+.expert-card__fact {
+  position: relative;
+  padding-left: var(--space-6);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-on-dark-muted);
+}
+
+.expert-card__fact::before {
+  content: '';
+  position: absolute;
+  top: calc(var(--lh-body) * 0.5em - 3px);
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--grad-primary);
+}
+
+/* На узких экранах карточка отдаёт поля тексту, а фото не занимает
+   весь экран: квадрат ограничен по ширине и стоит слева, как в шапке */
+@media (max-width: 899px) {
+  .expert-card {
+    padding: var(--space-6);
+  }
+
+  .expert-card__photo {
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 479px) {
+  .expert-card {
+    padding: var(--space-4);
+  }
+}
+
+/* ---------- Карточка сопровождения — тёмное стекло ----------
+   То же стекло, что у .pain-card, .work-card, .case-step,
+   .expert-card и остальных. На четырнадцатом экране таких панелей
+   две: про куратора (только текст) и про Тессу (модификатор
+   --tessa: место под иллюстрацию слева, текст и список справа). */
+
+.support-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-8);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+  transition: border-color var(--transition), background-color var(--transition),
+    box-shadow var(--transition);
+}
+
+.support-card:hover {
+  border-color: rgba(184, 140, 255, 0.55);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 14px 34px rgba(11, 4, 38, 0.55), var(--glow-lavender);
+}
+
+.support-card__text {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-on-dark-muted);
+}
+
+/* Первая строка блока про Тессу — определение, а не абзац:
+   набрана крупнее и светлее остального текста карточки */
+.support-card__lead {
+  font-size: var(--fs-lead);
+  font-weight: var(--fw-semibold);
+  line-height: 1.4;
+  color: var(--cloud-white);
+}
+
+/* Условие проверки работ: отдельная плашка с акцентной чертой слева —
+   это не продолжение абзаца, а правило курса. Фон плашки — однородная
+   заливка (двойной фон padding-box + border-box до этого просвечивал
+   градиентом почти на всю плашку и глушил текст); черта слева —
+   отдельный псевдоэлемент шириной 2px, не зависящий от прозрачности фона. */
+.support-card__note {
+  position: relative;
+  padding: var(--space-4) var(--space-6);
+  padding-left: calc(var(--space-6) + 2px);
+  border-radius: var(--radius-sm);
+  background: rgba(184, 140, 255, 0.12);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--cloud-white);
+}
+
+.support-card__note::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 2px;
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+  background: var(--grad-primary);
+}
+
+.support-card__list-title {
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-body);
+  color: var(--cloud-white);
+}
+
+.support-card__list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+  margin-top: calc(var(--space-3) * -1);
+}
+
+/* Звёздочки списка из документа — служебная разметка перечисления:
+   маркер рисует вёрстка, как в фактах эксперта */
+.support-card__item {
+  position: relative;
+  padding-left: var(--space-6);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-on-dark-muted);
+}
+
+.support-card__item::before {
+  content: '';
+  position: absolute;
+  top: calc(var(--lh-body) * 0.5em - 3px);
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--grad-primary);
+}
+
+/* ---------- Карточка Тессы — та же панель с местом под иллюстрацию ---------- */
+
+@media (min-width: 900px) {
+  .support-card--tessa {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: var(--space-12);
+    align-items: start;
+  }
+}
+
+@media (min-width: 1200px) {
+  .support-card--tessa {
+    grid-template-columns: 300px 1fr;
+  }
+}
+
+.tessa-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* Место под иллюстрацию Тессы. Пока файла нет — пустая рамка
+   со штриховой границей, как место под фото эксперта: она честно
+   показывает, что здесь будет картинка. Заполняется <img>. */
+.tessa-card__visual {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border: 1px dashed rgba(127, 232, 255, 0.35);
+  border-radius: var(--radius-sm);
+  background:
+    linear-gradient(135deg, rgba(127, 232, 255, 0.10) 0%, rgba(184, 140, 255, 0.06) 100%),
+    rgba(11, 4, 38, 0.35);
+}
+
+.tessa-card__visual:has(img) {
+  border-style: solid;
+}
+
+.tessa-card__visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* На узких экранах панель отдаёт поля тексту, а место под иллюстрацию
+   не занимает весь экран — как фото эксперта на тринадцатом экране */
+@media (max-width: 899px) {
+  .support-card {
+    padding: var(--space-6);
+  }
+
+  .tessa-card__visual {
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 479px) {
+  .support-card {
+    padding: var(--space-4);
+  }
+}
+
+/* ---------- Карточка тарифа — тёмное стекло с ценой и кнопкой ----------
+   То же стекло, что у .pain-card, .offer-card, .expert-card и остальных.
+   Карточки стоят рядом и сравниваются, поэтому цена и кнопка прижаты
+   к низу (margin-top: auto на блоке цены): три кнопки встают на одну
+   линию независимо от длины списков. */
+
+.tariff-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-8);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+  transition: transform var(--transition), border-color var(--transition),
+    background-color var(--transition), box-shadow var(--transition);
+}
+
+.tariff-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(184, 140, 255, 0.55);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 14px 34px rgba(11, 4, 38, 0.55), var(--glow-lavender);
+}
+
+.tariff-card__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* «Самый популярный» — метка тарифа, а не часть описания: таблетка
+   с градиентной обводкой на псевдоэлементе, как номер модуля программы.
+   Стоит на границе карточки (наполовину над рамкой, наполовину внутри),
+   поэтому вынесена из потока — иначе она отодвигала бы название тарифа
+   вниз, и заголовки трёх карточек переставали бы стоять на одной линии. */
+.tariff-card__badge {
+  position: absolute;
+  top: 0;
+  left: var(--space-8);
+  transform: translateY(-50%);
+  z-index: 1;
+  padding: 0.3125rem 0.75rem;
+  border-radius: var(--radius-pill);
+  background: var(--night-800);
+  font-size: var(--fs-eyebrow);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--ai-glow);
+}
+
+.tariff-card__badge::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(127, 232, 255, 0.55);
+}
+
+/* Название тарифа в исходнике набрано капсом — это выделение автора,
+   на странице оно идёт в том же регистре, что заголовки карточек
+   на других экранах */
+.tariff-card__name {
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-bold);
+  line-height: 1.25;
+  text-transform: none;
+  color: var(--cloud-white);
+}
+
+.tariff-card__for {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-on-dark-muted);
+}
+
+/* «Все из тарифа …, а также:» — подпись к списку, а не абзац */
+.tariff-card__list-title {
+  margin-bottom: calc(var(--space-4) - var(--space-6));
+  font-size: var(--fs-body);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-body);
+  color: var(--cloud-white);
+}
+
+.tariff-card__list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+}
+
+/* Тире в начале пунктов — служебная разметка перечисления, маркер
+   рисует вёрстка, как в списках направлений услуг */
+.tariff-card__item {
+  position: relative;
+  padding-left: var(--space-6);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-on-dark-muted);
+}
+
+.tariff-card__item::before {
+  content: '–';
+  position: absolute;
+  left: 0;
+  color: var(--tessa-lavender);
+}
+
+/* Условие тарифа: плашка с акцентной чертой слева — как условие
+   проверки работ на четырнадцатом экране (.support-card__note):
+   однородный фон, черта — отдельный псевдоэлемент шириной 2px */
+.tariff-card__note {
+  position: relative;
+  padding: var(--space-4) var(--space-6);
+  padding-left: calc(var(--space-6) + 2px);
+  border-radius: var(--radius-sm);
+  background: rgba(184, 140, 255, 0.12);
+  font-size: var(--fs-small);
+  line-height: var(--lh-body);
+  color: var(--cloud-white);
+}
+
+.tariff-card__note::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 2px;
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+  background: var(--grad-primary);
+}
+
+/* Цена прижата к низу карточки, чтобы кнопки трёх тарифов встали
+   на одну линию */
+.tariff-card__price {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: auto;
+  padding-top: var(--space-6);
+  border-top: 1px solid rgba(184, 140, 255, 0.18);
+}
+
+.tariff-card__price-now {
+  font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.25rem);
+  font-weight: var(--fw-extrabold);
+  line-height: 1.1;
+  letter-spacing: var(--ls-tight);
+  color: var(--cloud-white);
+}
+
+/* Регулярная стоимость зачёркнута только в цифре: зачёркивать
+   всю строку — значит зачеркнуть и её пояснение */
+.tariff-card__price-old {
+  font-size: var(--fs-small);
+  line-height: var(--lh-body);
+  color: var(--text-on-dark-muted);
+}
+
+.tariff-card__price-old s {
+  text-decoration-color: rgba(184, 140, 255, 0.8);
+}
+
+.tariff-card__price-split {
+  font-size: var(--fs-small);
+  line-height: var(--lh-body);
+  color: var(--ai-glow);
+}
+
+/* Рекомендованный тариф — то же тёмное стекло, что у соседей (заливка
+   и тени не меняются), выделена только рамка: она вдвое толще и
+   заметно ярче постоянной рамки .tariff-card, плюс мягкое лавандовое
+   свечение по контуру — усиленная версия обычного hover-состояния
+   карточки, но постоянная */
+.tariff-card--popular {
+  border-width: 2px;
+  border-color: rgba(184, 140, 255, 0.85);
+  box-shadow: 0 14px 34px rgba(11, 4, 38, 0.55), var(--glow-lavender);
+}
+
+.tariff-card--popular:hover {
+  border-color: rgba(184, 140, 255, 0.95);
+  box-shadow: 0 14px 34px rgba(11, 4, 38, 0.55), 0 0 34px rgba(184, 140, 255, 0.75);
+}
+
+/* На узких экранах карточка отдаёт поля тексту */
+@media (max-width: 479px) {
+  .tariff-card {
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .tariff-card__badge {
+    left: var(--space-4);
+  }
+
+  .tariff-card__note {
+    padding: var(--space-4);
+  }
+}
+
+/* ---------- Строка вопроса — тёмное стекло с раскрытием ----------
+   То же тёмное стекло и та же механика раскрытия, что у .module-card:
+   строка аккордеона во всю ширину, а не плитка сетки — четырнадцать
+   вопросов развёрнутыми целиком читались бы стеной текста. Раскрытие —
+   нативные <details>/<summary>, без скриптов и без ARIA-обвязки.
+   В отличие от .module-card, у вопроса нет ни номера, ни числа уроков:
+   сама формулировка вопроса и есть шапка строки. */
+
+.faq-item__box {
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+  transition: border-color var(--transition), background-color var(--transition),
+    box-shadow var(--transition);
+}
+
+.faq-item__box:hover {
+  border-color: rgba(184, 140, 255, 0.55);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.faq-item__box[open] {
+  border-color: rgba(184, 140, 255, 0.55);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 14px 34px rgba(11, 4, 38, 0.55), var(--glow-lavender);
+}
+
+/* Шапка строки: слева вопрос, справа шеврон. Маркер списка <summary>
+   снимается в обоих движках: display: none для WebKit, list-style
+   для остальных. */
+.faq-item__q {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  cursor: pointer;
+  list-style: none;
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-bold);
+  line-height: 1.3;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--cloud-white);
+}
+
+.faq-item__q::-webkit-details-marker {
+  display: none;
+}
+
+/* Шеврон — не иконка, а два бордера квадрата, повёрнутого на 45°,
+   как у .module-card__summary::after */
+.faq-item__q::after {
+  content: '';
+  flex-shrink: 0;
+  width: 10px;
+  height: 10px;
+  margin-right: 4px;
+  border-right: 2px solid var(--tessa-lavender);
+  border-bottom: 2px solid var(--tessa-lavender);
+  transform: rotate(45deg) translate(-2px, -2px);
+  transition: transform var(--transition), border-color var(--transition);
+}
+
+.faq-item__box[open] .faq-item__q::after {
+  transform: rotate(225deg) translate(-2px, -2px);
+  border-color: var(--ai-glow);
+}
+
+.faq-item__q:focus-visible {
+  outline: 2px solid var(--tessa-lavender);
+  outline-offset: -4px;
+  border-radius: var(--radius-md);
+}
+
+/* Тело раскрытия — один ответ, верхняя граница отделяет его от вопроса,
+   но не идёт в край карточки — отступ тот же, что у полей */
+.faq-item__a {
+  margin: 0 var(--space-6);
+  padding: var(--space-4) 0 var(--space-6);
+  border-top: 1px solid var(--border-dark);
+}
+
+.faq-item__text {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-on-dark-muted);
+}
+
+/* На узких экранах строка отдаёт поля тексту */
+@media (max-width: 479px) {
+  .faq-item__q {
+    padding: var(--space-4);
+  }
+
+  .faq-item__a {
+    margin-inline: var(--space-4);
+    padding: var(--space-3) 0 var(--space-4);
+  }
+}

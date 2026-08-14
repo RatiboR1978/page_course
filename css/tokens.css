@@ -1,0 +1,112 @@
+/* ============================================================
+   TOKENS — дизайн-токены Tessa AI (из брендбука)
+   ============================================================ */
+
+:root {
+  /* ---------- Палитра ---------- */
+  --ai-glow: #7FE8FF;             /* AI Glow */
+  --tessa-lavender: #B88CFF;      /* Tessa Lavender */
+  --pastel-lilac: #D8C2FF;        /* Pastel Lilac */
+  --blush-pink: #F6C7E8;          /* Blush Pink */
+  --soft-orchid: #E8B8F8;         /* Soft Orchid */
+  --clean-pearl: #F8F7FC;         /* Clean Pearl */
+  --cloud-white: #FFFFFF;         /* Cloud White */
+  --deep-ink-violet: #4A4568;     /* Deep Ink Violet */
+  --muted-lavender-gray: #8D86A8; /* Muted Lavender Gray */
+  --deep-night-plum: #2E2448;     /* Deep Night Plum */
+
+  /* Дополнительные тона тёмной сцены (взяты с макета hero) */
+  --night-950: #000225;           /* фон первого экрана на мобильных */
+  --night-900: #0B0426;
+  --night-800: #140A38;
+  --night-700: #1E1050;
+
+  /* ---------- Семантические цвета ---------- */
+  --bg-dark: var(--night-900);
+  --bg-light: var(--clean-pearl);
+  --text-on-dark: var(--cloud-white);
+  --text-on-dark-muted: #B9B2D6;
+  --text-on-light: var(--deep-ink-violet);
+  --text-on-light-muted: var(--muted-lavender-gray);
+  --accent: var(--tessa-lavender);
+  --hero-eyebrow: #7B84EA;        /* надзаголовок первого экрана (периwinkle) */
+  --hero-text: #D6D3E8;           /* основной текст первого экрана */
+  --hero-glow: var(--night-900);  /* подложка под текстом — цвет общего тёмного фона сайта */
+  --hero-glow-rgb: 11, 4, 38;     /* тот же цвет (--night-900) для rgba() с прозрачностью */
+  --border-light: rgba(74, 69, 104, 0.12);
+  --border-dark: rgba(184, 140, 255, 0.28);
+
+  /* ---------- Градиенты ---------- */
+  --grad-primary: linear-gradient(90deg, #7FE8FF 0%, #B88CFF 50%, #F6C7E8 100%);
+  --grad-light:   linear-gradient(90deg, #FFFFFF 0%, #F8F7FC 50%, #D8C2FF 100%);
+  --grad-warm:    linear-gradient(90deg, #F6C7E8 0%, #E8B8F8 33%, #B88CFF 66%, #7FE8FF 100%);
+  --grad-dark:    linear-gradient(90deg, #2E2448 0%, #B88CFF 50%, #7FE8FF 100%);
+  /* Градиент primary-кнопки с макета первого экрана: lilac -> cyan */
+  --grad-btn:     linear-gradient(90deg, #C9AEF5 0%, #A9C4F0 55%, #8FDCEF 100%);
+  /* Градиент акцентной строки H1: cyan -> lavender -> светлая сирень */
+  --grad-h1:      linear-gradient(90deg, #6FE3FF 0%, #A98CFF 48%, #E4D9FF 100%);
+  --grad-hero-bg: linear-gradient(160deg, #0B0426 0%, #1E1050 55%, #0B0426 100%);
+
+  /* ---------- Типографика ---------- */
+  --font-display: 'Comfortaa', 'Manrope', system-ui, sans-serif; /* логотип, акценты */
+  --font-body: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --fs-h1: clamp(2.25rem, 1.2rem + 4.6vw, 4.5rem);
+  --fs-h2: clamp(1.75rem, 1.1rem + 2.6vw, 3rem);
+  --fs-h3: clamp(1.25rem, 1rem + 1.1vw, 1.75rem);
+  --fs-h4: clamp(1.05rem, 0.95rem + 0.5vw, 1.25rem);
+  --fs-lead: clamp(1rem, 0.94rem + 0.45vw, 1.25rem);
+  --fs-body: 1rem;
+  --fs-small: 0.875rem;
+  --fs-eyebrow: 0.8125rem;
+
+  --lh-tight: 1.05;
+  --lh-heading: 1.2;
+  --lh-body: 1.6;
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-extrabold: 800;
+
+  --ls-tight: -0.02em;
+  --ls-wide: 0.08em;
+
+  /* ---------- Сетка и отступы ---------- */
+  --container: 1280px;
+  --gutter: clamp(1rem, 0.4rem + 2.4vw, 2.5rem);
+
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+  --section-py: clamp(3.5rem, 2rem + 6vw, 7rem);
+
+  /* ---------- Радиусы ---------- */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-pill: 999px;
+
+  /* ---------- Тени и свечения ---------- */
+  --shadow-sm: 0 2px 8px rgba(46, 36, 72, 0.06);
+  --shadow-md: 0 8px 24px rgba(46, 36, 72, 0.10);
+  --shadow-lg: 0 20px 48px rgba(46, 36, 72, 0.16);
+  --glow-lavender: 0 0 24px rgba(184, 140, 255, 0.55);
+  --glow-cyan: 0 0 24px rgba(127, 232, 255, 0.45);
+  --glow-btn: 0 8px 28px rgba(184, 140, 255, 0.45);
+
+  /* ---------- Прочее ---------- */
+  --transition: 0.25s ease;
+  --transition-slow: 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  --z-menu: 200;
+}
+
+/* Брейкпоинты (для справки, в CSS используются литералами):
+   sm — 480px | md — 768px | lg — 1200px */
