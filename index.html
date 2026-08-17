@@ -86,7 +86,7 @@
     <!-- ============================================================
          2. PAINS — почему результата всё ещё нет
          ============================================================ -->
-    <section class="section section--dark pains" id="pains">
+    <section class="section section--dark section--base pains" id="pains">
       <div class="container">
 
         <div class="section__head section__head--center pains__head reveal">
@@ -168,7 +168,8 @@
     <!-- ============================================================
          3. REASON — почему так происходит
          ============================================================ -->
-    <section class="section section--dark reason" id="reason">
+    <section class="section section--dark section--base reason" id="reason">
+      <canvas class="network-bg" aria-hidden="true"></canvas>
       <div class="container">
 
         <div class="section__head section__head--center reason__head reveal">
@@ -236,7 +237,7 @@
     <!-- ============================================================
          4. TREND — ИИ становится нормой, а не преимуществом
          ============================================================ -->
-    <section class="section section--dark trend" id="trend">
+    <section class="section section--dark section--raised trend" id="trend">
       <div class="container">
 
         <div class="section__head section__head--center trend__head reveal">
@@ -279,11 +280,10 @@
 
           <!-- Иллюстрация рядом со статистикой. Декоративная (смысл несут
                цифры в соседней колонке), поэтому alt пустой. Картинка
-               со своим тёмным фоном: --bare убирает рамку заглушки,
-               --fade растворяет края картинки в фоне секции. -->
-          <div class="trend__media media-placeholder media-placeholder--bare media-placeholder--fade reveal" data-reveal-delay="160">
-            <img src="assets/img/trend.png" alt="" width="1254" height="1254"
-                 loading="lazy" decoding="async">
+               с прозрачным фоном: --bare убирает рамку и подложку заглушки,
+               --fade не нужен — растворять в фон нечего, края и так пустые. -->
+          <div class="trend__media media-placeholder media-placeholder--bare reveal" data-reveal-delay="160">
+            <img src="assets/img/ai-skilled-professional-cyber-ears.png" alt="" loading="lazy">
           </div>
 
         </div>
@@ -318,7 +318,8 @@
     <!-- ============================================================
          5. PATH — за 8 недель: шесть шагов курса
          ============================================================ -->
-    <section class="section section--dark path" id="path">
+    <section class="section section--dark section--base path" id="path">
+      <canvas class="network-bg" aria-hidden="true"></canvas>
       <div class="container">
 
         <div class="section__head section__head--center path__head reveal">
@@ -398,7 +399,7 @@
     <!-- ============================================================
          6. OFFERS — что можно предлагать и сколько это стоит
          ============================================================ -->
-    <section class="section section--dark offers" id="offers">
+    <section class="section section--dark section--raised offers" id="offers">
       <div class="container">
 
         <div class="section__head section__head--center offers__head reveal">
@@ -418,7 +419,7 @@
 
           <li class="offer-card reveal" data-reveal-delay="0">
             <div class="offer-card__icon media-placeholder media-placeholder--icon media-placeholder--bare">
-              <img src="assets/img/offer-text.png" alt="" width="1254" height="1254" loading="lazy" decoding="async">
+              <img src="assets/img/texts-content.png" alt="" loading="lazy">
             </div>
             <h3 class="offer-card__title">Тексты и контент</h3>
             <ul class="offer-card__list">
@@ -431,7 +432,7 @@
 
           <li class="offer-card reveal" data-reveal-delay="80">
             <div class="offer-card__icon media-placeholder media-placeholder--icon media-placeholder--bare">
-              <img src="assets/img/offer-image.png" alt="" width="1254" height="1254" loading="lazy" decoding="async">
+              <img src="assets/img/images-design.png" alt="" loading="lazy">
             </div>
             <h3 class="offer-card__title">Изображения и дизайн-контент</h3>
             <ul class="offer-card__list">
@@ -443,7 +444,7 @@
 
           <li class="offer-card reveal" data-reveal-delay="0">
             <div class="offer-card__icon media-placeholder media-placeholder--icon media-placeholder--bare">
-              <img src="assets/img/offer-video.png" alt="" width="1254" height="1254" loading="lazy" decoding="async">
+              <img src="assets/img/video.png" alt="" loading="lazy">
             </div>
             <h3 class="offer-card__title">Видео</h3>
             <ul class="offer-card__list">
@@ -455,7 +456,7 @@
 
           <li class="offer-card reveal" data-reveal-delay="80">
             <div class="offer-card__icon media-placeholder media-placeholder--icon media-placeholder--bare">
-              <img src="assets/img/offer-audio.png" alt="" width="1254" height="1254" loading="lazy" decoding="async">
+              <img src="assets/img/voice-audio.png" alt="" loading="lazy">
             </div>
             <h3 class="offer-card__title">Голос и аудио</h3>
             <ul class="offer-card__list">
@@ -469,6 +470,7 @@
 
         <!-- Самый доходный формат — отдельная панель, а не пятая карточка сетки -->
         <div class="offers__combo reveal" data-reveal-delay="0">
+          <span class="offers__combo-badge">Самый выгодный формат</span>
           <h3 class="offers__combo-title">
             Комплексные услуги – <span class="grad-text grad-text--h1">самый доходный формат</span>
           </h3>
@@ -503,7 +505,7 @@
     <!-- ============================================================
          7. AUDIENCE — для кого этот курс
          ============================================================ -->
-    <section class="section section--dark audience" id="audience">
+    <section class="section section--dark section--base audience" id="audience">
       <div class="container">
 
         <div class="section__head section__head--center audience__head reveal">
@@ -516,31 +518,41 @@
         <ul class="audience__grid">
 
           <li class="audience-card reveal" data-reveal-delay="0">
-            <div class="audience-card__icon media-placeholder media-placeholder--icon" aria-hidden="true"></div>
+            <div class="audience-card__icon media-placeholder media-placeholder--icon media-placeholder--bare">
+              <img src="assets/img/beginner-a.png" alt="" loading="lazy">
+            </div>
             <h3 class="audience-card__title">Вы начинаете с нуля</h3>
             <p class="audience-card__text">Не знаете, какие нейросети выбрать, как зарегистрироваться и что писать в запросе. Курс начинается с базовых действий и объясняется без технического языка.</p>
           </li>
 
           <li class="audience-card reveal" data-reveal-delay="80">
-            <div class="audience-card__icon media-placeholder media-placeholder--icon" aria-hidden="true"></div>
+            <div class="audience-card__icon media-placeholder media-placeholder--icon media-placeholder--bare">
+              <img src="assets/img/ai-experience-a.png" alt="" loading="lazy">
+            </div>
             <h3 class="audience-card__title">Вы уже пробовали нейросети</h3>
             <p class="audience-card__text">Пользовались ChatGPT, создавали изображения, тестировали сервисы – но результат нестабильный. Вы систематизируете знания и научитесь доводить генерации до рабочего уровня.</p>
           </li>
 
           <li class="audience-card reveal" data-reveal-delay="160">
-            <div class="audience-card__icon media-placeholder media-placeholder--icon" aria-hidden="true"></div>
+            <div class="audience-card__icon media-placeholder media-placeholder--icon media-placeholder--bare">
+              <img src="assets/img/income-b.png" alt="" loading="lazy">
+            </div>
             <h3 class="audience-card__title">Вы хотите дополнительный доход</h3>
             <p class="audience-card__text">Ищете навык, который можно освоить параллельно с основной работой и постепенно превратить в источник заказов.</p>
           </li>
 
           <li class="audience-card reveal" data-reveal-delay="0">
-            <div class="audience-card__icon media-placeholder media-placeholder--icon" aria-hidden="true"></div>
+            <div class="audience-card__icon media-placeholder media-placeholder--icon media-placeholder--bare">
+              <img src="assets/img/profession-b.png" alt="" loading="lazy">
+            </div>
             <h3 class="audience-card__title">Вы хотите усилить свою профессию</h3>
             <p class="audience-card__text">Работаете с текстами, продвижением, клиентами, контентом, продажами, обучением или своим проектом. ИИ поможет закрывать задачи быстрее и расширить перечень услуг.</p>
           </li>
 
           <li class="audience-card reveal" data-reveal-delay="80">
-            <div class="audience-card__icon media-placeholder media-placeholder--icon" aria-hidden="true"></div>
+            <div class="audience-card__icon media-placeholder media-placeholder--icon media-placeholder--bare">
+              <img src="assets/img/career-change-a.png" alt="" loading="lazy">
+            </div>
             <h3 class="audience-card__title">Вы хотите сменить направление</h3>
             <p class="audience-card__text">Не понимаете, какую профессию выбрать, и хотите сначала попробовать несколько прикладных ИИ-навыков. В процессе увидите, что получается лучше всего.</p>
           </li>
@@ -553,7 +565,7 @@
     <!-- ============================================================
          8. METHOD — не изучаем сервисы ради сервисов
          ============================================================ -->
-    <section class="section section--dark method" id="method">
+    <section class="section section--dark section--raised method" id="method">
       <div class="container">
 
         <div class="section__head section__head--center method__head reveal">
@@ -564,38 +576,106 @@
           </p>
         </div>
 
-        <!-- Нумерация 01–04 рисуется CSS-счётчиком на .method-card::before.
-             Между карточками на десктопе — стрелка-коннектор (::after),
-             как в цепочке .reason__path-item: четыре шага читаются как
-             один процесс со стрелками, а не как сетка независимых карточек.
-             В каждой карточке — заглушка под иконку шага. -->
-        <ol class="method__grid">
+        <!-- Четыре шага — не сетка одинаковых плиток (их на странице уже
+             шесть подряд), а переключатель: слева рельс шагов, справа одна
+             крупная панель с результатом выбранного шага. Номера 01–04 здесь
+             часть управляющего элемента, поэтому пишутся в разметку, а не
+             печатаются CSS-счётчиком.
 
-          <li class="method-card reveal" data-reveal-delay="0">
-            <div class="method-card__icon media-placeholder media-placeholder--icon" aria-hidden="true"></div>
-            <h3 class="method-card__title">Разбираетесь</h3>
-            <p class="method-card__text">Получаете понятное объяснение инструмента и принципа его работы.</p>
-          </li>
+             ARIA-обвязка (tablist/tab/tabpanel) стоит в разметке, но панели
+             НЕ скрыты: без JS все четыре шага выводятся стопкой и читаются
+             целиком — скрывает лишние и вешает клавиатуру main.js. -->
+        <div class="method__layout reveal" data-method-tabs>
 
-          <li class="method-card reveal" data-reveal-delay="80">
-            <div class="method-card__icon media-placeholder media-placeholder--icon" aria-hidden="true"></div>
-            <h3 class="method-card__title">Повторяете</h3>
-            <p class="method-card__text">Вместе с преподавателем проходите весь процесс на экране.</p>
-          </li>
+          <div class="method__rail" role="tablist" aria-label="Четыре шага работы над навыком">
 
-          <li class="method-card reveal" data-reveal-delay="160">
-            <div class="method-card__icon media-placeholder media-placeholder--icon" aria-hidden="true"></div>
-            <h3 class="method-card__title">Создаете</h3>
-            <p class="method-card__text">Выполняете свою работу: текст, визуал, ролик, аудио или комплексный проект.</p>
-          </li>
+            <button type="button" class="method-tab" id="method-tab-1" role="tab"
+                    aria-selected="true" aria-controls="method-panel-1">
+              <span class="method-tab__num">01</span>
+              <span class="method-tab__title">Разбираетесь</span>
+            </button>
 
-          <li class="method-card reveal" data-reveal-delay="240">
-            <div class="method-card__icon media-placeholder media-placeholder--icon" aria-hidden="true"></div>
-            <h3 class="method-card__title">Упаковываете</h3>
-            <p class="method-card__text">Превращаете результат в кейс для портфолио или в услугу для клиента.</p>
-          </li>
+            <button type="button" class="method-tab" id="method-tab-2" role="tab"
+                    aria-selected="false" aria-controls="method-panel-2">
+              <span class="method-tab__num">02</span>
+              <span class="method-tab__title">Повторяете</span>
+            </button>
 
-        </ol>
+            <button type="button" class="method-tab" id="method-tab-3" role="tab"
+                    aria-selected="false" aria-controls="method-panel-3">
+              <span class="method-tab__num">03</span>
+              <span class="method-tab__title">Создаете</span>
+            </button>
+
+            <button type="button" class="method-tab" id="method-tab-4" role="tab"
+                    aria-selected="false" aria-controls="method-panel-4">
+              <span class="method-tab__num">04</span>
+              <span class="method-tab__title">Упаковываете</span>
+            </button>
+
+          </div>
+
+          <div class="method__panels">
+
+            <article class="method-panel" id="method-panel-1" role="tabpanel"
+                     aria-labelledby="method-tab-1" tabindex="0">
+              <!-- Картинка декоративная: дублирует смысл заголовка и текста
+                   шага рядом, поэтому alt пустой — как у pains.png и остальных
+                   иллюстраций страницы. Первая панель открыта на старте,
+                   поэтому грузится без lazy: у скрытых панелей оно останется. -->
+              <div class="method-panel__media media-placeholder media-placeholder--wide">
+                <img src="assets/img/method-step-01.png" alt="" width="1774" height="887"
+                     decoding="async">
+              </div>
+              <div class="method-panel__body">
+                <p class="method-panel__step">Шаг 01</p>
+                <h3 class="method-panel__title">Разбираетесь</h3>
+                <p class="method-panel__text">Получаете понятное объяснение инструмента и принципа его работы.</p>
+              </div>
+            </article>
+
+            <article class="method-panel" id="method-panel-2" role="tabpanel"
+                     aria-labelledby="method-tab-2" tabindex="0">
+              <div class="method-panel__media media-placeholder media-placeholder--wide">
+                <img src="assets/img/method-step-02.png" alt="" width="1774" height="887"
+                     loading="lazy" decoding="async">
+              </div>
+              <div class="method-panel__body">
+                <p class="method-panel__step">Шаг 02</p>
+                <h3 class="method-panel__title">Повторяете</h3>
+                <p class="method-panel__text">Вместе с преподавателем проходите весь процесс на экране.</p>
+              </div>
+            </article>
+
+            <article class="method-panel" id="method-panel-3" role="tabpanel"
+                     aria-labelledby="method-tab-3" tabindex="0">
+              <div class="method-panel__media media-placeholder media-placeholder--wide">
+                <img src="assets/img/method-step-03.png" alt="" width="1774" height="887"
+                     loading="lazy" decoding="async">
+              </div>
+              <div class="method-panel__body">
+                <p class="method-panel__step">Шаг 03</p>
+                <h3 class="method-panel__title">Создаете</h3>
+                <p class="method-panel__text">Выполняете свою работу: текст, визуал, ролик, аудио или комплексный проект.</p>
+              </div>
+            </article>
+
+            <article class="method-panel" id="method-panel-4" role="tabpanel"
+                     aria-labelledby="method-tab-4" tabindex="0">
+              <div class="method-panel__media media-placeholder media-placeholder--wide">
+                <img src="assets/img/method-step-04.png" alt="" width="1774" height="887"
+                     loading="lazy" decoding="async">
+              </div>
+              <div class="method-panel__body">
+                <p class="method-panel__step">Шаг 04</p>
+                <h3 class="method-panel__title">Упаковываете</h3>
+                <p class="method-panel__text">Превращаете результат в кейс для портфолио или в услугу для клиента.</p>
+              </div>
+            </article>
+
+          </div>
+
+        </div>
 
       </div>
     </section>
@@ -603,7 +683,8 @@
     <!-- ============================================================
          ДЕВЯТЫЙ ЭКРАН — сколько это займёт времени
          ============================================================ -->
-    <section class="section section--dark timing" id="timing">
+    <section class="section section--dark section--base timing" id="timing">
+      <canvas class="network-bg" aria-hidden="true"></canvas>
       <div class="container">
 
         <div class="section__head section__head--center timing__head reveal">
@@ -611,15 +692,66 @@
         </div>
 
         <!-- Разделители «·» из исходной строки — служебная пунктуация
-             перечисления: каждый пункт стал отдельной таблеткой -->
-        <ul class="timing__facts reveal" data-reveal-delay="80">
-          <li class="timing__fact">Старт сразу после оплаты</li>
-          <li class="timing__fact">8 недель</li>
-          <li class="timing__fact">32 урока</li>
-          <li class="timing__fact">Новый модуль каждую неделю</li>
-          <li class="timing__fact">3–5 часов в неделю</li>
-          <li class="timing__fact">Материалы остаются на 12 месяцев</li>
-        </ul>
+             перечисления, снята вёрсткой. Шесть равновесных таблеток
+             заменены одной ритм-панелью: «8 недель» и недельный такт —
+             главный факт блока, и он показан дорожкой из восьми
+             сегментов (семь модулей + финальный проект), а не описан
+             словами. Фразы сохранены дословно, число и единица просто
+             разложены по разным строкам. -->
+        <div class="timing__rhythm reveal" data-reveal-delay="80">
+
+          <div class="timing__rhythm-main">
+            <p class="timing__weeks">
+              <span class="timing__weeks-val">8</span>
+              <span class="timing__weeks-unit">недель</span>
+            </p>
+
+            <!-- Сегменты декоративны: смысл несут подписи 1–8 под ними,
+                 поэтому сама полоса скрыта от скринридера -->
+            <div class="timing__track" aria-hidden="true">
+              <span class="timing__seg"></span>
+              <span class="timing__seg"></span>
+              <span class="timing__seg"></span>
+              <span class="timing__seg"></span>
+              <span class="timing__seg"></span>
+              <span class="timing__seg"></span>
+              <span class="timing__seg"></span>
+              <span class="timing__seg timing__seg--final"></span>
+            </div>
+
+            <ol class="timing__weeknums">
+              <li class="timing__weeknum">1</li>
+              <li class="timing__weeknum">2</li>
+              <li class="timing__weeknum">3</li>
+              <li class="timing__weeknum">4</li>
+              <li class="timing__weeknum">5</li>
+              <li class="timing__weeknum">6</li>
+              <li class="timing__weeknum">7</li>
+              <li class="timing__weeknum timing__weeknum--final">финал</li>
+            </ol>
+
+            <p class="timing__rhythm-cap">Новый модуль каждую неделю</p>
+          </div>
+
+          <dl class="timing__rhythm-side">
+            <!-- В dl порядок dt → dd обязателен, а визуально число стоит
+                 над подписью: переворот делает order в .timing__metric -->
+            <div class="timing__metric">
+              <dt class="timing__metric-label">урока</dt>
+              <dd class="timing__metric-val">32</dd>
+            </div>
+            <div class="timing__metric">
+              <dt class="timing__metric-label">часов в неделю</dt>
+              <dd class="timing__metric-val">3–5</dd>
+            </div>
+          </dl>
+
+          <ul class="timing__rhythm-foot">
+            <li class="timing__rhythm-foot-item">Старт сразу после оплаты</li>
+            <li class="timing__rhythm-foot-item">Материалы остаются на 12 месяцев</li>
+          </ul>
+
+        </div>
 
         <div class="timing__notes reveal" data-reveal-delay="160">
           <p class="timing__text">
@@ -636,7 +768,10 @@
           </p>
         </div>
 
-        <!-- Тире в начале пунктов рисуются на .timing__free-item::before -->
+        <!-- Список отрицаний, а не перечень фич: строки с ✕-бейджем
+             в одну колонку. Стекло панели то же, что у ритм-панели
+             выше, — два блока секции читаются парой. Заголовок стоит
+             эйбрау по левому краю. -->
         <div class="timing__free reveal" data-reveal-delay="240">
           <h3 class="timing__free-title">Вам не понадобится</h3>
           <ul class="timing__free-list">
@@ -659,7 +794,7 @@
     <!-- ============================================================
          ДЕСЯТЫЙ ЭКРАН — программа курса: модули 0–6 и финальный проект
          ============================================================ -->
-    <section class="section section--dark program" id="program">
+    <section class="section section--dark section--raised program" id="program">
       <div class="container">
 
         <div class="section__head section__head--center program__head reveal">
@@ -968,7 +1103,7 @@
     <!-- ============================================================
          ОДИННАДЦАТЫЙ ЭКРАН — примеры работ «было → стало»
          ============================================================ -->
-    <section class="section section--dark works" id="works">
+    <section class="section section--dark section--base works" id="works">
       <div class="container">
 
         <div class="section__head section__head--center works__head reveal">
@@ -1116,7 +1251,7 @@
     <!-- ============================================================
          ДВЕНАДЦАТЫЙ ЭКРАН — результаты участников
          ============================================================ -->
-    <section class="section section--dark results" id="results">
+    <section class="section section--dark section--raised results" id="results">
       <div class="container">
 
         <div class="section__head section__head--center results__head reveal">
@@ -1166,7 +1301,7 @@
     <!-- ============================================================
          ТРИНАДЦАТЫЙ ЭКРАН — эксперт
          ============================================================ -->
-    <section class="section section--dark expert" id="expert">
+    <section class="section section--dark section--base expert" id="expert">
       <div class="container">
 
         <div class="section__head section__head--center expert__head reveal">
@@ -1210,7 +1345,7 @@
     <!-- ============================================================
          ЧЕТЫРНАДЦАТЫЙ ЭКРАН — сопровождение куратора и Тесса
          ============================================================ -->
-    <section class="section section--dark support" id="support">
+    <section class="section section--dark section--raised support" id="support">
       <div class="container">
 
         <div class="section__head section__head--center support__head reveal">
@@ -1280,7 +1415,7 @@
     <!-- ============================================================
          ПЯТНАДЦАТЫЙ ЭКРАН — тарифы
          ============================================================ -->
-    <section class="section section--dark tariffs" id="tariffs">
+    <section class="section section--dark section--deep tariffs" id="tariffs">
       <div class="container">
 
         <div class="section__head section__head--center tariffs__head reveal">
@@ -1408,7 +1543,7 @@
       </div>
     </section>
 
-    <section class="section section--dark guarantee" id="guarantee">
+    <section class="section section--dark section--base guarantee" id="guarantee">
       <div class="container">
 
         <div class="guarantee__panel reveal">
@@ -1429,7 +1564,7 @@
       </div>
     </section>
 
-    <section class="section section--dark timer" id="timer">
+    <section class="section section--dark section--raised timer" id="timer">
       <div class="container">
 
         <div class="timer__panel reveal">
@@ -1479,7 +1614,7 @@
       </div>
     </section>
 
-    <section class="section section--dark faq" id="faq">
+    <section class="section section--dark section--base faq" id="faq">
       <div class="container">
 
         <div class="section__head section__head--center faq__head reveal">
@@ -1622,7 +1757,7 @@
       </div>
     </section>
 
-    <section class="section section--dark cta" id="cta">
+    <section class="section section--dark section--deep cta" id="cta">
       <div class="container">
 
         <div class="cta__head reveal">
@@ -1687,5 +1822,6 @@
 
   <script src="js/main.js" defer></script>
   <script src="js/animations.js" defer></script>
+  <script src="js/network-bg.js" defer></script>
 </body>
 </html>
