@@ -161,7 +161,7 @@
   margin-inline: auto;
 }
 
-/* Маленькая круглая иконка на карточке (OFFERS, AUDIENCE, METHOD) */
+/* Маленькая круглая иконка на карточке (OFFERS, AUDIENCE) */
 .media-placeholder--icon {
   flex: none;
   width: 48px;
@@ -169,35 +169,74 @@
   border-radius: 50%;
 }
 
-/* OFFERS крупнее остальных: там уже стоят настоящие иллюстрации
+/* OFFERS и AUDIENCE крупнее базового: там стоят настоящие иллюстрации
    (--bare, без круглой подложки), и в паре с заголовком карточки
-   48px терялись. AUDIENCE и METHOD остаются на базовом размере,
-   пока там заглушки без картинок.
-   overflow: visible обязателен — свечение на ::before шире самой
-   иконки и без сброса базового overflow: hidden обрезалось бы вровень. */
+   48px терялись. AUDIENCE чуть меньше OFFERS — карточка узкая и текста
+   в ней больше, иконка не должна перевешивать заголовок. */
 .offer-card__icon.media-placeholder--icon {
-  width: 96px;
+  width: 112px;
   overflow: visible;
 }
 
-/* Мягкое свечение под иконкой — размытое пятно чуть шире круга.
-   ::before уходит под <img> за счёт отрицательного z-index (родитель
-   уже position: relative от .media-placeholder), поэтому свечение видно
-   только по краям, а не поверх картинки. Цвет чередуется лавандой/цианом
-   по нечётным/чётным карточкам — тот же приём, что у соседних секций. */
-.offer-card__icon.media-placeholder--icon::before {
-  content: '';
-  position: absolute;
-  inset: -18px;
-  z-index: -1;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(184, 140, 255, 0.4) 0%, rgba(184, 140, 255, 0.14) 55%, transparent 76%);
-  filter: blur(4px);
-  pointer-events: none;
+.audience-card__icon.media-placeholder--icon {
+  width: 88px;
+  overflow: visible;
 }
 
-.offer-card:nth-child(even) .offer-card__icon.media-placeholder--icon::before {
-  background: radial-gradient(circle, rgba(127, 232, 255, 0.36) 0%, rgba(127, 232, 255, 0.13) 55%, transparent 76%);
+/* Мягкое свечение под иконкой: размытое пятно бренд-градиента чуть
+   шире самой картинки, z-index держит его за иконкой. Плавно мерцает
+   (opacity + чуть масштаба), карточки сдвинуты по фазе через nth-child,
+   чтобы четыре пятна не пульсировали синхронно, как один щиток.
+   Тем же приёмом светятся иконки участников в AUDIENCE. */
+.offer-card__icon.media-placeholder--icon::before,
+.audience-card__icon.media-placeholder--icon::before {
+  content: '';
+  position: absolute;
+  inset: -18%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(184, 140, 255, 0.38) 0%, rgba(127, 232, 255, 0.18) 55%, transparent 75%);
+  filter: blur(14px);
+  animation: offer-icon-glow 4.5s ease-in-out infinite;
+}
+
+.offer-card:nth-child(2) .offer-card__icon.media-placeholder--icon::before {
+  animation-delay: -1.1s;
+}
+
+.offer-card:nth-child(3) .offer-card__icon.media-placeholder--icon::before {
+  animation-delay: -2.3s;
+}
+
+.offer-card:nth-child(4) .offer-card__icon.media-placeholder--icon::before {
+  animation-delay: -3.4s;
+}
+
+.audience-card:nth-child(2) .audience-card__icon.media-placeholder--icon::before {
+  animation-delay: -0.9s;
+}
+
+.audience-card:nth-child(3) .audience-card__icon.media-placeholder--icon::before {
+  animation-delay: -1.8s;
+}
+
+.audience-card:nth-child(4) .audience-card__icon.media-placeholder--icon::before {
+  animation-delay: -2.7s;
+}
+
+.audience-card:nth-child(5) .audience-card__icon.media-placeholder--icon::before {
+  animation-delay: -3.6s;
+}
+
+@keyframes offer-icon-glow {
+  0%, 100% {
+    opacity: 0.7;
+    transform: scale(0.94);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
 }
 
 /* ---------- Место под форму GetCourse ----------
@@ -266,7 +305,7 @@
 
 /* ---------- Таймлайн «что нужно знать» ----------
    Раньше это была сетка карточек (.reason-card), визуально неотличимая
-   от pain-card/step-card/method-card ниже по странице. Четыре пункта —
+   от pain-card/step-card/case-step ниже по странице. Четыре пункта —
    это очередность понимания, а не независимые тезисы, поэтому вместо
    карточек — пронумерованные узлы на общей линии (счётчик на .reason__timeline
    в sections.css) и текст под каждым. На узких экранах линия становится
@@ -292,7 +331,9 @@
   height: 56px;
   border-radius: 50%;
   border: 1px solid rgba(184, 140, 255, 0.45);
-  background: var(--night-900);
+  /* Узел пробивает дырку в соединительной линии, поэтому его заливка
+     обязана совпадать с фоном секции — берём тон секции, а не литерал. */
+  background: var(--surface-solid, var(--night-900));
   font-size: var(--fs-h4);
   font-weight: var(--fw-extrabold);
   letter-spacing: var(--ls-tight);
@@ -334,7 +375,7 @@
   padding: var(--space-6);
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--fill-1);
   backdrop-filter: blur(8px);
   transition: transform var(--transition), border-color var(--transition),
     background-color var(--transition), box-shadow var(--transition);
@@ -373,8 +414,8 @@
 .stat-card:hover {
   transform: translateY(-3px);
   border-color: rgba(184, 140, 255, 0.55);
-  background: rgba(255, 255, 255, 0.07);
-  box-shadow: 0 14px 34px rgba(11, 4, 38, 0.55), var(--glow-lavender);
+  background: var(--fill-3);
+  box-shadow: var(--shadow-card), var(--glow-lavender);
 }
 
 /* На узких экранах карточка отдаёт поля тексту */
@@ -412,7 +453,9 @@
   height: 48px;
   border-radius: 50%;
   border: 1px solid rgba(184, 140, 255, 0.45);
-  background: var(--night-900);
+  /* Узел пробивает дырку в соединительной линии, поэтому его заливка
+     обязана совпадать с фоном секции — берём тон секции, а не литерал. */
+  background: var(--surface-solid, var(--night-900));
   font-size: var(--fs-h4);
   font-weight: var(--fw-extrabold);
   letter-spacing: var(--ls-tight);
@@ -432,7 +475,7 @@
   padding: var(--space-6);
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--fill-1);
   backdrop-filter: blur(8px);
   transition: transform var(--transition), border-color var(--transition),
     background-color var(--transition), box-shadow var(--transition);
@@ -441,8 +484,8 @@
 .path-step__card:hover {
   transform: translateY(-3px);
   border-color: rgba(184, 140, 255, 0.55);
-  background: rgba(255, 255, 255, 0.07);
-  box-shadow: 0 14px 34px rgba(11, 4, 38, 0.55), var(--glow-lavender);
+  background: var(--fill-3);
+  box-shadow: var(--shadow-card), var(--glow-lavender);
 }
 
 .path-step__title {
@@ -496,7 +539,7 @@
   padding: var(--space-6);
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--fill-1);
   backdrop-filter: blur(8px);
   transition: transform var(--transition), border-color var(--transition),
     background-color var(--transition), box-shadow var(--transition);
@@ -505,8 +548,8 @@
 .offer-card:hover {
   transform: translateY(-3px);
   border-color: rgba(184, 140, 255, 0.55);
-  background: rgba(255, 255, 255, 0.07);
-  box-shadow: 0 14px 34px rgba(11, 4, 38, 0.55), var(--glow-lavender);
+  background: var(--fill-3);
+  box-shadow: var(--shadow-card), var(--glow-lavender);
 }
 
 /* Заголовок направления + короткая градиентная черта под ним —
@@ -584,7 +627,7 @@
   padding: var(--space-6);
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--fill-1);
   backdrop-filter: blur(8px);
   transition: transform var(--transition), border-color var(--transition),
     background-color var(--transition), box-shadow var(--transition);
@@ -597,8 +640,8 @@
 .audience-card:hover {
   transform: translateY(-3px);
   border-color: rgba(184, 140, 255, 0.55);
-  background: rgba(255, 255, 255, 0.07);
-  box-shadow: 0 14px 34px rgba(11, 4, 38, 0.55), var(--glow-lavender);
+  background: var(--fill-3);
+  box-shadow: var(--shadow-card), var(--glow-lavender);
 }
 
 .audience-card__title {
@@ -623,61 +666,203 @@
   }
 }
 
-/* ---------- Карточка шага метода — тёмное стекло с номером в круге ----------
-   То же стекло, что у .pain-card, .reason-card, .stat-card, .step-card,
-   .offer-card и .audience-card. Номер 01–04 печатает CSS-счётчик
-   (см. .method__grid в sections.css): в исходнике «1.» — служебная нумерация
-   перечисления, а не часть формулировки, поэтому в разметку она не пишется
-   и в копируемый текст не попадает.
+/* ---------- Шаг метода: кнопка рельса + панель шага ----------
+   Единственная секция страницы, где четыре пункта — не сетка стеклянных
+   плиток: такие плитки идут подряд в pains, reason, offers, audience,
+   path и stats, и седьмой ряд подряд перестаёт читаться. Здесь шаги живут
+   в переключателе — рельс из четырёх кнопок и одна крупная панель с тем,
+   что на этом шаге получается. Стекло на экране одно, а не четыре.
 
-   От номера карточки шага курса (пятый экран) отличается формой: там крупная
-   цифра градиентом и черта под ней, здесь — цифра в круглом бейдже, а шаги
-   на десктопе соединены короткой чертой в гапе. Четыре шага читаются как
-   один процесс, а не как четыре независимых пункта. */
+   .method-tab — кнопка шага. На мобильных это чип в горизонтальной ленте,
+   с 768px — строка вертикального рельса с номером в круге на линии
+   (линию рисует .method__rail::before в sections.css). */
 
-.method-card {
-  counter-increment: method;
+.method-tab {
+  /* position — не для смещения, а для порядка отрисовки: линия рельса
+     нарисована абсолютным ::before и без этого легла бы поверх кнопок,
+     прочертив круги номеров насквозь. */
   position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  padding: var(--space-6);
-  border: 1px solid var(--border-dark);
-  border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(8px);
-  transition: transform var(--transition), border-color var(--transition),
-    background-color var(--transition), box-shadow var(--transition);
-}
-
-.method-card::before {
-  content: counter(method, decimal-leading-zero); /* 01 … 04 */
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: var(--space-2);
   flex: none;
-  width: 48px;
-  height: 48px;
-  margin-bottom: var(--space-4);
-  border: 1px solid rgba(184, 140, 255, 0.45);
-  border-radius: 50%;
-  background: rgba(184, 140, 255, 0.10);
-  font-size: var(--fs-h4);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-pill);
+  background: var(--fill-1);
+  font-family: inherit;
+  /* Мельче базового текста: четыре чипа в сетке 2×2 на 375px должны
+     помещаться в свою половину строки, включая «Упаковываете». */
+  font-size: var(--fs-small);
+  line-height: 1.2;
+  color: var(--text-on-dark-muted);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color var(--transition), border-color var(--transition),
+    background-color var(--transition), box-shadow var(--transition);
+}
+
+.method-tab__num {
   font-weight: var(--fw-extrabold);
-  line-height: 1;
   letter-spacing: var(--ls-tight);
   color: var(--pastel-lilac);
+  transition: inherit;
 }
 
-.method-card:hover {
-  transform: translateY(-3px);
+.method-tab__title {
+  font-weight: var(--fw-semibold);
+}
+
+.method-tab:hover {
   border-color: rgba(184, 140, 255, 0.55);
-  background: rgba(255, 255, 255, 0.07);
-  box-shadow: 0 14px 34px rgba(11, 4, 38, 0.55), var(--glow-lavender);
+  background: var(--fill-3);
+  color: var(--cloud-white);
 }
 
-.method-card__title {
-  font-size: var(--fs-h4);
+.method-tab:focus-visible {
+  outline: 2px solid var(--ai-glow);
+  outline-offset: 3px;
+}
+
+.method-tab[aria-selected='true'] {
+  border-color: var(--tessa-lavender);
+  background: rgba(184, 140, 255, 0.16);
+  color: var(--cloud-white);
+  box-shadow: var(--glow-lavender);
+}
+
+/* С 768px чипы разворачиваются в вертикальный рельс: номер уходит
+   в круглый бейдж на линии, активный шаг — светящийся узел. Подложка
+   бейджа непрозрачная, иначе линия рельса просвечивает сквозь круг. */
+@media (min-width: 768px) {
+  .method-tab {
+    width: 100%;
+    justify-content: flex-start;
+    gap: var(--space-4);
+    padding: var(--space-3) var(--space-3) var(--space-3) 0;
+    border: 0;
+    border-radius: var(--radius-md);
+    background: none;
+    text-align: left;
+    white-space: normal;
+  }
+
+  .method-tab__num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 48px;
+    height: 48px;
+    border: 1px solid rgba(184, 140, 255, 0.45);
+    border-radius: 50%;
+    background: var(--surface-solid, var(--night-900));
+    font-size: var(--fs-h4);
+    line-height: 1;
+  }
+
+  .method-tab__title {
+    font-size: var(--fs-h4);
+    font-weight: var(--fw-bold);
+  }
+
+  /* Шаги стоят на одной оси и не двигаются ни на ховере, ни активными:
+     сдвиг сбивал бы номера с линии рельса. Состояние читается цветом,
+     контуром и свечением. */
+  .method-tab:hover {
+    background: none;
+  }
+
+  .method-tab:hover .method-tab__num {
+    border-color: rgba(184, 140, 255, 0.75);
+  }
+
+  .method-tab[aria-selected='true'] {
+    background: none;
+    box-shadow: none;
+  }
+
+  /* Лавандовая заливка активного номера идёт слоем поверх непрозрачной
+     подложки, а не вместо неё: иначе сквозь полупрозрачный круг
+     просвечивала бы линия рельса. */
+  .method-tab[aria-selected='true'] .method-tab__num {
+    border-color: var(--tessa-lavender);
+    background:
+      linear-gradient(rgba(184, 140, 255, 0.22), rgba(184, 140, 255, 0.22)),
+      var(--surface-solid, var(--night-900));
+    color: var(--cloud-white);
+    box-shadow: var(--glow-lavender);
+  }
+}
+
+/* Панель шага — то самое единственное стекло секции.
+   Скрытые панели прячет атрибут hidden (его ставит main.js): без JS
+   все четыре видны стопкой и секция остаётся читаемой. */
+.method-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-6);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-lg);
+  background: var(--fill-1);
+  backdrop-filter: blur(8px);
+  box-shadow: var(--shadow-card);
+}
+
+.method-panel[hidden] {
+  display: none;
+}
+
+/* Панель появляется при переключении. Анимация перезапускается сама:
+   элемент выходит из display:none, отдельный класс для этого не нужен. */
+.method-panel {
+  animation: method-panel-in var(--transition) ease-out both;
+}
+
+@keyframes method-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .method-panel {
+    animation: none;
+  }
+}
+
+/* Заглушка занимает всю ширину панели, а не общие 640px: панель здесь
+   и есть главный объект секции. Высота ограничена — на 1440 честные
+   16:9 дают 420px пустого прямоугольника, из-за которого секция
+   вырастает в полтора экрана. */
+.method-panel__media {
+  width: 100%;
+  max-width: none;
+  max-height: 360px;
+}
+
+.method-panel__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* Номер шага дублируется здесь надзаголовком: панель может быть
+   пролистана с клавиатуры, и по одному заголовку непонятно, какой
+   из четырёх шагов сейчас открыт. */
+.method-panel__step {
+  font-size: var(--fs-eyebrow);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--tessa-lavender);
+}
+
+.method-panel__title {
+  font-size: var(--fs-h3);
   font-weight: var(--fw-bold);
   line-height: 1.3;
   text-transform: none;
@@ -685,48 +870,20 @@
   color: var(--cloud-white);
 }
 
-.method-card__text {
-  font-size: var(--fs-body);
+.method-panel__text {
+  font-size: var(--fs-lead);
   line-height: var(--lh-body);
   color: var(--text-on-dark-muted);
 }
 
-/* Заглушка под иконку шага — маленький значок в углу карточки, а не
-   ещё один кружок над номером: номер остаётся единственным акцентным
-   маркером последовательности */
-.method-card__icon {
-  position: absolute;
-  top: var(--space-6);
-  right: var(--space-6);
-  width: 32px;
-  margin-bottom: 0;
+.method-panel:focus-visible {
+  outline: 2px solid var(--ai-glow);
+  outline-offset: 4px;
 }
 
-/* Стрелка-коннектор между шагами — та же идея, что в цепочке
-   .reason__path-item::after: символ «→», а не голая линия, читается
-   как явный переход от шага к шагу. Только там, где все четыре стоят
-   одним рядом. По центру бейджа: отступ карточки + половина круга. */
-@media (min-width: 1200px) {
-  .method-card::after {
-    content: '→';
-    position: absolute;
-    top: calc(var(--space-6) + 24px);
-    left: calc(100% + 2px);
-    transform: translateY(-50%);
-    font-size: 1.25rem;
-    line-height: 1;
-    color: var(--tessa-lavender);
-  }
-
-  .method-card:last-child::after {
-    display: none;
-  }
-}
-
-/* На узких экранах карточка отдаёт поля тексту */
-@media (max-width: 479px) {
-  .method-card {
-    padding: var(--space-4);
+@media (min-width: 768px) {
+  .method-panel {
+    padding: var(--space-8);
   }
 }
 
@@ -742,7 +899,7 @@
 .module-card__box {
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--fill-1);
   backdrop-filter: blur(8px);
   transition: border-color var(--transition), background-color var(--transition),
     box-shadow var(--transition);
@@ -750,15 +907,15 @@
 
 .module-card__box:hover {
   border-color: rgba(184, 140, 255, 0.55);
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--fill-2);
 }
 
 /* Открытая карточка держит подсветку и без курсора — так видно,
    какой модуль читаешь, когда открыто несколько */
 .module-card__box[open] {
   border-color: rgba(184, 140, 255, 0.55);
-  background: rgba(255, 255, 255, 0.07);
-  box-shadow: 0 14px 34px rgba(11, 4, 38, 0.55), var(--glow-lavender);
+  background: var(--fill-3);
+  box-shadow: var(--shadow-card), var(--glow-lavender);
 }
 
 /* Шапка карточки: слева номер, число уроков, название и обещание,
@@ -961,7 +1118,7 @@
   padding: var(--space-6);
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--fill-1);
   backdrop-filter: blur(8px);
   transition: transform var(--transition), border-color var(--transition),
     background-color var(--transition), box-shadow var(--transition);
@@ -970,8 +1127,8 @@
 .work-card:hover {
   transform: translateY(-3px);
   border-color: rgba(184, 140, 255, 0.55);
-  background: rgba(255, 255, 255, 0.07);
-  box-shadow: 0 14px 34px rgba(11, 4, 38, 0.55), var(--glow-lavender);
+  background: var(--fill-3);
+  box-shadow: var(--shadow-card), var(--glow-lavender);
 }
 
 .work-card__head {
@@ -1085,10 +1242,10 @@
 }
 
 /* ---------- Шаг кейса участника — тёмное стекло с номером ----------
-   То же стекло, что у .pain-card, .method-card, .work-card и остальных.
+   То же стекло, что у .pain-card, .step-card, .work-card и остальных.
    Четыре шага — это порядок рассказа о кейсе, поэтому карточки
-   пронумерованы CSS-счётчиком и связаны чертой, как шаги метода
-   на восьмом экране. Последний шаг единственный говорит о деньгах,
+   пронумерованы CSS-счётчиком и связаны чертой, как шаги курса
+   на пятом экране. Последний шаг единственный говорит о деньгах,
    поэтому набран цианом — то же правило, что у «Можно предлагать
    клиентам» в модулях программы. */
 
@@ -1105,7 +1262,7 @@
   padding: var(--space-6);
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--fill-1);
   backdrop-filter: blur(8px);
   transition: transform var(--transition), border-color var(--transition),
     background-color var(--transition), box-shadow var(--transition);
@@ -1132,8 +1289,8 @@
 .case-step:hover {
   transform: translateY(-3px);
   border-color: rgba(184, 140, 255, 0.55);
-  background: rgba(255, 255, 255, 0.07);
-  box-shadow: 0 14px 34px rgba(11, 4, 38, 0.55), var(--glow-lavender);
+  background: var(--fill-3);
+  box-shadow: var(--shadow-card), var(--glow-lavender);
 }
 
 /* Коммерческий результат — единственный шаг про деньги */
@@ -1145,7 +1302,7 @@
 
 .case-step--money:hover {
   border-color: rgba(127, 232, 255, 0.55);
-  box-shadow: 0 14px 34px rgba(11, 4, 38, 0.55), var(--glow-cyan);
+  box-shadow: var(--shadow-card), var(--glow-cyan);
 }
 
 .case-step__title {
@@ -1207,7 +1364,7 @@
   padding: var(--space-8);
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--fill-1);
   backdrop-filter: blur(8px);
   transition: border-color var(--transition), background-color var(--transition),
     box-shadow var(--transition);
@@ -1215,8 +1372,8 @@
 
 .expert-card:hover {
   border-color: rgba(184, 140, 255, 0.55);
-  background: rgba(255, 255, 255, 0.07);
-  box-shadow: 0 14px 34px rgba(11, 4, 38, 0.55), var(--glow-lavender);
+  background: var(--fill-3);
+  box-shadow: var(--shadow-card), var(--glow-lavender);
 }
 
 /* В две колонки — только когда колонке фактов остаётся достаточно ширины:
@@ -1341,7 +1498,7 @@
   padding: var(--space-8);
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--fill-1);
   backdrop-filter: blur(8px);
   transition: border-color var(--transition), background-color var(--transition),
     box-shadow var(--transition);
@@ -1349,8 +1506,8 @@
 
 .support-card:hover {
   border-color: rgba(184, 140, 255, 0.55);
-  background: rgba(255, 255, 255, 0.07);
-  box-shadow: 0 14px 34px rgba(11, 4, 38, 0.55), var(--glow-lavender);
+  background: var(--fill-3);
+  box-shadow: var(--shadow-card), var(--glow-lavender);
 }
 
 .support-card__text {
@@ -1507,7 +1664,7 @@
   padding: var(--space-8);
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--fill-1);
   backdrop-filter: blur(8px);
   transition: transform var(--transition), border-color var(--transition),
     background-color var(--transition), box-shadow var(--transition);
@@ -1516,8 +1673,8 @@
 .tariff-card:hover {
   transform: translateY(-3px);
   border-color: rgba(184, 140, 255, 0.55);
-  background: rgba(255, 255, 255, 0.07);
-  box-shadow: 0 14px 34px rgba(11, 4, 38, 0.55), var(--glow-lavender);
+  background: var(--fill-3);
+  box-shadow: var(--shadow-card), var(--glow-lavender);
 }
 
 .tariff-card__head {
@@ -1539,7 +1696,9 @@
   z-index: 1;
   padding: 0.3125rem 0.75rem;
   border-radius: var(--radius-pill);
-  background: var(--night-800);
+  /* Плашка сидит на кромке карточки: заливка совпадает с фоном секции,
+     иначе на почти чёрном тоне тарифов она читалась бы светлым пятном. */
+  background: var(--surface-solid, var(--night-800));
   font-size: var(--fs-eyebrow);
   font-weight: var(--fw-bold);
   letter-spacing: var(--ls-wide);
@@ -1672,12 +1831,12 @@
 .tariff-card--popular {
   border-width: 2px;
   border-color: rgba(184, 140, 255, 0.85);
-  box-shadow: 0 14px 34px rgba(11, 4, 38, 0.55), var(--glow-lavender);
+  box-shadow: var(--shadow-card), var(--glow-lavender);
 }
 
 .tariff-card--popular:hover {
   border-color: rgba(184, 140, 255, 0.95);
-  box-shadow: 0 14px 34px rgba(11, 4, 38, 0.55), 0 0 34px rgba(184, 140, 255, 0.75);
+  box-shadow: var(--shadow-card), 0 0 34px rgba(184, 140, 255, 0.75);
 }
 
 /* На узких экранах карточка отдаёт поля тексту */
@@ -1706,7 +1865,7 @@
 .faq-item__box {
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--fill-1);
   backdrop-filter: blur(8px);
   transition: border-color var(--transition), background-color var(--transition),
     box-shadow var(--transition);
@@ -1714,13 +1873,13 @@
 
 .faq-item__box:hover {
   border-color: rgba(184, 140, 255, 0.55);
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--fill-2);
 }
 
 .faq-item__box[open] {
   border-color: rgba(184, 140, 255, 0.55);
-  background: rgba(255, 255, 255, 0.07);
-  box-shadow: 0 14px 34px rgba(11, 4, 38, 0.55), var(--glow-lavender);
+  background: var(--fill-3);
+  box-shadow: var(--shadow-card), var(--glow-lavender);
 }
 
 /* Шапка строки: слева вопрос, справа шеврон. Маркер списка <summary>

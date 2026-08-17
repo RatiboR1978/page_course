@@ -8,6 +8,77 @@
    ============================================================ */
 
 /* ------------------------------------------------------------
+   METHOD TABS — переключатель четырёх шагов восьмого экрана (#method).
+
+   Разметка (см. секцию METHOD в index.html): [data-method-tabs] — обёртка,
+   внутри рельс с четырьмя [role="tab"] и четыре [role="tabpanel"],
+   связанные через aria-controls/id.
+
+   Прогрессивное улучшение: в разметке панели не скрыты, поэтому без
+   скрипта видны все четыре шага сразу — текст секции не теряется.
+   Скрипт прячет неактивные, синхронизирует aria-selected и добавляет
+   клавиатуру. Стрелки работают по обеим осям: до 768px рельс
+   горизонтальный, дальше вертикальный.
+   ------------------------------------------------------------ */
+(function () {
+  'use strict';
+
+  const root = document.querySelector('[data-method-tabs]');
+  if (!root) return;
+
+  const tabs = Array.prototype.slice.call(root.querySelectorAll('[role="tab"]'));
+  const panels = tabs.map((tab) => document.getElementById(tab.getAttribute('aria-controls')));
+
+  if (!tabs.length || panels.some((panel) => !panel)) return;
+
+  function select(index, moveFocus) {
+    tabs.forEach((tab, i) => {
+      const isActive = i === index;
+
+      tab.setAttribute('aria-selected', String(isActive));
+      tab.tabIndex = isActive ? 0 : -1;
+      panels[i].hidden = !isActive;
+    });
+
+    if (moveFocus) tabs[index].focus();
+  }
+
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', function () {
+      select(index, false);
+    });
+
+    tab.addEventListener('keydown', function (event) {
+      let next = null;
+
+      switch (event.key) {
+        case 'ArrowRight':
+        case 'ArrowDown':
+          next = (index + 1) % tabs.length;
+          break;
+        case 'ArrowLeft':
+        case 'ArrowUp':
+          next = (index - 1 + tabs.length) % tabs.length;
+          break;
+        case 'Home':
+          next = 0;
+          break;
+        case 'End':
+          next = tabs.length - 1;
+          break;
+        default:
+          return;
+      }
+
+      event.preventDefault();
+      select(next, true);
+    });
+  });
+
+  select(0, false);
+})();
+
+/* ------------------------------------------------------------
    COUNTDOWN — таймер семнадцатого экрана (#timer):
    «Стоимость для участников вебинара действует 24 часа».
 

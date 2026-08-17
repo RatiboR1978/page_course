@@ -236,7 +236,12 @@
 
 .pains {
   position: relative;
-  background: var(--night-900);
+  background:
+    linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
+      top / 100% 2px no-repeat,
+    radial-gradient(60% 100% at 50% 0%, var(--seam-halo) 0%, transparent 70%)
+      top / 100% 200px no-repeat,
+    var(--surface-solid, var(--night-900));
   overflow: hidden;
 }
 
@@ -379,9 +384,10 @@
 @media (min-width: 1200px) {
   :root {
     /* Опорная ширина раскладки. Обычно равна ширине окна, но ограничена так,
-       чтобы высота секции (54.8% от опоры контента) не превышала высоту окна.
-       1.82 чуть меньше 1250/685 = 1.8248 — запас на округление. */
-    --hw: min(100vw, 100svh * 1.82);
+       чтобы высота секции не превышала высоту окна.
+       1.63 чуть меньше 1250/763 = 1.6382 — запас на округление
+       (763 — высота секции при увеличенном нижнем отступе, см. ниже). */
+    --hw: min(100vw, 100svh * 1.63);
 
     /* Опора раскладки контента. До 1280px совпадает с --hw (всё
        пропорционально, как в референсе), дальше замирает на ширине
@@ -390,11 +396,12 @@
     --u: calc(var(--cw) / 100); /* 1% опоры контента — аналог vw */
   }
 
-  /* Высота — по блоку контента, без лишнего воздуха сверху и снизу.
-     На макете 1250 блок равен 685px, то есть ровно пропорции картинки
-     1920×1052 — там фон виден целиком, обрезки нет. На более широких
-     окнах контент упирается в ширину контейнера, секция остаётся такой же
-     невысокой, а фон подрезается по вертикали (см. background-position). */
+  /* Высота — по блоку контента, без лишнего воздуха сверху, кроме
+     увеличенного нижнего отступа (см. .hero__inner ниже). На макете 1250
+     блок равен 763px — выше пропорции картинки 1920×1052 (685px), поэтому
+     cover подрезает кадр по вертикали уже на самом референсе, не только на
+     более широких окнах. Смещение вниз (background-position ниже) режет
+     верхнее пустое небо, персонаж остаётся в кадре. */
   .hero {
     padding: 0;
   }
@@ -463,12 +470,13 @@
 
   /* Блок контента. Размеры получены обратным пересчётом ширин строк
      референса: три строки H1 сходятся на 58px, абзац — на 22px.
-     Логотип начинается на 62, кнопки заканчиваются на 613:
-     62 + 551 + 72 = 685 — ровно высота секции на макете 1250,
-     поэтому там вертикальное центрирование ничего не сдвигает. */
+     Логотип начинается на 62, кнопки заканчиваются на 613. Нижний отступ
+     увеличен против референса (72 → 150) — под кнопками нужен более
+     явный воздух перед стыком с .pains:
+     62 + 551 + 150 = 763 — новая высота секции на макете 1250. */
   .hero__inner {
-    padding-top: calc(var(--u) * 4.96);    /* 62px */
-    padding-bottom: calc(var(--u) * 5.76); /* 72px */
+    padding-top: calc(var(--u) * 4.96);     /* 62px */
+    padding-bottom: calc(var(--u) * 12);    /* 150px */
   }
 
   .hero__eyebrow {
@@ -512,9 +520,35 @@
    краям и пустой серединой под текст. Размеры на токенах и clamp().
    ------------------------------------------------------------ */
 
+/* Canvas с живым узором точек-линий (js/network-bg.js). Скрыт по
+   умолчанию — включается только на десктопном брейкпоинте конкретной
+   секции (.reason .network-bg / .path .network-bg ниже), там же, где
+   раньше подключалась картинка. На мобильных не рендерится и не грузит
+   JS-анимацию — как и раньше с картинкой. */
+.network-bg {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .network-bg {
+    display: none !important;
+  }
+}
+
 .reason {
   position: relative;
-  background: var(--night-900);
+  background:
+    linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
+      top / 100% 2px no-repeat,
+    radial-gradient(60% 100% at 50% 0%, var(--seam-halo) 0%, transparent 70%)
+      top / 100% 200px no-repeat,
+    var(--surface-solid, var(--night-900));
   overflow: hidden;
 }
 
@@ -526,6 +560,7 @@
   content: '';
   position: absolute;
   inset: 0;
+  z-index: 1;
   background:
     radial-gradient(58% 52% at 88% 0%, rgba(127, 232, 255, 0.14) 0%, rgba(127, 232, 255, 0) 70%),
     radial-gradient(58% 55% at 8% 100%, rgba(184, 140, 255, 0.16) 0%, rgba(184, 140, 255, 0) 70%);
@@ -533,22 +568,39 @@
 }
 
 @media (min-width: 768px) {
-  /* Верхний слой — вертикальное затухание в общий фон сайта: у картинки
-     края чуть светлее #0B0426, и без него на стыках с соседними тёмными
-     секциями была бы заметна горизонтальная граница. */
+  /* Верхний слой — вертикальное затухание в общий фон сайта: живой узор
+     из .network-bg должен так же растворяться на стыках с соседними
+     тёмными секциями, как раньше растворялась картинка reason-bg.png.
+     Линия шва и её ореол переезжают сюда же первыми слоями: из фона
+     секции их накрыл бы непрозрачный край затухания. В фоне секции
+     ореол при этом убран — два одинаковых слоя складывались бы
+     в плотное облако под швом. */
+  .reason {
+    background:
+      linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
+        top / 100% 2px no-repeat,
+      var(--surface-solid, var(--night-900));
+  }
+
   .reason::before {
-    background-image:
+    background:
+      linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
+        top / 100% 2px no-repeat,
+      radial-gradient(60% 100% at 50% 0%, var(--seam-halo) 0%, transparent 70%)
+        top / 100% 140px no-repeat,
       linear-gradient(
         180deg,
         rgba(11, 4, 38, 1) 0%,
         rgba(11, 4, 38, 0) 14%,
         rgba(11, 4, 38, 0) 86%,
         rgba(11, 4, 38, 1) 100%
-      ),
-      url('../assets/img/reason-bg.png');
-    background-size: cover, cover;
-    background-position: center, center;
-    background-repeat: no-repeat, no-repeat;
+      ) center / cover no-repeat;
+  }
+
+  /* Живой узор точек-линий вместо статичной картинки reason-bg.png —
+     see js/network-bg.js. Лежит под ::before (затухание) и под .container. */
+  .reason .network-bg {
+    display: block;
   }
 }
 
@@ -705,7 +757,7 @@
   padding: 0.625rem 1.125rem;
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--fill-1);
   font-size: var(--fs-small);
   font-weight: var(--fw-bold);
   letter-spacing: 0.04em;
@@ -812,12 +864,64 @@
 
 .trend {
   position: relative;
-  background: var(--night-900);
+  background:
+    linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
+      top / 100% 2px no-repeat,
+    radial-gradient(60% 100% at 50% 0%, var(--seam-halo) 0%, transparent 70%)
+      top / 100% 200px no-repeat,
+    var(--surface-solid, var(--night-900));
   overflow: hidden;
 }
 
 /* Подсветки нет: пятно у верхней кромки подчёркивало стык с reason,
    у которого свой фон-картинка. Фон секции — ровный --night-900. */
+
+/* Фон секции — картинка trend-bg.png: узор из точек-линий по левому
+   и правому краям, пустая середина под заголовок, картинку и цифры.
+   Подключается так же, как фоны reason/path/audience/method: слой
+   картинки в общем shorthand, а ::before добавляет вертикальное
+   затухание в цвет страницы, чтобы на стыках с соседними тёмными
+   секциями не было горизонтальной границы. Линия шва и её ореол
+   тоже уезжают в ::before — иначе непрозрачный край затухания
+   накрыл бы их сверху.
+
+   На узких экранах не подключается: там cover обрежет картинку
+   по бокам ровно там, где живёт узор, а 1.4 МБ всё равно скачаются. */
+@media (min-width: 768px) {
+  /* cover — фон на всю секцию. Исходник был вертикальным (865×1819),
+     и cover растягивал его по ширине: узор раздувался примерно в
+     полтора раза. Поэтому сама картинка переразмечена (см.
+     trend-bg-src.png — оригинал): боковые полосы с узором оставлены
+     в своём масштабе, растянута только пустая середина, ровный
+     градиент по ней тянется незаметно. Ширина 1400 против прежних
+     865 — при том же cover узор выходит примерно вдвое мельче и
+     по-прежнему стоит у краёв. */
+  .trend {
+    background:
+      url('../assets/img/trend-bg.png') center / cover no-repeat,
+      var(--surface-solid, var(--night-900));
+  }
+
+  .trend::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
+        top / 100% 2px no-repeat,
+      radial-gradient(60% 100% at 50% 0%, var(--seam-halo) 0%, transparent 70%)
+        top / 100% 140px no-repeat,
+      linear-gradient(
+        180deg,
+        rgba(11, 4, 38, 1) 0%,
+        rgba(11, 4, 38, 0) 14%,
+        rgba(11, 4, 38, 0) 86%,
+        rgba(11, 4, 38, 1) 100%
+      ) center / cover no-repeat;
+    pointer-events: none;
+  }
+}
 
 .trend > .container {
   position: relative;
@@ -917,7 +1021,7 @@
   padding: clamp(1.5rem, 0.9rem + 2.4vw, 3rem);
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--fill-1);
   backdrop-filter: blur(8px);
 }
 
@@ -999,7 +1103,12 @@
 
 .path {
   position: relative;
-  background: var(--night-900);
+  background:
+    linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
+      top / 100% 2px no-repeat,
+    radial-gradient(60% 100% at 50% 0%, var(--seam-halo) 0%, transparent 70%)
+      top / 100% 200px no-repeat,
+    var(--surface-solid, var(--night-900));
   overflow: hidden;
 }
 
@@ -1010,6 +1119,7 @@
   content: '';
   position: absolute;
   inset: 0;
+  z-index: 1;
   background:
     radial-gradient(58% 52% at 86% 0%, rgba(127, 232, 255, 0.14) 0%, rgba(127, 232, 255, 0) 70%),
     radial-gradient(58% 55% at 10% 100%, rgba(184, 140, 255, 0.16) 0%, rgba(184, 140, 255, 0) 70%);
@@ -1018,20 +1128,37 @@
 
 @media (min-width: 768px) {
   /* Верхний слой — затухание в общий фон сайта, чтобы на стыках
-     с соседними тёмными секциями не было горизонтальной границы */
+     с соседними тёмными секциями не было горизонтальной границы.
+     Линия шва и её ореол переезжают сюда же первыми слоями: из фона
+     секции их накрыл бы непрозрачный край затухания. В фоне секции
+     ореол при этом убран — два одинаковых слоя складывались бы
+     в плотное облако под швом. */
+  .path {
+    background:
+      linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
+        top / 100% 2px no-repeat,
+      var(--surface-solid, var(--night-900));
+  }
+
   .path::before {
-    background-image:
+    background:
+      linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
+        top / 100% 2px no-repeat,
+      radial-gradient(60% 100% at 50% 0%, var(--seam-halo) 0%, transparent 70%)
+        top / 100% 140px no-repeat,
       linear-gradient(
         180deg,
         rgba(11, 4, 38, 1) 0%,
         rgba(11, 4, 38, 0) 14%,
         rgba(11, 4, 38, 0) 86%,
         rgba(11, 4, 38, 1) 100%
-      ),
-      url('../assets/img/path-bg.png');
-    background-size: cover, cover;
-    background-position: center, center;
-    background-repeat: no-repeat, no-repeat;
+      ) center / cover no-repeat;
+  }
+
+  /* Живой узор точек-линий вместо статичной картинки path-bg.png —
+     see js/network-bg.js. */
+  .path .network-bg {
+    display: block;
   }
 }
 
@@ -1142,12 +1269,54 @@
 
 .offers {
   position: relative;
-  background: var(--night-900);
+  background:
+    linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
+      top / 100% 2px no-repeat,
+    radial-gradient(60% 100% at 50% 0%, var(--seam-halo) 0%, transparent 70%)
+      top / 100% 200px no-repeat,
+    var(--surface-solid, var(--night-900));
   overflow: hidden;
 }
 
 /* Подсветки нет: пятно у верхней кромки подчёркивало стык с path,
    у которого свой фон-картинка. Фон секции — ровный --night-900. */
+
+/* Фон секции — та же картинка trend-bg.png, что и на четвёртом экране:
+   узор по левому и правому краям, пустая середина под сетку карточек.
+   Схема подключения общая для всех секций с картинкой: слой картинки
+   в фоне секции, а линия шва, её ореол и вертикальное затухание
+   в цвет страницы — слоями ::before поверх. На узких экранах не
+   подключается: cover срежет картинку ровно по узору, а вес всё
+   равно скачается. */
+@media (min-width: 768px) {
+  .offers {
+    background:
+      linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
+        top / 100% 2px no-repeat,
+      url('../assets/img/trend-bg.png') center / cover no-repeat,
+      var(--surface-solid, var(--night-900));
+  }
+
+  .offers::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
+        top / 100% 2px no-repeat,
+      radial-gradient(60% 100% at 50% 0%, var(--seam-halo) 0%, transparent 70%)
+        top / 100% 140px no-repeat,
+      linear-gradient(
+        180deg,
+        rgba(11, 4, 38, 1) 0%,
+        rgba(11, 4, 38, 0) 14%,
+        rgba(11, 4, 38, 0) 86%,
+        rgba(11, 4, 38, 1) 100%
+      ) center / cover no-repeat;
+    pointer-events: none;
+  }
+}
 
 .offers > .container {
   position: relative;
@@ -1190,16 +1359,46 @@
 }
 
 /* Комплексные услуги — одна стеклянная панель, а не пятая карточка сетки:
-   это не ещё одно направление, а способ объединить предыдущие четыре. */
+   это не ещё одно направление, а способ объединить предыдущие четыре.
+   То же стекло, что у .offer-card и .tariff-card — не отдельный баннер
+   с собственной рамкой, а такая же карточка системы. Смысл «самое
+   выгодное предложение» несёт не заливка, а плашка на кромке, как
+   «Самый популярный» у тарифа (.tariff-card__badge). */
 .offers__combo {
+  position: relative;
   margin-top: var(--space-12);
   padding: clamp(1.5rem, 0.9rem + 2.4vw, 3rem);
-  border: 1px solid rgba(184, 140, 255, 0.45);
-  border-radius: var(--radius-lg);
-  background:
-    linear-gradient(135deg, rgba(184, 140, 255, 0.12) 0%, rgba(127, 232, 255, 0.08) 100%),
-    rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  background: var(--fill-1);
   backdrop-filter: blur(8px);
+}
+
+/* Таблетка-метка на верхней кромке — тот же приём, что у
+   .tariff-card__badge, только по центру: заливка совпадает с фоном
+   секции, чтобы плашка «сидела» на границе, а не перекрывала её. */
+.offers__combo-badge {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  padding: 0.3125rem 0.75rem;
+  border-radius: var(--radius-pill);
+  background: var(--surface-solid, var(--night-900));
+  font-size: var(--fs-eyebrow);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--ai-glow);
+}
+
+.offers__combo-badge::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(127, 232, 255, 0.55);
 }
 
 .offers__combo-title {
@@ -1242,20 +1441,22 @@
 .offers__combo-item {
   position: relative;
   padding: var(--space-3) 0 var(--space-3) var(--space-6);
-  border-bottom: 1px solid var(--border-dark);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
   color: var(--cloud-white);
 }
 
-/* Тире-маркер из исходного списка — на псевдоэлементе,
-   чтобы не попадать в копируемый текст */
+/* Маркер-кружок вместо тире — тот же приём, что у .expert-card__fact:
+   рисуется на псевдоэлементе, чтобы не попадать в копируемый текст */
 .offers__combo-item::before {
-  content: '–';
+  content: '';
   position: absolute;
+  top: calc(var(--space-3) + var(--lh-body) * 0.5em - 3px);
   left: 0;
-  font-weight: var(--fw-bold);
-  color: var(--tessa-lavender);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--grad-primary);
 }
 
 /* Сноска об источнике вилок — мельче основного текста,
@@ -1297,7 +1498,12 @@
 
 .audience {
   position: relative;
-  background: var(--night-900);
+  background:
+    linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
+      top / 100% 2px no-repeat,
+    radial-gradient(60% 100% at 50% 0%, var(--seam-halo) 0%, transparent 70%)
+      top / 100% 200px no-repeat,
+    var(--surface-solid, var(--night-900));
   overflow: hidden;
 }
 
@@ -1309,6 +1515,51 @@
     radial-gradient(56% 50% at 88% 0%, rgba(127, 232, 255, 0.14) 0%, rgba(127, 232, 255, 0) 70%),
     radial-gradient(58% 54% at 12% 100%, rgba(184, 140, 255, 0.15) 0%, rgba(184, 140, 255, 0) 70%);
   pointer-events: none;
+}
+
+/* Фон секции — картинка audience-bg.png с нейросетевым узором по левому
+   и правому краям и пустой серединой под карточки. Подключается тем же
+   способом, что и фоны reason/path: слой картинки уходит в общий
+   shorthand под градиенты шва, а ::before добавляет вертикальное
+   затухание в цвет страницы, чтобы на стыках с соседними тёмными
+   секциями не было горизонтальной границы.
+
+   На узких экранах не подключается: картинка широкая (16:9), в высокую
+   колонку cover обрезал бы её до пустой середины — узор ушёл бы за края,
+   а вес всё равно скачался бы. Там остаётся прежняя подсветка
+   градиентами: циан сверху справа, лаванда снизу слева. */
+@media (min-width: 768px) {
+  .audience {
+    background:
+      linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
+        top / 100% 2px no-repeat,
+      url('../assets/img/audience-bg.png') center / cover no-repeat,
+      var(--surface-solid, var(--night-900));
+  }
+
+  /* Затухание кладётся поверх картинки, поэтому линия шва и её ореол
+     из фона секции оказались бы под непрозрачным краем градиента и
+     пропали. Переносим их в ::before первыми слоями — так шов остаётся
+     верхним слоем и виден на границе с предыдущей секцией. Из фона
+     секции ореол при этом убран: два одинаковых слоя складывались и
+     давали слишком плотное облако под швом. Здесь он ещё и ниже
+     (140px вместо 200px) — под ним лежит картинка, а не ровный фон. */
+  .audience::before {
+    background:
+      linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
+        top / 100% 2px no-repeat,
+      radial-gradient(60% 100% at 50% 0%, var(--seam-halo) 0%, transparent 70%)
+        top / 100% 140px no-repeat,
+      radial-gradient(56% 50% at 88% 0%, rgba(127, 232, 255, 0.14) 0%, rgba(127, 232, 255, 0) 70%),
+      radial-gradient(58% 54% at 12% 100%, rgba(184, 140, 255, 0.15) 0%, rgba(184, 140, 255, 0) 70%),
+      linear-gradient(
+        180deg,
+        rgba(11, 4, 38, 1) 0%,
+        rgba(11, 4, 38, 0) 14%,
+        rgba(11, 4, 38, 0) 86%,
+        rgba(11, 4, 38, 1) 100%
+      );
+  }
 }
 
 .audience > .container {
@@ -1389,7 +1640,12 @@
 
 .method {
   position: relative;
-  background: var(--night-900);
+  background:
+    linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
+      top / 100% 2px no-repeat,
+    radial-gradient(60% 100% at 50% 0%, var(--seam-halo) 0%, transparent 70%)
+      top / 100% 200px no-repeat,
+    var(--surface-solid, var(--night-900));
   overflow: hidden;
 }
 
@@ -1401,6 +1657,51 @@
     radial-gradient(56% 50% at 12% 0%, rgba(184, 140, 255, 0.16) 0%, rgba(184, 140, 255, 0) 70%),
     radial-gradient(58% 54% at 88% 100%, rgba(127, 232, 255, 0.13) 0%, rgba(127, 232, 255, 0) 70%);
   pointer-events: none;
+}
+
+/* Фон секции — картинка method-bg.png: нейросетевой узор в правом
+   верхнем и левом нижнем углах, пустая середина под рельс и панель
+   шага. Подключается тем же способом, что и фоны reason/path/audience:
+   слой картинки уходит в общий shorthand под градиенты шва, а ::before
+   добавляет вертикальное затухание в цвет страницы, чтобы на стыках
+   с соседними тёмными секциями не было горизонтальной границы.
+
+   На узких экранах не подключается по той же причине, что и в
+   audience: картинка широкая (16:9), в высокой колонке cover обрезал
+   бы её до пустой середины — узор ушёл бы за края, а вес всё равно
+   скачался бы. Там остаётся прежняя подсветка градиентами. */
+@media (min-width: 768px) {
+  .method {
+    background:
+      linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
+        top / 100% 2px no-repeat,
+      url('../assets/img/method-bg.png') center / cover no-repeat,
+      var(--surface-solid, var(--night-900));
+  }
+
+  /* Затухание кладётся поверх картинки, поэтому линия шва и её ореол
+     из фона секции оказались бы под непрозрачным краем градиента и
+     пропали. Переносим их в ::before первыми слоями — так шов остаётся
+     верхним слоем и виден на границе с предыдущей секцией. Из фона
+     секции ореол при этом убран: два одинаковых слоя складывались и
+     давали слишком плотное облако под швом. Здесь он ещё и ниже
+     (140px вместо 200px) — под ним лежит картинка, а не ровный фон. */
+  .method::before {
+    background:
+      linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
+        top / 100% 2px no-repeat,
+      radial-gradient(60% 100% at 50% 0%, var(--seam-halo) 0%, transparent 70%)
+        top / 100% 140px no-repeat,
+      radial-gradient(56% 50% at 12% 0%, rgba(184, 140, 255, 0.16) 0%, rgba(184, 140, 255, 0) 70%),
+      radial-gradient(58% 54% at 88% 100%, rgba(127, 232, 255, 0.13) 0%, rgba(127, 232, 255, 0) 70%),
+      linear-gradient(
+        180deg,
+        rgba(11, 4, 38, 1) 0%,
+        rgba(11, 4, 38, 0) 14%,
+        rgba(11, 4, 38, 0) 86%,
+        rgba(11, 4, 38, 1) 100%
+      );
+  }
 }
 
 .method > .container {
@@ -1417,26 +1718,67 @@
   margin-inline: auto;
 }
 
-/* Сетка шагов: 1 → 2 → 4 колонки. Шаги короткие и на десктопе
-   встают одним рядом, читаясь как последовательность.
-   Счётчик обнуляется здесь, инкремент — на .method-card. */
-.method__grid {
-  counter-reset: method;
+/* Раскладка переключателя: рельс шагов + панель шага.
+   На мобильных — лента чипов над панелью, с 768px — две колонки,
+   где левая держит рельс на фиксированной доле ширины, чтобы
+   панель не прыгала при переключении шагов. */
+.method__layout {
   display: grid;
   grid-template-columns: 1fr;
-  align-items: stretch;
-  gap: var(--space-6);
+  gap: var(--space-8);
 }
 
+/* На планшете рельс держится узким и гап меньше: иначе от 768px
+   панели остаётся ~370px и заглушка 16:9 сжимается в полоску. */
 @media (min-width: 768px) {
-  .method__grid {
-    grid-template-columns: repeat(2, 1fr);
+  .method__layout {
+    grid-template-columns: minmax(190px, 230px) 1fr;
+    gap: var(--space-8);
+    align-items: start;
   }
 }
 
 @media (min-width: 1200px) {
-  .method__grid {
-    grid-template-columns: repeat(4, 1fr);
+  .method__layout {
+    grid-template-columns: minmax(280px, 340px) 1fr;
+    gap: var(--space-12);
+  }
+}
+
+/* Рельс: на мобильных — сетка 2×2 из чипов. В строку четыре шага
+   не помещаются, а лента с прокруткой прятала бы 03 и 04 за краем
+   экрана: шагов всего четыре, и все должны быть видны сразу.
+   С 768px — колонка со светящейся линией через центры круглых номеров. */
+.method__rail {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-2);
+}
+
+@media (min-width: 768px) {
+  .method__rail {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  /* Линия рельса. Начинается и заканчивается на центрах крайних
+     номеров (24px — половина бейджа), поэтому не торчит за первым
+     и последним шагом. Гаснет книзу: процесс идёт сверху вниз. */
+  .method__rail::before {
+    content: '';
+    position: absolute;
+    top: calc(var(--space-3) + 24px);
+    bottom: calc(var(--space-3) + 24px);
+    left: 24px;
+    width: 1px;
+    background: linear-gradient(
+      180deg,
+      rgba(184, 140, 255, 0.55) 0%,
+      rgba(184, 140, 255, 0.18) 100%
+    );
+    pointer-events: none;
   }
 }
 
@@ -1455,18 +1797,64 @@
 
 .timing {
   position: relative;
-  background: var(--night-900);
+  background:
+    linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
+      top / 100% 2px no-repeat,
+    radial-gradient(60% 100% at 50% 0%, var(--seam-halo) 0%, transparent 70%)
+      top / 100% 200px no-repeat,
+    var(--surface-solid, var(--night-900));
   overflow: hidden;
 }
 
+/* На десктопе шов уезжает в ::before: там поверх узора лежит затухание
+   в цвет страницы, и линия из фона секции оказалась бы под его
+   непрозрачным краем. Здесь ореол из фона убран, чтобы два одинаковых
+   слоя не складывались в плотное облако под швом. */
+@media (min-width: 768px) {
+  .timing {
+    background: var(--surface-solid, var(--night-900));
+  }
+}
+
+/* Секция переведена с тона --deep на --base: почти чёрная середина
+   гасила живой узор, ради которого сюда и добавлен .network-bg.
+   Подсветки вернулись к обычной плотности — поднимать их на треть,
+   как было под --deep, больше незачем. */
 .timing::before {
   content: '';
   position: absolute;
   inset: 0;
+  z-index: 1;
   background:
     radial-gradient(56% 50% at 88% 0%, rgba(127, 232, 255, 0.14) 0%, rgba(127, 232, 255, 0) 70%),
-    radial-gradient(58% 54% at 12% 100%, rgba(184, 140, 255, 0.15) 0%, rgba(184, 140, 255, 0) 70%);
+    radial-gradient(58% 54% at 12% 100%, rgba(184, 140, 255, 0.16) 0%, rgba(184, 140, 255, 0) 70%);
   pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  /* Верхний слой — затухание в общий фон сайта, чтобы на стыках
+     с соседними тёмными секциями не было горизонтальной границы.
+     Схема та же, что у .reason и .path. */
+  .timing::before {
+    background:
+      linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
+        top / 100% 2px no-repeat,
+      radial-gradient(60% 100% at 50% 0%, var(--seam-halo) 0%, transparent 70%)
+        top / 100% 140px no-repeat,
+      linear-gradient(
+        180deg,
+        rgba(11, 4, 38, 1) 0%,
+        rgba(11, 4, 38, 0) 14%,
+        rgba(11, 4, 38, 0) 86%,
+        rgba(11, 4, 38, 1) 100%
+      ) center / cover no-repeat;
+  }
+
+  /* Живой узор точек-линий — see js/network-bg.js. Лежит под ::before
+     (затухание) и под .container. */
+  .timing .network-bg {
+    display: block;
+  }
 }
 
 .timing > .container {
@@ -1482,37 +1870,233 @@
   margin-bottom: 0;
 }
 
-/* Строка фактов — шесть таблеток вместо одной длинной строки через «·».
-   Разделители были служебной пунктуацией перечисления и сняты:
-   таблетки разделяются вёрсткой. Строка центрируется и переносится
-   сама, отдельных брейкпоинтов не требует. */
-.timing__facts {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--space-3);
+/* Ритм-панель вместо шести равновесных таблеток. Факты не равны
+   по весу: «8 недель» и недельный такт — суть блока, остальное
+   уточнения. Поэтому панель асимметрична — крупная метрика с
+   дорожкой недель слева, две метрики поменьше справа, служебные
+   факты тонкой строкой в подвале. Дорожка показывает семь модулей
+   и восьмую неделю финального проекта, о которых говорит текст
+   ниже: секция про время наконец-то время и рисует. */
+.timing__rhythm {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
   max-width: 60em;
   margin-inline: auto;
+  padding: clamp(1.5rem, 0.9rem + 2.4vw, 2.5rem);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-lg);
+  background: var(--fill-1);
+  backdrop-filter: blur(8px);
+  box-shadow: var(--shadow-card);
 }
 
-.timing__fact {
-  padding: var(--space-3) var(--space-6);
-  border: 1px solid var(--border-dark);
+@media (min-width: 768px) {
+  .timing__rhythm {
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    column-gap: var(--space-12);
+  }
+}
+
+/* Число и единица «8 недель» — одна фраза, просто разложенная
+   по строкам: число несёт вес, единица уходит в подпись. */
+.timing__weeks {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+.timing__weeks-val {
+  font-family: var(--font-display);
+  font-size: var(--fs-h1);
+  font-weight: var(--fw-extrabold);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  background: var(--grad-h1);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.timing__weeks-unit {
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wide);
+  color: var(--text-on-dark-muted);
+}
+
+/* Дорожка недель: семь сегментов курса + восьмой, финальный проект.
+   Финальный набран цианом — тем же акцентом, которым на странице
+   помечается результат, а не процесс. */
+.timing__track {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 6px;
+}
+
+/* Градиент один на всю дорожку: если положить его в каждый сегмент,
+   полоса рассыпается на одинаковые леденцы. Каждый сегмент показывает
+   свой участок растянутой на семь ширин заливки. */
+.timing__seg {
+  height: 10px;
   border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(8px);
+  background-image: linear-gradient(90deg, var(--tessa-lavender) 0%, var(--blush-pink) 100%);
+  background-size: 700% 100%;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--transition-slow);
+}
+
+.timing__seg:nth-child(1) { background-position: 0% 50%; }
+.timing__seg:nth-child(2) { background-position: 16.667% 50%; }
+.timing__seg:nth-child(3) { background-position: 33.333% 50%; }
+.timing__seg:nth-child(4) { background-position: 50% 50%; }
+.timing__seg:nth-child(5) { background-position: 66.667% 50%; }
+.timing__seg:nth-child(6) { background-position: 83.333% 50%; }
+.timing__seg:nth-child(7) { background-position: 100% 50%; }
+
+/* Финальный проект — не продолжение градиента, а другой цвет:
+   восьмая неделя отличается от семи учебных по сути */
+.timing__seg--final {
+  background-image: none;
+  background-color: var(--ai-glow);
+  box-shadow: var(--glow-cyan);
+}
+
+/* Каскад заливки привязан к .is-visible, который вешает
+   IntersectionObserver из animations.js — своего JS блоку не нужно */
+.timing__rhythm.is-visible .timing__seg {
+  transform: scaleX(1);
+}
+
+.timing__seg:nth-child(1) { transition-delay: 0.10s; }
+.timing__seg:nth-child(2) { transition-delay: 0.17s; }
+.timing__seg:nth-child(3) { transition-delay: 0.24s; }
+.timing__seg:nth-child(4) { transition-delay: 0.31s; }
+.timing__seg:nth-child(5) { transition-delay: 0.38s; }
+.timing__seg:nth-child(6) { transition-delay: 0.45s; }
+.timing__seg:nth-child(7) { transition-delay: 0.52s; }
+.timing__seg:nth-child(8) { transition-delay: 0.62s; }
+
+/* minmax(0, 1fr), а не 1fr: иначе более широкая подпись «финал»
+   раздвигает свою колонку и подписи перестают совпадать с сегментами */
+.timing__weeknums {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: var(--space-2);
+  font-size: var(--fs-eyebrow);
+  line-height: 1.2;
+  color: var(--text-on-dark-muted);
+}
+
+.timing__weeknum--final {
+  font-weight: var(--fw-semibold);
+  color: var(--ai-glow);
+}
+
+/* На мобильных колонка сужается до ~30px — подпись финала
+   уменьшается, чтобы не вылезать за свой сегмент */
+@media (max-width: 767px) {
+  .timing__weeknum--final {
+    font-size: 0.625rem;
+    letter-spacing: -0.01em;
+  }
+}
+
+.timing__rhythm-cap {
+  margin-top: var(--space-6);
   font-size: var(--fs-body);
   font-weight: var(--fw-semibold);
   line-height: 1.3;
   color: var(--cloud-white);
-  transition: border-color var(--transition), background-color var(--transition),
-    box-shadow var(--transition);
 }
 
-.timing__fact:hover {
-  border-color: rgba(184, 140, 255, 0.55);
-  background: rgba(255, 255, 255, 0.07);
-  box-shadow: var(--glow-lavender);
+/* Правая колонка: две метрики столбиком. На десктопе отделяется
+   от дорожки вертикальной чертой, на мобильных — горизонтальной. */
+.timing__rhythm-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-6);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border-dark);
+}
+
+@media (min-width: 768px) {
+  .timing__rhythm-side {
+    padding-top: 0;
+    padding-left: var(--space-12);
+    border-top: none;
+    border-left: 1px solid var(--border-dark);
+  }
+}
+
+/* В разметке порядок dt → dd обязателен, визуально число стоит первым */
+.timing__metric {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--space-2);
+}
+
+.timing__metric + .timing__metric {
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border-dark);
+}
+
+.timing__metric-val {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-extrabold);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  color: var(--cloud-white);
+}
+
+.timing__metric-label {
+  font-size: var(--fs-small);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wide);
+  color: var(--text-on-dark-muted);
+}
+
+/* Подвал панели — служебные факты, которые не разбираются
+   на число и единицу: они остаются фразами целиком */
+.timing__rhythm-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-8);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border-dark);
+  font-size: var(--fs-small);
+  line-height: 1.4;
+  color: var(--text-on-dark-muted);
+}
+
+@media (min-width: 768px) {
+  .timing__rhythm-foot {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Точка-маркер перечисления — на псевдоэлементе, чтобы не попадать
+   в копируемый текст (тот же приём, что у тире в списках страницы) */
+.timing__rhythm-foot-item {
+  position: relative;
+  padding-left: var(--space-4);
+}
+
+.timing__rhythm-foot-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--tessa-lavender);
 }
 
 /* Два абзаца режима обучения. Акцент .grad-text--h1 стоит
@@ -1533,109 +2117,182 @@
   color: var(--text-on-dark-muted);
 }
 
-/* «Вам не понадобится» — одна стеклянная панель, как чек-лист
-   четвёртого экрана: шесть пунктов читаются как единый список
-   снятых требований, а не как шесть отдельных тезисов. */
+/* «Вам не понадобится» — список отрицаний, а не перечень фич.
+   В прежнем виде (стеклянная коробка с тире-списком) он был
+   неотличим от чек-листов четвёртого и шестого экранов, хотя
+   говорит противоположное. Коробка снята, пункты стали
+   приглушёнными тегами, которые вычёркиваются линией: снятое
+   требование видно, а не прочитывается. Панель наверху осталась
+   единственной коробкой секции — вес распределился. */
+/* Стекло и геометрия — ровно те же, что у ритм-панели выше: два
+   блока секции должны читаться парой, а не двумя разными приёмами. */
 .timing__free {
-  max-width: 56em;
+  position: relative;
+  max-width: 60em;
   margin: var(--space-16) auto 0;
-  padding: clamp(1.5rem, 0.9rem + 2.4vw, 3rem);
+  padding: clamp(1.5rem, 0.9rem + 2.4vw, 2.5rem);
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--fill-1);
   backdrop-filter: blur(8px);
+  box-shadow: var(--shadow-card);
 }
 
-/* Заголовок панели + тонкая градиентная черта под ним — как .trend__lead */
+/* Заголовок стоит по левому краю — единственный нецентрированный
+   элемент секции: он ломает вертикальную ось, на которой до этого
+   стояло всё подряд. Раньше он был набран эйбрау приглушённым цветом
+   и терялся на фоне собственного списка: строки списка крупнее его.
+   Теперь это полноценный заголовок панели — размер h3, белый цвет,
+   капс снят (на этом кегле он читался бы криком) — и волосяная
+   лавандовая линия под ним, гаснущая вправо, как разделители строк. */
 .timing__free-title {
   position: relative;
-  margin-bottom: var(--space-8);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
   padding-bottom: var(--space-4);
+  border-bottom: 1px solid transparent;
+  border-image: linear-gradient(90deg, rgba(184, 140, 255, 0.55), transparent 92%) 1;
   font-size: var(--fs-h3);
   font-weight: var(--fw-bold);
   line-height: 1.2;
-  text-transform: none;
-  letter-spacing: normal;
-  text-align: center;
+  letter-spacing: -0.01em;
+  text-align: left;
   color: var(--cloud-white);
 }
 
-.timing__free-title::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  width: 96px;
-  height: 2px;
-  transform: translateX(-50%);
-  border-radius: 2px;
-  background: var(--grad-primary);
-}
-
-/* Список в две колонки на десктопе: пункты короткие, в одну колонку
-   панель растягивалась бы пустотой справа. */
-.timing__free-list {
+/* ✕ — тот же знак отрицания, что у строк списка, но крупнее и
+   в бейдже: он держит смысл заголовка («не понадобится») и
+   рифмуется с бейджами пунктов. */
+.timing__free-title::before {
+  content: '✕';
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 0 var(--space-8);
-}
-
-@media (min-width: 768px) {
-  .timing__free-list {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-.timing__free-item {
-  position: relative;
-  padding: var(--space-4) 0 var(--space-4) var(--space-8);
-  border-bottom: 1px solid var(--border-dark);
-  font-size: var(--fs-body);
-  line-height: var(--lh-body);
-  color: var(--text-on-dark-muted);
-}
-
-/* Тире-маркер из исходного списка — на псевдоэлементе,
-   чтобы не попадать в копируемый текст */
-.timing__free-item::before {
-  content: '–';
-  position: absolute;
-  left: var(--space-3);
-  font-weight: var(--fw-bold);
+  place-items: center;
+  flex: none;
+  width: 1.75em;
+  height: 1.75em;
+  border: 1px solid rgba(184, 140, 255, 0.55);
+  border-radius: 50%;
+  background: rgba(184, 140, 255, 0.14);
+  box-shadow: var(--glow-lavender);
+  font-size: 0.62em;
+  line-height: 1;
   color: var(--tessa-lavender);
 }
 
-/* В одну колонку нижнюю границу снимает последний пункт,
-   в две — последний в каждом столбце */
-.timing__free-item:last-child {
-  border-bottom: none;
+/* Один столбец на всех ширинах. Две колонки пробовали — пункты
+   разной длины давали рваные строки и разную длину разделителей
+   слева и справа. Перечёркивание тоже пробовали: на переносах оно
+   превращает текст в кашу, поэтому отрицание несёт не линия,
+   а ✕-бейдж в начале строки. */
+.timing__free-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
 }
 
-@media (min-width: 768px) {
-  .timing__free-item:nth-last-child(-n + 2) {
-    border-bottom: none;
-  }
+/* Бейдж — не абсолютный, а первая ячейка внутренней сетки строки:
+   при переносе текста он остаётся у первой строки, а хвост
+   выравнивается по висячему отступу */
+.timing__free-item {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-4);
+  padding: var(--space-4) 0;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-on-dark-muted);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity var(--transition-slow), transform var(--transition-slow),
+    color var(--transition);
 }
+
+.timing__free-item::before {
+  content: '✕';
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  margin-top: -0.1em;
+  border: 1px solid rgba(184, 140, 255, 0.35);
+  border-radius: 50%;
+  font-size: 0.6875rem;
+  line-height: 1;
+  color: var(--tessa-lavender);
+  transition: border-color var(--transition), background-color var(--transition),
+    box-shadow var(--transition), color var(--transition);
+}
+
+/* Волосяная линия между строками гаснет вправо: сплошная граница
+   на всю ширину дробила бы панель на одинаковые ячейки */
+.timing__free-item + .timing__free-item {
+  border-top: 1px solid transparent;
+  border-image: linear-gradient(90deg, rgba(184, 140, 255, 0.28), transparent 92%) 1;
+}
+
+.timing__free-item:hover {
+  color: var(--cloud-white);
+}
+
+.timing__free-item:hover::before {
+  border-color: rgba(184, 140, 255, 0.7);
+  background: rgba(184, 140, 255, 0.14);
+  box-shadow: var(--glow-lavender);
+  color: var(--cloud-white);
+}
+
+/* Каскад по .is-visible от IntersectionObserver — тот же приём,
+   что у заливки дорожки недель выше */
+.timing__free.is-visible .timing__free-item {
+  opacity: 1;
+  transform: none;
+}
+
+.timing__free-item:nth-child(1) { transition-delay: 0.10s; }
+.timing__free-item:nth-child(2) { transition-delay: 0.18s; }
+.timing__free-item:nth-child(3) { transition-delay: 0.26s; }
+.timing__free-item:nth-child(4) { transition-delay: 0.34s; }
+.timing__free-item:nth-child(5) { transition-delay: 0.42s; }
+.timing__free-item:nth-child(6) { transition-delay: 0.50s; }
 
 .timing__free-note {
+  position: relative;
   margin-top: var(--space-8);
   font-size: var(--fs-small);
   line-height: var(--lh-body);
-  text-align: center;
+  text-align: left;
   color: var(--text-on-dark-muted);
 }
 
 @media (max-width: 479px) {
-  .timing__fact {
-    padding-inline: var(--space-4);
-  }
-
   .timing__free-item {
-    padding-left: var(--space-6);
+    grid-template-columns: 24px minmax(0, 1fr);
+    gap: var(--space-3);
   }
 
   .timing__free-item::before {
-    left: 0;
+    width: 24px;
+    height: 24px;
+    font-size: 0.625rem;
+  }
+}
+
+/* Анимации дорожки и появления строк декоративны: при reduce
+   всё показывается сразу, в конечном состоянии */
+@media (prefers-reduced-motion: reduce) {
+  .timing__seg {
+    transform: scaleX(1);
+    transition: none;
+    transition-delay: 0s;
+  }
+
+  .timing__free-item {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    transition-delay: 0s;
   }
 }
 
@@ -1652,7 +2309,12 @@
 
 .program {
   position: relative;
-  background: var(--night-900);
+  background:
+    linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
+      top / 100% 2px no-repeat,
+    radial-gradient(60% 100% at 50% 0%, var(--seam-halo) 0%, transparent 70%)
+      top / 100% 200px no-repeat,
+    var(--surface-solid, var(--night-900));
   overflow: hidden;
 }
 
@@ -1709,7 +2371,7 @@
   padding: clamp(1.5rem, 0.9rem + 2.4vw, 3rem);
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--fill-1);
   backdrop-filter: blur(8px);
 }
 
@@ -1789,7 +2451,12 @@
 
 .works {
   position: relative;
-  background: var(--night-900);
+  background:
+    linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
+      top / 100% 2px no-repeat,
+    radial-gradient(60% 100% at 50% 0%, var(--seam-halo) 0%, transparent 70%)
+      top / 100% 200px no-repeat,
+    var(--surface-solid, var(--night-900));
   overflow: hidden;
 }
 
@@ -1861,7 +2528,12 @@
 
 .results {
   position: relative;
-  background: var(--night-900);
+  background:
+    linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
+      top / 100% 2px no-repeat,
+    radial-gradient(60% 100% at 50% 0%, var(--seam-halo) 0%, transparent 70%)
+      top / 100% 200px no-repeat,
+    var(--surface-solid, var(--night-900));
   overflow: hidden;
 }
 
@@ -1937,7 +2609,12 @@
 
 .expert {
   position: relative;
-  background: var(--night-900);
+  background:
+    linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
+      top / 100% 2px no-repeat,
+    radial-gradient(60% 100% at 50% 0%, var(--seam-halo) 0%, transparent 70%)
+      top / 100% 200px no-repeat,
+    var(--surface-solid, var(--night-900));
   overflow: hidden;
 }
 
@@ -1987,7 +2664,12 @@
 
 .support {
   position: relative;
-  background: var(--night-900);
+  background:
+    linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
+      top / 100% 2px no-repeat,
+    radial-gradient(60% 100% at 50% 0%, var(--seam-halo) 0%, transparent 70%)
+      top / 100% 200px no-repeat,
+    var(--surface-solid, var(--night-900));
   overflow: hidden;
 }
 
@@ -2068,17 +2750,23 @@
 
 .tariffs {
   position: relative;
-  background: var(--night-900);
+  background:
+    linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
+      top / 100% 2px no-repeat,
+    radial-gradient(60% 100% at 50% 0%, var(--seam-halo) 0%, transparent 70%)
+      top / 100% 200px no-repeat,
+    var(--surface-solid, var(--night-900));
   overflow: hidden;
 }
 
+/* Тон --deep, подсветки подняты — см. комментарий у .timing::before. */
 .tariffs::before {
   content: '';
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(56% 50% at 88% 0%, rgba(127, 232, 255, 0.14) 0%, rgba(127, 232, 255, 0) 70%),
-    radial-gradient(58% 54% at 12% 100%, rgba(184, 140, 255, 0.15) 0%, rgba(184, 140, 255, 0) 70%);
+    radial-gradient(56% 50% at 88% 0%, rgba(127, 232, 255, 0.19) 0%, rgba(127, 232, 255, 0) 70%),
+    radial-gradient(58% 54% at 12% 100%, rgba(184, 140, 255, 0.20) 0%, rgba(184, 140, 255, 0) 70%);
   pointer-events: none;
 }
 
@@ -2137,7 +2825,12 @@
 
 .guarantee {
   position: relative;
-  background: var(--night-900);
+  background:
+    linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
+      top / 100% 2px no-repeat,
+    radial-gradient(60% 100% at 50% 0%, var(--seam-halo) 0%, transparent 70%)
+      top / 100% 200px no-repeat,
+    var(--surface-solid, var(--night-900));
   overflow: hidden;
 }
 
@@ -2168,7 +2861,7 @@
   padding: clamp(1.5rem, 0.9rem + 2.4vw, 3rem);
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--fill-1);
   backdrop-filter: blur(8px);
   text-align: center;
 }
@@ -2248,7 +2941,12 @@
 
 .timer {
   position: relative;
-  background: var(--night-900);
+  background:
+    linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
+      top / 100% 2px no-repeat,
+    radial-gradient(60% 100% at 50% 0%, var(--seam-halo) 0%, transparent 70%)
+      top / 100% 200px no-repeat,
+    var(--surface-solid, var(--night-900));
   overflow: hidden;
 }
 
@@ -2277,7 +2975,7 @@
   padding: clamp(1.5rem, 0.9rem + 2.4vw, 3rem);
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--fill-1);
   backdrop-filter: blur(8px);
   text-align: center;
 }
@@ -2458,7 +3156,12 @@
 
 .faq {
   position: relative;
-  background: var(--night-900);
+  background:
+    linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
+      top / 100% 2px no-repeat,
+    radial-gradient(60% 100% at 50% 0%, var(--seam-halo) 0%, transparent 70%)
+      top / 100% 200px no-repeat,
+    var(--surface-solid, var(--night-900));
   overflow: hidden;
 }
 
@@ -2514,17 +3217,23 @@
 
 .cta {
   position: relative;
-  background: var(--night-900);
+  background:
+    linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
+      top / 100% 2px no-repeat,
+    radial-gradient(60% 100% at 50% 0%, var(--seam-halo) 0%, transparent 70%)
+      top / 100% 200px no-repeat,
+    var(--surface-solid, var(--night-900));
   overflow: hidden;
 }
 
+/* Тон --deep, подсветки подняты — см. комментарий у .timing::before. */
 .cta::before {
   content: '';
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(56% 50% at 88% 0%, rgba(127, 232, 255, 0.15) 0%, rgba(127, 232, 255, 0) 70%),
-    radial-gradient(58% 54% at 12% 100%, rgba(184, 140, 255, 0.16) 0%, rgba(184, 140, 255, 0) 70%);
+    radial-gradient(56% 50% at 88% 0%, rgba(127, 232, 255, 0.20) 0%, rgba(127, 232, 255, 0) 70%),
+    radial-gradient(58% 54% at 12% 100%, rgba(184, 140, 255, 0.21) 0%, rgba(184, 140, 255, 0) 70%);
   pointer-events: none;
 }
 
@@ -2577,7 +3286,7 @@
   padding: clamp(1.5rem, 0.9rem + 2.4vw, 3rem);
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--fill-1);
   backdrop-filter: blur(8px);
 }
 
@@ -2680,7 +3389,7 @@
   padding: var(--space-3) var(--space-6);
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--fill-1);
   backdrop-filter: blur(8px);
   font-size: var(--fs-body);
   font-weight: var(--fw-semibold);
@@ -2692,13 +3401,13 @@
 
 .cta__fact:hover {
   border-color: rgba(184, 140, 255, 0.55);
-  background: rgba(255, 255, 255, 0.07);
+  background: var(--fill-3);
   box-shadow: var(--glow-lavender);
 }
 
 /* «Предложение действует 24 часа» — единственный факт про срочность,
    а не про содержание курса, поэтому выделен циановым, как деньги
-   выделены циановым в .method-card__lead и .case-step--money. */
+   выделены циановым в .case-step--money и в модулях программы. */
 .cta__fact--urgent {
   border-color: rgba(127, 232, 255, 0.5);
   background: rgba(127, 232, 255, 0.1);
