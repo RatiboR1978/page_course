@@ -40,46 +40,36 @@
   border-radius: var(--radius-pill);
 }
 
-/* Основная — светлый градиент lilac → cyan, тёмный текст.
-   Свечение по контуру + мягкий ореол снизу, как на референсе. */
+/* Основная кнопка. Заливку, цвет текста и тень берёт из тоновых
+   токенов: на тёмном — светлый градиент с неоновым ореолом, на
+   светлом — фиолетовая плашка с белым текстом. Разметке тон не важен. */
 .btn--primary {
-  background: var(--grad-btn);
-  color: var(--deep-night-plum);
-  box-shadow:
-    0 0 24px rgba(184, 140, 255, 0.45),
-    0 8px 28px rgba(184, 140, 255, 0.3);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  box-shadow: var(--btn-shadow);
 }
 
 .btn--primary:hover {
   filter: brightness(1.06);
-  box-shadow:
-    0 0 32px rgba(184, 140, 255, 0.65),
-    0 12px 34px rgba(184, 140, 255, 0.45);
+  box-shadow: var(--btn-shadow-hover);
 }
 
-/* Вторичная на светлом фоне — обводка */
-.btn--secondary {
-  background: transparent;
-  color: var(--text-on-light);
-  border-color: var(--pastel-lilac);
-}
-
-.btn--secondary:hover {
-  border-color: var(--tessa-lavender);
-  background: rgba(184, 140, 255, 0.08);
-}
-
-/* Вторичная на тёмном фоне — приглушённая заливка с тонкой границей */
+/* Вторичная кнопка. Оформление берётся из тоновых токенов: на тёмном —
+   приглушённая заливка с белёсой границей, на светлом — белая плашка с
+   фиолетовой обводкой и тенью. Разметке не нужно знать тон секции. */
+.btn--secondary,
 .btn--secondary-dark {
-  background: rgba(120, 120, 170, 0.22);
-  color: var(--cloud-white);
-  border-color: rgba(255, 255, 255, 0.16);
+  background: var(--btn-alt-bg);
+  color: var(--btn-alt-fg);
+  border-color: var(--btn-alt-border);
+  box-shadow: var(--card-shadow);
   backdrop-filter: blur(6px);
 }
 
+.btn--secondary:hover,
 .btn--secondary-dark:hover {
-  border-color: rgba(184, 140, 255, 0.7);
-  background: rgba(140, 130, 200, 0.32);
+  border-color: var(--accent);
+  background: var(--btn-alt-bg-hover);
 }
 
 /* ---------- Заглушка под изображение — общий паттерн ----------
@@ -93,11 +83,11 @@
 .media-placeholder {
   position: relative;
   overflow: hidden;
-  border: 1px dashed rgba(184, 140, 255, 0.35);
+  border: 1px dashed var(--media-border);
   border-radius: var(--radius-sm);
   background:
-    linear-gradient(135deg, rgba(184, 140, 255, 0.10) 0%, rgba(127, 232, 255, 0.06) 100%),
-    rgba(11, 4, 38, 0.35);
+    var(--media-film),
+    var(--media-backing);
 }
 
 .media-placeholder:has(img, video) {
@@ -195,7 +185,7 @@
   inset: -18%;
   z-index: -1;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(184, 140, 255, 0.38) 0%, rgba(127, 232, 255, 0.18) 55%, transparent 75%);
+  background: var(--icon-glow);
   filter: blur(14px);
   animation: offer-icon-glow 4.5s ease-in-out infinite;
 }
@@ -239,19 +229,6 @@
   }
 }
 
-/* ---------- Место под форму GetCourse ----------
-   Пустой слот-заглушка: сама форма верстается позже виджетом GetCourse,
-   здесь только зона, куда его нужно встроить. Пунктир того же цвета,
-   что у media-placeholder, чтобы оба вида заглушек читались как одна
-   система «здесь появится контент, которого пока нет». */
-.form-slot {
-  min-height: 96px;
-  margin-top: var(--space-8);
-  border: 1px dashed rgba(127, 232, 255, 0.35);
-  border-radius: var(--radius-md);
-  background: rgba(127, 232, 255, 0.04);
-}
-
 /* ---------- Строка «боли» — компактный пункт без бокса ----------
    Живёт на тёмной сцене (.section--dark). Раньше это была карточка-стекло
    с полями 24px и рамкой — девять таких боксов подряд занимали почти
@@ -276,8 +253,8 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--grad-primary);
-  box-shadow: 0 0 10px rgba(184, 140, 255, 0.7);
+  background: var(--grad-mark);
+  box-shadow: var(--dot-glow);
 }
 
 .pain-item__title {
@@ -285,13 +262,13 @@
   font-size: var(--fs-body);
   font-weight: var(--fw-bold);
   line-height: 1.35;
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 .pain-item__text {
   font-size: var(--fs-small);
   line-height: 1.5;
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 .btn--sm {
@@ -301,6 +278,11 @@
 
 .btn--block {
   width: 100%;
+  /* У .btn стоит white-space: nowrap на весь текст надписи, а тут она
+     длинная («Выбрать самостоятельный тариф»): без переноса кнопка
+     требует больше ширины, чем есть у карточки, и толкает всю
+     .tariffs__grid за пределы экрана на мобильных */
+  white-space: normal;
 }
 
 /* ---------- Таймлайн «что нужно знать» ----------
@@ -320,35 +302,29 @@
 }
 
 .reason-step__node {
-  counter-increment: reason;
   position: relative;
   z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   flex: none;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  border: 1px solid rgba(184, 140, 255, 0.45);
-  /* Узел пробивает дырку в соединительной линии, поэтому его заливка
-     обязана совпадать с фоном секции — берём тон секции, а не литерал. */
-  background: var(--surface-solid, var(--night-900));
-  font-size: var(--fs-h4);
-  font-weight: var(--fw-extrabold);
-  letter-spacing: var(--ls-tight);
-  color: var(--pastel-lilac);
+  width: 132px;
+  height: 132px;
 }
 
-.reason-step__node::before {
-  content: counter(reason, decimal-leading-zero); /* 01, 02, 03, 04 */
+/* Иконка шага сама несёт номер и стиль узла — отдельный кружок-подложка
+   и бейдж с цифрой (01–04) только мельчили картинку, убраны. */
+.reason-step__node img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .reason-step__text {
   font-size: var(--fs-h4);
   font-weight: var(--fw-semibold);
   line-height: 1.35;
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 @media (min-width: 1200px) {
@@ -376,6 +352,7 @@
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-md);
   background: var(--fill-1);
+  box-shadow: var(--card-shadow);
   backdrop-filter: blur(8px);
   transition: transform var(--transition), border-color var(--transition),
     background-color var(--transition), box-shadow var(--transition);
@@ -387,7 +364,7 @@
   line-height: 1;
   letter-spacing: var(--ls-tight);
   /* только background-image: шорткат background сбросил бы background-clip */
-  background-image: var(--grad-primary);
+  background-image: var(--grad-accent-text);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -397,7 +374,7 @@
   font-size: var(--fs-h4);
   font-weight: var(--fw-semibold);
   line-height: 1.35;
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 /* margin-top: auto прижимает источник к низу, чтобы в обеих карточках
@@ -408,12 +385,12 @@
   border-top: 1px solid var(--border-dark);
   font-size: var(--fs-small);
   line-height: 1.4;
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 .stat-card:hover {
   transform: translateY(-3px);
-  border-color: rgba(184, 140, 255, 0.55);
+  border-color: var(--border-hover);
   background: var(--fill-3);
   box-shadow: var(--shadow-card), var(--glow-lavender);
 }
@@ -452,14 +429,14 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  border: 1px solid rgba(184, 140, 255, 0.45);
+  border: 1px solid var(--border-hover);
   /* Узел пробивает дырку в соединительной линии, поэтому его заливка
      обязана совпадать с фоном секции — берём тон секции, а не литерал. */
   background: var(--surface-solid, var(--night-900));
   font-size: var(--fs-h4);
   font-weight: var(--fw-extrabold);
   letter-spacing: var(--ls-tight);
-  color: var(--pastel-lilac);
+  color: var(--accent-soft);
 }
 
 .path-step__node::before {
@@ -476,6 +453,7 @@
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-md);
   background: var(--fill-1);
+  box-shadow: var(--card-shadow);
   backdrop-filter: blur(8px);
   transition: transform var(--transition), border-color var(--transition),
     background-color var(--transition), box-shadow var(--transition);
@@ -483,24 +461,36 @@
 
 .path-step__card:hover {
   transform: translateY(-3px);
-  border-color: rgba(184, 140, 255, 0.55);
+  border-color: var(--border-hover);
   background: var(--fill-3);
   box-shadow: var(--shadow-card), var(--glow-lavender);
 }
 
 .path-step__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
   font-size: var(--fs-h4);
   font-weight: var(--fw-bold);
   line-height: 1.3;
   text-transform: none;
   letter-spacing: normal;
-  color: var(--cloud-white);
+  color: var(--text-strong);
+}
+
+/* Иконка шага — заготовка-иллюстрация, а не пиктограмма-символ,
+   поэтому без обводки и заливки: своя подложка уже в самой картинке. */
+.path-step__icon {
+  flex: none;
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
 }
 
 .path-step__text {
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 /* margin-inline: 0 сбрасывает авто-поля из .media-placeholder--wide.
@@ -540,6 +530,7 @@
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-md);
   background: var(--fill-1);
+  box-shadow: var(--card-shadow);
   backdrop-filter: blur(8px);
   transition: transform var(--transition), border-color var(--transition),
     background-color var(--transition), box-shadow var(--transition);
@@ -547,7 +538,7 @@
 
 .offer-card:hover {
   transform: translateY(-3px);
-  border-color: rgba(184, 140, 255, 0.55);
+  border-color: var(--border-hover);
   background: var(--fill-3);
   box-shadow: var(--shadow-card), var(--glow-lavender);
 }
@@ -562,7 +553,7 @@
   line-height: 1.3;
   text-transform: none;
   letter-spacing: normal;
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 .offer-card__title::after {
@@ -573,7 +564,7 @@
   width: 40px;
   height: 2px;
   border-radius: 2px;
-  background: var(--grad-primary);
+  background: var(--grad-mark);
 }
 
 .offer-card__list {
@@ -587,7 +578,7 @@
   padding-left: var(--space-6);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 /* Тире-маркер из исходного списка — на псевдоэлементе,
@@ -597,13 +588,13 @@
   position: absolute;
   left: 0;
   font-weight: var(--fw-bold);
-  color: var(--tessa-lavender);
+  color: var(--accent);
 }
 
 .offer-card__price {
   font-weight: var(--fw-bold);
   white-space: nowrap;
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 /* На узких экранах карточка отдаёт поля тексту */
@@ -628,6 +619,7 @@
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-md);
   background: var(--fill-1);
+  box-shadow: var(--card-shadow);
   backdrop-filter: blur(8px);
   transition: transform var(--transition), border-color var(--transition),
     background-color var(--transition), box-shadow var(--transition);
@@ -639,7 +631,7 @@
 
 .audience-card:hover {
   transform: translateY(-3px);
-  border-color: rgba(184, 140, 255, 0.55);
+  border-color: var(--border-hover);
   background: var(--fill-3);
   box-shadow: var(--shadow-card), var(--glow-lavender);
 }
@@ -650,13 +642,13 @@
   line-height: 1.3;
   text-transform: none;
   letter-spacing: normal;
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 .audience-card__text {
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 /* На узких экранах карточка отдаёт поля тексту */
@@ -691,12 +683,13 @@
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-pill);
   background: var(--fill-1);
+  box-shadow: var(--card-shadow);
   font-family: inherit;
   /* Мельче базового текста: четыре чипа в сетке 2×2 на 375px должны
      помещаться в свою половину строки, включая «Упаковываете». */
   font-size: var(--fs-small);
   line-height: 1.2;
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
   white-space: nowrap;
   cursor: pointer;
   transition: color var(--transition), border-color var(--transition),
@@ -706,7 +699,7 @@
 .method-tab__num {
   font-weight: var(--fw-extrabold);
   letter-spacing: var(--ls-tight);
-  color: var(--pastel-lilac);
+  color: var(--accent-soft);
   transition: inherit;
 }
 
@@ -715,20 +708,20 @@
 }
 
 .method-tab:hover {
-  border-color: rgba(184, 140, 255, 0.55);
+  border-color: var(--border-hover);
   background: var(--fill-3);
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 .method-tab:focus-visible {
-  outline: 2px solid var(--ai-glow);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 3px;
 }
 
 .method-tab[aria-selected='true'] {
-  border-color: var(--tessa-lavender);
-  background: rgba(184, 140, 255, 0.16);
-  color: var(--cloud-white);
+  border-color: var(--accent);
+  background: var(--plaque-fill-2);
+  color: var(--text-strong);
   box-shadow: var(--glow-lavender);
 }
 
@@ -755,7 +748,7 @@
     flex: none;
     width: 48px;
     height: 48px;
-    border: 1px solid rgba(184, 140, 255, 0.45);
+    border: 1px solid var(--border-hover);
     border-radius: 50%;
     background: var(--surface-solid, var(--night-900));
     font-size: var(--fs-h4);
@@ -775,7 +768,7 @@
   }
 
   .method-tab:hover .method-tab__num {
-    border-color: rgba(184, 140, 255, 0.75);
+    border-color: var(--border-hover);
   }
 
   .method-tab[aria-selected='true'] {
@@ -787,11 +780,11 @@
      подложки, а не вместо неё: иначе сквозь полупрозрачный круг
      просвечивала бы линия рельса. */
   .method-tab[aria-selected='true'] .method-tab__num {
-    border-color: var(--tessa-lavender);
+    border-color: var(--accent);
     background:
       linear-gradient(rgba(184, 140, 255, 0.22), rgba(184, 140, 255, 0.22)),
       var(--surface-solid, var(--night-900));
-    color: var(--cloud-white);
+    color: var(--text-strong);
     box-shadow: var(--glow-lavender);
   }
 }
@@ -858,7 +851,7 @@
   font-weight: var(--fw-bold);
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
-  color: var(--tessa-lavender);
+  color: var(--accent);
 }
 
 .method-panel__title {
@@ -867,17 +860,17 @@
   line-height: 1.3;
   text-transform: none;
   letter-spacing: normal;
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 .method-panel__text {
   font-size: var(--fs-lead);
   line-height: var(--lh-body);
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 .method-panel:focus-visible {
-  outline: 2px solid var(--ai-glow);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 4px;
 }
 
@@ -900,20 +893,21 @@
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-md);
   background: var(--fill-1);
+  box-shadow: var(--card-shadow);
   backdrop-filter: blur(8px);
   transition: border-color var(--transition), background-color var(--transition),
     box-shadow var(--transition);
 }
 
 .module-card__box:hover {
-  border-color: rgba(184, 140, 255, 0.55);
+  border-color: var(--border-hover);
   background: var(--fill-2);
 }
 
 /* Открытая карточка держит подсветку и без курсора — так видно,
    какой модуль читаешь, когда открыто несколько */
 .module-card__box[open] {
-  border-color: rgba(184, 140, 255, 0.55);
+  border-color: var(--border-hover);
   background: var(--fill-3);
   box-shadow: var(--shadow-card), var(--glow-lavender);
 }
@@ -923,7 +917,7 @@
    движках: display: none для WebKit, list-style для остальных. */
 .module-card__summary {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: auto 1fr auto;
   align-items: start;
   gap: var(--space-2) var(--space-6);
   padding: var(--space-6);
@@ -935,36 +929,47 @@
   display: none;
 }
 
+/* Иконка модуля — своя иллюстрация слева от текста шапки, во всю
+   высоту трёх строк (номер/название/обещание), как и шеврон справа */
+.module-card__icon {
+  grid-column: 1;
+  grid-row: 1 / span 3;
+  align-self: center;
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+}
+
 /* Шеврон — не иконка, а два бордера квадрата, повёрнутого на 45°:
    отдельного SVG ради стрелки не нужно */
 .module-card__summary::after {
   content: '';
-  grid-column: 2;
+  grid-column: 3;
   grid-row: 1 / span 3;
   align-self: center;
   width: 10px;
   height: 10px;
   margin-right: 4px;
-  border-right: 2px solid var(--tessa-lavender);
-  border-bottom: 2px solid var(--tessa-lavender);
+  border-right: 2px solid var(--accent);
+  border-bottom: 2px solid var(--accent);
   transform: rotate(45deg) translate(-2px, -2px);
   transition: transform var(--transition), border-color var(--transition);
 }
 
 .module-card__box[open] .module-card__summary::after {
   transform: rotate(225deg) translate(-2px, -2px);
-  border-color: var(--ai-glow);
+  border-color: var(--accent-cyan);
 }
 
 /* Фокус ловит вся шапка, а не текст внутри неё */
 .module-card__summary:focus-visible {
-  outline: 2px solid var(--tessa-lavender);
+  outline: 2px solid var(--focus-ring);
   outline-offset: -4px;
   border-radius: var(--radius-md);
 }
 
 .module-card__meta {
-  grid-column: 1;
+  grid-column: 2;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -981,7 +986,7 @@
   font-weight: var(--fw-extrabold);
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
-  color: var(--pastel-lilac);
+  color: var(--accent-soft);
 }
 
 .module-card__num::before {
@@ -989,30 +994,30 @@
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  border: 1px solid rgba(184, 140, 255, 0.55);
+  border: 1px solid var(--border-hover);
 }
 
 .module-card__lessons {
   font-size: var(--fs-small);
   font-weight: var(--fw-semibold);
-  color: var(--ai-glow);
+  color: var(--accent-cyan);
 }
 
 .module-card__title {
-  grid-column: 1;
+  grid-column: 2;
   font-size: var(--fs-h4);
   font-weight: var(--fw-bold);
   line-height: 1.3;
   text-transform: none;
   letter-spacing: normal;
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 .module-card__promise {
-  grid-column: 1;
+  grid-column: 2;
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 /* Тело раскрытия. Верхняя граница отделяет его от шапки, но не идёт
@@ -1041,7 +1046,7 @@
   padding-left: var(--space-6);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 .module-card__topic::before {
@@ -1049,7 +1054,7 @@
   position: absolute;
   left: 0;
   font-weight: var(--fw-bold);
-  color: var(--tessa-lavender);
+  color: var(--accent);
 }
 
 /* «Практика», «Можно предлагать клиентам», «Результат модуля» — подписи
@@ -1057,15 +1062,15 @@
    Черта слева отделяет их от списка тем. */
 .module-card__block {
   padding-left: var(--space-4);
-  border-left: 2px solid rgba(184, 140, 255, 0.35);
+  border-left: 2px solid var(--border-hover);
 }
 
 .module-card__block--sale {
-  border-left-color: var(--ai-glow);
+  border-left-color: var(--accent-cyan);
 }
 
 .module-card__block--result {
-  border-left-color: var(--tessa-lavender);
+  border-left-color: var(--accent);
 }
 
 .module-card__label {
@@ -1074,23 +1079,58 @@
   font-weight: var(--fw-extrabold);
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
-  color: var(--pastel-lilac);
+  color: var(--accent-soft);
 }
 
 .module-card__block--sale .module-card__label {
-  color: var(--ai-glow);
+  color: var(--accent-cyan);
 }
 
 .module-card__text {
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
-/* На узких экранах карточка отдаёт поля тексту */
+/* На узких экранах трёхколоночная шапка (иконка / текст / шеврон)
+   сжимает иконку до значка сбоку. Вместо этого иконку выносим
+   в свою строку — между номером модуля и заголовком — и укрупняем:
+   так у неё есть место, а текст остаётся во всю ширину карточки. */
 @media (max-width: 479px) {
   .module-card__summary {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      'meta    chevron'
+      'icon    icon'
+      'title   title'
+      'promise promise';
     padding: var(--space-4);
+    gap: var(--space-2) var(--space-4);
+  }
+
+  .module-card__meta {
+    grid-area: meta;
+  }
+
+  .module-card__icon {
+    grid-area: icon;
+    align-self: auto;
+    width: 112px;
+    height: 112px;
+    margin-block: var(--space-1) 0;
+  }
+
+  .module-card__title {
+    grid-area: title;
+  }
+
+  .module-card__promise {
+    grid-area: promise;
+  }
+
+  .module-card__summary::after {
+    grid-area: chevron;
+    align-self: start;
   }
 
   .module-card__body {
@@ -1119,6 +1159,7 @@
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-md);
   background: var(--fill-1);
+  box-shadow: var(--card-shadow);
   backdrop-filter: blur(8px);
   transition: transform var(--transition), border-color var(--transition),
     background-color var(--transition), box-shadow var(--transition);
@@ -1126,7 +1167,7 @@
 
 .work-card:hover {
   transform: translateY(-3px);
-  border-color: rgba(184, 140, 255, 0.55);
+  border-color: var(--border-hover);
   background: var(--fill-3);
   box-shadow: var(--shadow-card), var(--glow-lavender);
 }
@@ -1143,19 +1184,19 @@
   font-weight: var(--fw-extrabold);
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
-  color: var(--pastel-lilac);
+  color: var(--accent-soft);
 }
 
 /* Тип работы — таблетка: она отличает карточки друг от друга
    быстрее, чем номер примера */
 .work-card__kind {
   padding: 2px var(--space-3);
-  border: 1px solid rgba(127, 232, 255, 0.35);
+  border: 1px solid var(--badge-ring);
   border-radius: var(--radius-pill);
   font-size: var(--fs-small);
   font-weight: var(--fw-semibold);
   line-height: 1.4;
-  color: var(--ai-glow);
+  color: var(--accent-cyan);
 }
 
 /* Место под настоящую работу. Пока файла нет — пустая рамка с тонкой
@@ -1166,11 +1207,11 @@
   position: relative;
   aspect-ratio: 4 / 3;
   overflow: hidden;
-  border: 1px dashed rgba(184, 140, 255, 0.35);
+  border: 1px dashed var(--media-border);
   border-radius: var(--radius-sm);
   background:
-    linear-gradient(135deg, rgba(184, 140, 255, 0.10) 0%, rgba(127, 232, 255, 0.06) 100%),
-    rgba(11, 4, 38, 0.35);
+    var(--media-film),
+    var(--media-backing);
 }
 
 /* Когда работа подставлена, штриховая рамка не нужна */
@@ -1190,7 +1231,7 @@
 .work-card__credit {
   font-size: var(--fs-small);
   line-height: var(--lh-body);
-  color: var(--text-on-light-muted);
+  color: var(--text-muted);
 }
 
 .work-card__pair {
@@ -1204,11 +1245,11 @@
    результат, к которому приводит курс. */
 .work-card__row {
   padding-left: var(--space-4);
-  border-left: 2px solid rgba(184, 140, 255, 0.35);
+  border-left: 2px solid var(--border-hover);
 }
 
 .work-card__row--after {
-  border-left-color: var(--ai-glow);
+  border-left-color: var(--accent-cyan);
 }
 
 .work-card__label {
@@ -1217,21 +1258,21 @@
   font-weight: var(--fw-extrabold);
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
-  color: var(--pastel-lilac);
+  color: var(--accent-soft);
 }
 
 .work-card__row--after .work-card__label {
-  color: var(--ai-glow);
+  color: var(--accent-cyan);
 }
 
 .work-card__value {
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 .work-card__row--after .work-card__value {
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 /* На узких экранах карточка отдаёт поля тексту */
@@ -1241,112 +1282,111 @@
   }
 }
 
-/* ---------- Шаг кейса участника — тёмное стекло с номером ----------
-   То же стекло, что у .pain-card, .step-card, .work-card и остальных.
-   Четыре шага — это порядок рассказа о кейсе, поэтому карточки
-   пронумерованы CSS-счётчиком и связаны чертой, как шаги курса
-   на пятом экране. Последний шаг единственный говорит о деньгах,
-   поэтому набран цианом — то же правило, что у «Можно предлагать
-   клиентам» в модулях программы. */
-
-.results__grid {
-  counter-reset: case-step;
-}
+/* ---------- Шаг кейса участника — сегмент одного маршрута ----------
+   Не отдельная карточка, а сегмент общей стеклянной панели
+   (.results__grid в sections.css): порядок держит крупная иконка
+   над заголовком, а не номер — шаги разделены волосяной линией,
+   а между ними на широких экранах стоит бейдж-стрелка. Путь читается
+   как один непрерывный кейс, а не как четыре одинаковые плашки.
+   Последний шаг единственный говорит о деньгах, поэтому набран цианом
+   и получает собственную лёгкую заливку сегмента — тот же принцип
+   цвета, что у «Можно предлагать клиентам» в модулях программы,
+   но без отдельной рамки. */
 
 .case-step {
-  counter-increment: case-step;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
   padding: var(--space-6);
-  border: 1px solid var(--border-dark);
-  border-radius: var(--radius-md);
-  background: var(--fill-1);
-  backdrop-filter: blur(8px);
-  transition: transform var(--transition), border-color var(--transition),
-    background-color var(--transition), box-shadow var(--transition);
+  transition: background-color var(--transition);
 }
 
-.case-step::before {
-  content: counter(case-step, decimal-leading-zero); /* 01 … 04 */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: none;
-  width: 48px;
-  height: 48px;
-  margin-bottom: var(--space-4);
-  border: 1px solid rgba(184, 140, 255, 0.45);
-  border-radius: 50%;
-  background: rgba(184, 140, 255, 0.10);
-  font-size: var(--fs-h4);
-  font-weight: var(--fw-extrabold);
-  line-height: 1;
-  color: var(--pastel-lilac);
+/* Иконка шага — своя иллюстрация над заголовком, крупная и по центру
+   сегмента; во всех четырёх сегментах одного размера, чтобы ряд
+   не прыгал по высоте */
+.case-step__icon {
+  display: block;
+  width: 190px;
+  height: 190px;
+  margin: 0 auto var(--space-4);
+  object-fit: contain;
+}
+
+/* Волосяная линия между сегментами: горизонтальная, пока шаги стоят
+   в один столбец, вертикальная — когда встают в ряд на широких экранах */
+.case-step + .case-step {
+  border-top: 1px solid var(--border-dark);
+}
+
+@media (min-width: 900px) {
+  .case-step + .case-step {
+    border-top: none;
+    border-left: 1px solid var(--border-dark);
+  }
 }
 
 .case-step:hover {
-  transform: translateY(-3px);
-  border-color: rgba(184, 140, 255, 0.55);
-  background: var(--fill-3);
-  box-shadow: var(--shadow-card), var(--glow-lavender);
-}
-
-/* Коммерческий результат — единственный шаг про деньги */
-.case-step--money::before {
-  border-color: rgba(127, 232, 255, 0.55);
-  background: rgba(127, 232, 255, 0.10);
-  color: var(--ai-glow);
-}
-
-.case-step--money:hover {
-  border-color: rgba(127, 232, 255, 0.55);
-  box-shadow: var(--shadow-card), var(--glow-cyan);
+  background: var(--fill-2);
 }
 
 .case-step__title {
+  margin-bottom: var(--space-2);
   font-size: var(--fs-h4);
   font-weight: var(--fw-bold);
   line-height: 1.3;
   text-transform: none;
   letter-spacing: normal;
-  color: var(--cloud-white);
-}
-
-.case-step--money .case-step__title {
-  color: var(--ai-glow);
+  color: var(--text-strong);
 }
 
 .case-step__text {
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
-/* Соединительная черта между шагами — только там, где все четыре
-   стоят одним рядом. По центру бейджа: отступ карточки + половина круга. */
-@media (min-width: 1200px) {
-  .case-step::after {
-    content: '';
+/* Коммерческий результат — единственный шаг про деньги: заливка
+   сегмента и цвет цифры/заголовка цианом вместо лавандового */
+.case-step--money {
+  background: var(--plaque-fill-cyan);
+}
+
+.case-step--money:hover {
+  background: var(--plaque-fill-cyan);
+}
+
+.case-step--money .case-step__title {
+  color: var(--accent-cyan);
+}
+
+/* Стрелка прогресса — поверх волосяной линии между сегментами,
+   только когда шаги стоят в ряд */
+@media (min-width: 900px) {
+  .case-step:not(:last-child)::after {
+    content: '→';
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: absolute;
-    top: calc(var(--space-6) + 24px);
-    left: 100%;
-    width: var(--space-6);
-    height: 2px;
-    background: var(--grad-primary);
-    opacity: 0.45;
-  }
-
-  .case-step:last-child::after {
-    display: none;
+    top: 50%;
+    right: 0;
+    z-index: 1;
+    width: 26px;
+    height: 26px;
+    transform: translate(50%, -50%);
+    border: 1px solid var(--border-hover);
+    border-radius: 50%;
+    background: var(--accent);
+    font-size: 0.8rem;
+    line-height: 1;
+    color: #fff;
   }
 }
 
-/* На узких экранах карточка отдаёт поля тексту */
+/* На узких экранах сегмент отдаёт поля тексту, а заголовок и текст
+   центрируются под иконкой, которая и так стоит по центру */
 @media (max-width: 479px) {
   .case-step {
     padding: var(--space-4);
+    text-align: center;
   }
 }
 
@@ -1360,29 +1400,55 @@
 .expert-card {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-8);
+  gap: var(--space-4);
   padding: var(--space-8);
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-md);
   background: var(--fill-1);
+  box-shadow: var(--card-shadow);
   backdrop-filter: blur(8px);
   transition: border-color var(--transition), background-color var(--transition),
     box-shadow var(--transition);
 }
 
 .expert-card:hover {
-  border-color: rgba(184, 140, 255, 0.55);
+  border-color: var(--border-hover);
   background: var(--fill-3);
   box-shadow: var(--shadow-card), var(--glow-lavender);
 }
 
 /* В две колонки — только когда колонке фактов остаётся достаточно ширины:
-   на 768px фото и семь строк текста рядом уже теснят друг друга */
+   на 768px фото и семь строк текста рядом уже теснят друг друга. Имя —
+   строка над списком фактов, а не подпись под фото: фото остаётся
+   отдельным столбцом слева и растягивается на обе строки. */
 @media (min-width: 900px) {
   .expert-card {
     grid-template-columns: 260px 1fr;
-    gap: var(--space-12);
-    align-items: start;
+    grid-template-areas:
+      "photo name"
+      "photo facts";
+    column-gap: var(--space-12);
+    row-gap: var(--space-4);
+    align-items: stretch;
+  }
+
+  /* Именованные области существуют только при этой ширине — ниже
+     карточка в одну колонку, и grid-area здесь была бы бессмысленным
+     именем линии: браузер схлопывает фото/имя/факты в одну ячейку */
+  .expert-card__name {
+    grid-area: name;
+  }
+
+  .expert-card__photo {
+    grid-area: photo;
+    /* На этой ширине фото растягивается по высоте на обе строки грида
+       (имя + список фактов), а не держит квадратную пропорцию само по себе */
+    aspect-ratio: auto;
+    height: 100%;
+  }
+
+  .expert-card__facts {
+    grid-area: facts;
   }
 }
 
@@ -1392,10 +1458,13 @@
   }
 }
 
-.expert-card__aside {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
+.expert-card__name {
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-bold);
+  line-height: 1.25;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--text-strong);
 }
 
 /* Место под фото эксперта. Пока файла нет — пустая рамка с тонкой
@@ -1406,11 +1475,11 @@
   position: relative;
   aspect-ratio: 1 / 1;
   overflow: hidden;
-  border: 1px dashed rgba(184, 140, 255, 0.35);
+  border: 1px dashed var(--media-border);
   border-radius: var(--radius-sm);
   background:
-    linear-gradient(135deg, rgba(184, 140, 255, 0.10) 0%, rgba(127, 232, 255, 0.06) 100%),
-    rgba(11, 4, 38, 0.35);
+    var(--media-film),
+    var(--media-backing);
 }
 
 /* Когда фото подставлено, штриховая рамка не нужна */
@@ -1424,21 +1493,12 @@
   object-fit: cover;
 }
 
-.expert-card__name {
-  font-size: var(--fs-h3);
-  font-weight: var(--fw-bold);
-  line-height: 1.25;
-  text-transform: none;
-  letter-spacing: normal;
-  color: var(--cloud-white);
-}
-
 /* Позиционирование эксперта в исходнике не закрыто — строка появится,
    когда автор её пришлёт */
 .expert-card__role {
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  color: var(--ai-glow);
+  color: var(--accent-cyan);
 }
 
 .expert-card__facts {
@@ -1453,7 +1513,7 @@
   padding-left: var(--space-6);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 .expert-card__fact::before {
@@ -1464,18 +1524,23 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--grad-primary);
+  background: var(--grad-mark);
 }
 
-/* На узких экранах карточка отдаёт поля тексту, а фото не занимает
-   весь экран: квадрат ограничен по ширине и стоит слева, как в шапке */
+/* На узких экранах карточка отдаёт поля тексту; имя и фото —
+   в колонке без грида — центрируются, а не жмутся к левому краю */
 @media (max-width: 899px) {
   .expert-card {
     padding: var(--space-6);
   }
 
+  .expert-card__name {
+    text-align: center;
+  }
+
   .expert-card__photo {
-    max-width: 200px;
+    max-width: 260px;
+    margin: 0 auto;
   }
 }
 
@@ -1499,13 +1564,14 @@
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-md);
   background: var(--fill-1);
+  box-shadow: var(--card-shadow);
   backdrop-filter: blur(8px);
   transition: border-color var(--transition), background-color var(--transition),
     box-shadow var(--transition);
 }
 
 .support-card:hover {
-  border-color: rgba(184, 140, 255, 0.55);
+  border-color: var(--border-hover);
   background: var(--fill-3);
   box-shadow: var(--shadow-card), var(--glow-lavender);
 }
@@ -1513,7 +1579,7 @@
 .support-card__text {
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 /* Первая строка блока про Тессу — определение, а не абзац:
@@ -1522,7 +1588,7 @@
   font-size: var(--fs-lead);
   font-weight: var(--fw-semibold);
   line-height: 1.4;
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 /* Условие проверки работ: отдельная плашка с акцентной чертой слева —
@@ -1535,10 +1601,10 @@
   padding: var(--space-4) var(--space-6);
   padding-left: calc(var(--space-6) + 2px);
   border-radius: var(--radius-sm);
-  background: rgba(184, 140, 255, 0.12);
+  background: var(--plaque-fill);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 .support-card__note::before {
@@ -1547,14 +1613,14 @@
   inset: 0 auto 0 0;
   width: 2px;
   border-radius: var(--radius-sm) 0 0 var(--radius-sm);
-  background: var(--grad-primary);
+  background: var(--grad-mark);
 }
 
 .support-card__list-title {
   font-size: var(--fs-body);
   font-weight: var(--fw-semibold);
   line-height: var(--lh-body);
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 .support-card__list {
@@ -1571,7 +1637,7 @@
   padding-left: var(--space-6);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 .support-card__item::before {
@@ -1582,7 +1648,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--grad-primary);
+  background: var(--grad-mark);
 }
 
 /* ---------- Карточка Тессы — та же панель с местом под иллюстрацию ---------- */
@@ -1615,11 +1681,11 @@
   position: relative;
   aspect-ratio: 1 / 1;
   overflow: hidden;
-  border: 1px dashed rgba(127, 232, 255, 0.35);
+  border: 1px dashed var(--badge-ring);
   border-radius: var(--radius-sm);
   background:
-    linear-gradient(135deg, rgba(127, 232, 255, 0.10) 0%, rgba(184, 140, 255, 0.06) 100%),
-    rgba(11, 4, 38, 0.35);
+    var(--media-film),
+    var(--media-backing);
 }
 
 .tessa-card__visual:has(img) {
@@ -1632,15 +1698,17 @@
   object-fit: cover;
 }
 
-/* На узких экранах панель отдаёт поля тексту, а место под иллюстрацию
-   не занимает весь экран — как фото эксперта на тринадцатом экране */
+/* На узких экранах панель отдаёт поля тексту; иллюстрация — в колонке
+   без грида — центрируется и растёт, а не жмётся к левому краю,
+   как фото эксперта на тринадцатом экране */
 @media (max-width: 899px) {
   .support-card {
     padding: var(--space-6);
   }
 
   .tessa-card__visual {
-    max-width: 200px;
+    max-width: 260px;
+    margin: 0 auto;
   }
 }
 
@@ -1665,6 +1733,7 @@
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-md);
   background: var(--fill-1);
+  box-shadow: var(--card-shadow);
   backdrop-filter: blur(8px);
   transition: transform var(--transition), border-color var(--transition),
     background-color var(--transition), box-shadow var(--transition);
@@ -1672,7 +1741,7 @@
 
 .tariff-card:hover {
   transform: translateY(-3px);
-  border-color: rgba(184, 140, 255, 0.55);
+  border-color: var(--border-hover);
   background: var(--fill-3);
   box-shadow: var(--shadow-card), var(--glow-lavender);
 }
@@ -1703,7 +1772,7 @@
   font-weight: var(--fw-bold);
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
-  color: var(--ai-glow);
+  color: var(--accent-cyan);
 }
 
 .tariff-card__badge::before {
@@ -1711,7 +1780,7 @@
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  border: 1px solid rgba(127, 232, 255, 0.55);
+  border: 1px solid var(--badge-ring);
 }
 
 /* Название тарифа в исходнике набрано капсом — это выделение автора,
@@ -1722,13 +1791,13 @@
   font-weight: var(--fw-bold);
   line-height: 1.25;
   text-transform: none;
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 .tariff-card__for {
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 /* «Все из тарифа …, а также:» — подпись к списку, а не абзац */
@@ -1737,7 +1806,7 @@
   font-size: var(--fs-body);
   font-weight: var(--fw-semibold);
   line-height: var(--lh-body);
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 .tariff-card__list {
@@ -1753,14 +1822,14 @@
   padding-left: var(--space-6);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 .tariff-card__item::before {
   content: '–';
   position: absolute;
   left: 0;
-  color: var(--tessa-lavender);
+  color: var(--accent);
 }
 
 /* Условие тарифа: плашка с акцентной чертой слева — как условие
@@ -1771,10 +1840,10 @@
   padding: var(--space-4) var(--space-6);
   padding-left: calc(var(--space-6) + 2px);
   border-radius: var(--radius-sm);
-  background: rgba(184, 140, 255, 0.12);
+  background: var(--plaque-fill);
   font-size: var(--fs-small);
   line-height: var(--lh-body);
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 .tariff-card__note::before {
@@ -1783,7 +1852,7 @@
   inset: 0 auto 0 0;
   width: 2px;
   border-radius: var(--radius-sm) 0 0 var(--radius-sm);
-  background: var(--grad-primary);
+  background: var(--grad-mark);
 }
 
 /* Цена прижата к низу карточки, чтобы кнопки трёх тарифов встали
@@ -1794,7 +1863,7 @@
   gap: var(--space-2);
   margin-top: auto;
   padding-top: var(--space-6);
-  border-top: 1px solid rgba(184, 140, 255, 0.18);
+  border-top: 1px solid var(--border-hairline);
 }
 
 .tariff-card__price-now {
@@ -1802,7 +1871,7 @@
   font-weight: var(--fw-extrabold);
   line-height: 1.1;
   letter-spacing: var(--ls-tight);
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 /* Регулярная стоимость зачёркнута только в цифре: зачёркивать
@@ -1810,17 +1879,17 @@
 .tariff-card__price-old {
   font-size: var(--fs-small);
   line-height: var(--lh-body);
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 .tariff-card__price-old s {
-  text-decoration-color: rgba(184, 140, 255, 0.8);
+  text-decoration-color: var(--accent);
 }
 
 .tariff-card__price-split {
   font-size: var(--fs-small);
   line-height: var(--lh-body);
-  color: var(--ai-glow);
+  color: var(--accent-cyan);
 }
 
 /* Рекомендованный тариф — то же тёмное стекло, что у соседей (заливка
@@ -1830,13 +1899,13 @@
    карточки, но постоянная */
 .tariff-card--popular {
   border-width: 2px;
-  border-color: rgba(184, 140, 255, 0.85);
+  border-color: var(--border-strong);
   box-shadow: var(--shadow-card), var(--glow-lavender);
 }
 
 .tariff-card--popular:hover {
-  border-color: rgba(184, 140, 255, 0.95);
-  box-shadow: var(--shadow-card), 0 0 34px rgba(184, 140, 255, 0.75);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-card), var(--glow-lavender);
 }
 
 /* На узких экранах карточка отдаёт поля тексту */
@@ -1866,18 +1935,19 @@
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-md);
   background: var(--fill-1);
+  box-shadow: var(--card-shadow);
   backdrop-filter: blur(8px);
   transition: border-color var(--transition), background-color var(--transition),
     box-shadow var(--transition);
 }
 
 .faq-item__box:hover {
-  border-color: rgba(184, 140, 255, 0.55);
+  border-color: var(--border-hover);
   background: var(--fill-2);
 }
 
 .faq-item__box[open] {
-  border-color: rgba(184, 140, 255, 0.55);
+  border-color: var(--border-hover);
   background: var(--fill-3);
   box-shadow: var(--shadow-card), var(--glow-lavender);
 }
@@ -1898,7 +1968,7 @@
   line-height: 1.3;
   text-transform: none;
   letter-spacing: normal;
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 .faq-item__q::-webkit-details-marker {
@@ -1913,19 +1983,19 @@
   width: 10px;
   height: 10px;
   margin-right: 4px;
-  border-right: 2px solid var(--tessa-lavender);
-  border-bottom: 2px solid var(--tessa-lavender);
+  border-right: 2px solid var(--accent);
+  border-bottom: 2px solid var(--accent);
   transform: rotate(45deg) translate(-2px, -2px);
   transition: transform var(--transition), border-color var(--transition);
 }
 
 .faq-item__box[open] .faq-item__q::after {
   transform: rotate(225deg) translate(-2px, -2px);
-  border-color: var(--ai-glow);
+  border-color: var(--accent-cyan);
 }
 
 .faq-item__q:focus-visible {
-  outline: 2px solid var(--tessa-lavender);
+  outline: 2px solid var(--focus-ring);
   outline-offset: -4px;
   border-radius: var(--radius-md);
 }
@@ -1941,7 +2011,7 @@
 .faq-item__text {
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 /* На узких экранах строка отдаёт поля тексту */

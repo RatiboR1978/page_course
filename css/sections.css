@@ -19,7 +19,7 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 .logo__img {
@@ -169,7 +169,7 @@
     font-size: clamp(0.9375rem, 0.83rem + 0.5vw, 1.25rem);
     text-transform: none;
     letter-spacing: normal;
-    color: var(--cloud-white);
+    color: var(--text-strong);
     margin-bottom: var(--space-4);
   }
 
@@ -206,7 +206,7 @@
     margin-top: var(--space-4);
     margin-bottom: 0;
     font-weight: var(--fw-bold);
-    color: var(--cloud-white);
+    color: var(--text-strong);
   }
 }
 
@@ -265,7 +265,7 @@
   line-height: 1.22;
   text-transform: none;
   letter-spacing: -0.01em;
-  color: var(--cloud-white);
+  color: var(--text-strong);
   text-wrap: balance;
 }
 
@@ -273,7 +273,7 @@
    Только background-image: шорткат background сбросил бы background-clip: text,
    который приходит из .grad-text, и градиент лёг бы сплошной плашкой. */
 .grad-text--h1 {
-  background-image: var(--grad-h1);
+  background-image: var(--grad-accent-text);
 }
 
 .pains .section__subtitle {
@@ -290,7 +290,7 @@
   font-weight: var(--fw-bold);
   line-height: 1.2;
   text-align: center;
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 .pains__lead::after {
@@ -302,7 +302,7 @@
   height: 2px;
   transform: translateX(-50%);
   border-radius: 2px;
-  background: var(--grad-primary);
+  background: var(--grad-mark);
 }
 
 /* Список пунктов: 1 → 2 → 3 колонки. Вертикального зазора между
@@ -515,31 +515,10 @@
    пункта «что нужно знать», обещание курса и первый на странице
    промежуточный CTA.
 
-   Та же тёмная сцена, что и у pains, но с собственным фоном:
-   картинка reason-bg.png с нейросетевым узором по левому и правому
-   краям и пустой серединой под текст. Размеры на токенах и clamp().
+   Светлый серый экран между двумя тёмными. Фона-картинки и живого
+   узора точек-линий здесь нет: на светлом они не читаются, оформление
+   держат иконки и карточки. Размеры на токенах и clamp().
    ------------------------------------------------------------ */
-
-/* Canvas с живым узором точек-линий (js/network-bg.js). Скрыт по
-   умолчанию — включается только на десктопном брейкпоинте конкретной
-   секции (.reason .network-bg / .path .network-bg ниже), там же, где
-   раньше подключалась картинка. На мобильных не рендерится и не грузит
-   JS-анимацию — как и раньше с картинкой. */
-.network-bg {
-  display: none;
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .network-bg {
-    display: none !important;
-  }
-}
 
 .reason {
   position: relative;
@@ -550,58 +529,6 @@
       top / 100% 200px no-repeat,
     var(--surface-solid, var(--night-900));
   overflow: hidden;
-}
-
-/* Фон секции. На узких экранах картинка не подключается: она широкая
-   (16:9), в высокую колонку cover обрезал бы её до пустой середины —
-   весь узор ушёл бы за края, а 1.5 МБ всё равно скачались. Там остаётся
-   прежняя подсветка градиентами: циан сверху справа, лаванда снизу слева. */
-.reason::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background:
-    radial-gradient(58% 52% at 88% 0%, rgba(127, 232, 255, 0.14) 0%, rgba(127, 232, 255, 0) 70%),
-    radial-gradient(58% 55% at 8% 100%, rgba(184, 140, 255, 0.16) 0%, rgba(184, 140, 255, 0) 70%);
-  pointer-events: none;
-}
-
-@media (min-width: 768px) {
-  /* Верхний слой — вертикальное затухание в общий фон сайта: живой узор
-     из .network-bg должен так же растворяться на стыках с соседними
-     тёмными секциями, как раньше растворялась картинка reason-bg.png.
-     Линия шва и её ореол переезжают сюда же первыми слоями: из фона
-     секции их накрыл бы непрозрачный край затухания. В фоне секции
-     ореол при этом убран — два одинаковых слоя складывались бы
-     в плотное облако под швом. */
-  .reason {
-    background:
-      linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
-        top / 100% 2px no-repeat,
-      var(--surface-solid, var(--night-900));
-  }
-
-  .reason::before {
-    background:
-      linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
-        top / 100% 2px no-repeat,
-      radial-gradient(60% 100% at 50% 0%, var(--seam-halo) 0%, transparent 70%)
-        top / 100% 140px no-repeat,
-      linear-gradient(
-        180deg,
-        rgba(11, 4, 38, 1) 0%,
-        rgba(11, 4, 38, 0) 14%,
-        rgba(11, 4, 38, 0) 86%,
-        rgba(11, 4, 38, 1) 100%
-      ) center / cover no-repeat;
-  }
-
-  /* Живой узор точек-линий вместо статичной картинки reason-bg.png —
-     see js/network-bg.js. Лежит под ::before (затухание) и под .container. */
-  .reason .network-bg {
-    display: block;
-  }
 }
 
 .reason > .container {
@@ -618,7 +545,7 @@
 }
 
 .reason .section__title {
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 .reason .section__subtitle {
@@ -635,7 +562,7 @@
   font-weight: var(--fw-bold);
   line-height: 1.2;
   text-align: center;
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 .reason__lead::after {
@@ -647,16 +574,14 @@
   height: 2px;
   transform: translateX(-50%);
   border-radius: 2px;
-  background: var(--grad-primary);
+  background: var(--grad-mark);
 }
 
 /* Таймлайн вместо сетки карточек: на узких экранах — колонка узлов
    слева от текста, на десктопе (≥1200px, когда все четыре встают
    одной строкой) — горизонтальный ряд с узлами по центру и общей
-   соединительной чертой. Счётчик обнуляется здесь, инкремент —
-   на .reason-step__node. */
+   соединительной чертой. */
 .reason__timeline {
-  counter-reset: reason;
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
@@ -670,12 +595,12 @@
   .reason-step:not(:last-child)::after {
     content: '';
     position: absolute;
-    top: 56px;
-    left: 27px;
+    top: 132px;
+    left: 65px;
     width: 2px;
     height: var(--space-6);
-    background: var(--grad-primary);
-    opacity: 0.35;
+    background: var(--grad-mark);
+    opacity: var(--mark-opacity);
   }
 }
 
@@ -693,17 +618,16 @@
     align-items: start;
   }
 
-  /* Общая линия под рядом узлов: по центру круга (56px), плюс отступ
-     контейнера от верха ряда до центра узла */
+  /* Общая линия под рядом узлов: по центру иконки (132px) */
   .reason-step::after {
     content: '';
     position: absolute;
-    top: 28px;
+    top: 66px;
     left: 100%;
     width: var(--space-8);
     height: 2px;
-    background: var(--grad-primary);
-    opacity: 0.45;
+    background: var(--grad-mark);
+    opacity: var(--mark-opacity);
   }
 
   .reason-step:last-child::after {
@@ -722,14 +646,14 @@
 .reason__result {
   font-size: var(--fs-lead);
   line-height: var(--lh-body);
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 .reason__path-title {
   margin-top: var(--space-8);
   font-size: var(--fs-h4);
   font-weight: var(--fw-bold);
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 /* Цепочка шагов: таблетки со стрелками между ними.
@@ -758,11 +682,12 @@
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-pill);
   background: var(--fill-1);
+  box-shadow: var(--card-shadow);
   font-size: var(--fs-small);
   font-weight: var(--fw-bold);
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 /* Стрелка вынесена за границу таблетки и нарисована на CSS, а не глифом:
@@ -783,7 +708,7 @@
   height: 2px;
   transform: translateY(-50%);
   border-radius: 2px;
-  background: var(--tessa-lavender);
+  background: var(--accent);
 }
 
 /* Наконечник — треугольник на бордерах, 8px в длину */
@@ -794,7 +719,7 @@
   transform: translateY(-50%);
   border-top: 5px solid transparent;
   border-bottom: 5px solid transparent;
-  border-left: 8px solid var(--tessa-lavender);
+  border-left: 8px solid var(--accent);
 }
 
 /* У последнего шага стрелки нет — цепочка на нём заканчивается */
@@ -816,7 +741,7 @@
   text-align: center;
 }
 
-@media (max-width: 479px) {
+@media (max-width: 767px) {
   /* Цепочка встаёт в колонку, стрелки разворачиваются вниз */
   .reason__path {
     flex-direction: column;
@@ -842,7 +767,7 @@
     top: calc(100% + var(--path-arrow-inset) + var(--path-arrow) - 0.5rem);
     left: 50%;
     transform: translateX(-50%);
-    border-top: 8px solid var(--tessa-lavender);
+    border-top: 8px solid var(--accent);
     border-right: 5px solid transparent;
     border-bottom: 0;
     border-left: 5px solid transparent;
@@ -941,7 +866,7 @@
   line-height: 1.22;
   text-transform: none;
   letter-spacing: -0.01em;
-  color: var(--cloud-white);
+  color: var(--text-strong);
   text-wrap: balance;
 }
 
@@ -1010,7 +935,7 @@
   font-size: var(--fs-lead);
   line-height: var(--lh-body);
   text-align: center;
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 /* Чек-лист — одна стеклянная панель, а не третья подряд сетка карточек:
@@ -1022,19 +947,20 @@
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-lg);
   background: var(--fill-1);
+  box-shadow: var(--card-shadow);
   backdrop-filter: blur(8px);
 }
 
 /* Подводка к списку + тонкая градиентная черта под ней — как на 2 и 3 экранах */
 .trend__lead {
   position: relative;
-  margin-bottom: var(--space-8);
+  margin-bottom: var(--space-6);
   padding-bottom: var(--space-4);
   font-size: var(--fs-h3);
   font-weight: var(--fw-bold);
   line-height: 1.2;
   text-align: center;
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 .trend__lead::after {
@@ -1046,7 +972,7 @@
   height: 2px;
   transform: translateX(-50%);
   border-radius: 2px;
-  background: var(--grad-primary);
+  background: var(--grad-mark);
 }
 
 .trend__item {
@@ -1055,7 +981,7 @@
   border-bottom: 1px solid var(--border-dark);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 .trend__item:last-child {
@@ -1070,7 +996,7 @@
   position: absolute;
   left: var(--space-3);
   font-weight: var(--fw-bold);
-  color: var(--tessa-lavender);
+  color: var(--accent);
 }
 
 .trend__verdict {
@@ -1079,7 +1005,7 @@
   font-weight: var(--fw-bold);
   line-height: 1.35;
   text-align: center;
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 @media (max-width: 479px) {
@@ -1097,8 +1023,8 @@
    Шесть шагов курса 01–06 — ответ на вопрос предыдущего экрана
    «а что делать, если использую 5–7% возможностей».
 
-   Та же тёмная сцена и те же токены, что у pains, reason и trend,
-   и собственный фон-картинка — как на третьем экране.
+   Светлый серый экран между двумя тёмными: живой узор и затухание в
+   тёмный фон здесь сняты, оформление держат карточки шагов.
    ------------------------------------------------------------ */
 
 .path {
@@ -1112,55 +1038,8 @@
   overflow: hidden;
 }
 
-/* Фон секции — по той же схеме, что у .reason: на узких экранах картинка
-   не подключается (она широкая, в высокую колонку cover обрезал бы её до
-   пустой середины), там остаётся подсветка градиентами. */
-.path::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background:
-    radial-gradient(58% 52% at 86% 0%, rgba(127, 232, 255, 0.14) 0%, rgba(127, 232, 255, 0) 70%),
-    radial-gradient(58% 55% at 10% 100%, rgba(184, 140, 255, 0.16) 0%, rgba(184, 140, 255, 0) 70%);
-  pointer-events: none;
-}
-
-@media (min-width: 768px) {
-  /* Верхний слой — затухание в общий фон сайта, чтобы на стыках
-     с соседними тёмными секциями не было горизонтальной границы.
-     Линия шва и её ореол переезжают сюда же первыми слоями: из фона
-     секции их накрыл бы непрозрачный край затухания. В фоне секции
-     ореол при этом убран — два одинаковых слоя складывались бы
-     в плотное облако под швом. */
-  .path {
-    background:
-      linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
-        top / 100% 2px no-repeat,
-      var(--surface-solid, var(--night-900));
-  }
-
-  .path::before {
-    background:
-      linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
-        top / 100% 2px no-repeat,
-      radial-gradient(60% 100% at 50% 0%, var(--seam-halo) 0%, transparent 70%)
-        top / 100% 140px no-repeat,
-      linear-gradient(
-        180deg,
-        rgba(11, 4, 38, 1) 0%,
-        rgba(11, 4, 38, 0) 14%,
-        rgba(11, 4, 38, 0) 86%,
-        rgba(11, 4, 38, 1) 100%
-      ) center / cover no-repeat;
-  }
-
-  /* Живой узор точек-линий вместо статичной картинки path-bg.png —
-     see js/network-bg.js. */
-  .path .network-bg {
-    display: block;
-  }
-}
+/* Живой canvas и затухание в тёмный фон здесь сняты: секция стала
+   светлой: на белом тёмный узор не читается. */
 
 .path > .container {
   position: relative;
@@ -1179,7 +1058,7 @@
   line-height: 1.22;
   text-transform: none;
   letter-spacing: -0.01em;
-  color: var(--cloud-white);
+  color: var(--text-strong);
   text-wrap: balance;
 }
 
@@ -1206,8 +1085,8 @@
   bottom: 24px;
   left: 23px;
   width: 2px;
-  background: var(--grad-primary);
-  opacity: 0.3;
+  background: var(--grad-mark);
+  opacity: var(--mark-opacity);
 }
 
 @media (min-width: 1200px) {
@@ -1334,7 +1213,7 @@
   line-height: 1.22;
   text-transform: none;
   letter-spacing: -0.01em;
-  color: var(--cloud-white);
+  color: var(--text-strong);
   text-wrap: balance;
 }
 
@@ -1371,6 +1250,7 @@
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-md);
   background: var(--fill-1);
+  box-shadow: var(--card-shadow);
   backdrop-filter: blur(8px);
 }
 
@@ -1390,7 +1270,10 @@
   font-weight: var(--fw-bold);
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
-  color: var(--ai-glow);
+  color: var(--accent-cyan);
+  /* Иначе на узких экранах плашка сжимается по ширине карточки
+     и «формат» переносится на вторую строку */
+  white-space: nowrap;
 }
 
 .offers__combo-badge::before {
@@ -1398,7 +1281,7 @@
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  border: 1px solid rgba(127, 232, 255, 0.55);
+  border: 1px solid var(--badge-ring);
 }
 
 .offers__combo-title {
@@ -1407,7 +1290,7 @@
   font-weight: var(--fw-extrabold);
   line-height: 1.25;
   text-align: center;
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 .offers__combo-lead {
@@ -1416,7 +1299,7 @@
   font-size: var(--fs-lead);
   line-height: var(--lh-body);
   text-align: center;
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 /* Шесть готовых результатов: 1 → 2 → 3 колонки */
@@ -1443,7 +1326,7 @@
   padding: var(--space-3) 0 var(--space-3) var(--space-6);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 /* Маркер-кружок вместо тире — тот же приём, что у .expert-card__fact:
@@ -1456,7 +1339,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--grad-primary);
+  background: var(--grad-mark);
 }
 
 /* Сноска об источнике вилок — мельче основного текста,
@@ -1467,7 +1350,7 @@
   font-size: var(--fs-small);
   line-height: 1.5;
   text-align: center;
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 .offers__cta {
@@ -1517,50 +1400,10 @@
   pointer-events: none;
 }
 
-/* Фон секции — картинка audience-bg.png с нейросетевым узором по левому
-   и правому краям и пустой серединой под карточки. Подключается тем же
-   способом, что и фоны reason/path: слой картинки уходит в общий
-   shorthand под градиенты шва, а ::before добавляет вертикальное
-   затухание в цвет страницы, чтобы на стыках с соседними тёмными
-   секциями не было горизонтальной границы.
-
-   На узких экранах не подключается: картинка широкая (16:9), в высокую
-   колонку cover обрезал бы её до пустой середины — узор ушёл бы за края,
-   а вес всё равно скачался бы. Там остаётся прежняя подсветка
-   градиентами: циан сверху справа, лаванда снизу слева. */
-@media (min-width: 768px) {
-  .audience {
-    background:
-      linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
-        top / 100% 2px no-repeat,
-      url('../assets/img/audience-bg.png') center / cover no-repeat,
-      var(--surface-solid, var(--night-900));
-  }
-
-  /* Затухание кладётся поверх картинки, поэтому линия шва и её ореол
-     из фона секции оказались бы под непрозрачным краем градиента и
-     пропали. Переносим их в ::before первыми слоями — так шов остаётся
-     верхним слоем и виден на границе с предыдущей секцией. Из фона
-     секции ореол при этом убран: два одинаковых слоя складывались и
-     давали слишком плотное облако под швом. Здесь он ещё и ниже
-     (140px вместо 200px) — под ним лежит картинка, а не ровный фон. */
-  .audience::before {
-    background:
-      linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
-        top / 100% 2px no-repeat,
-      radial-gradient(60% 100% at 50% 0%, var(--seam-halo) 0%, transparent 70%)
-        top / 100% 140px no-repeat,
-      radial-gradient(56% 50% at 88% 0%, rgba(127, 232, 255, 0.14) 0%, rgba(127, 232, 255, 0) 70%),
-      radial-gradient(58% 54% at 12% 100%, rgba(184, 140, 255, 0.15) 0%, rgba(184, 140, 255, 0) 70%),
-      linear-gradient(
-        180deg,
-        rgba(11, 4, 38, 1) 0%,
-        rgba(11, 4, 38, 0) 14%,
-        rgba(11, 4, 38, 0) 86%,
-        rgba(11, 4, 38, 1) 100%
-      );
-  }
-}
+/* Картинка audience-bg.png отсюда снята: секция переведена в светлый
+   тон, чтобы разорвать три тёмных экрана подряд (offers — audience —
+   method). Тёмный узор на белом не читается, а вертикальное затухание
+   в цвет страницы там больше нечему растворять. */
 
 .audience > .container {
   position: relative;
@@ -1581,7 +1424,7 @@
   line-height: 1.22;
   text-transform: none;
   letter-spacing: -0.01em;
-  color: var(--cloud-white);
+  color: var(--text-strong);
   text-wrap: balance;
 }
 
@@ -1806,56 +1649,8 @@
   overflow: hidden;
 }
 
-/* На десктопе шов уезжает в ::before: там поверх узора лежит затухание
-   в цвет страницы, и линия из фона секции оказалась бы под его
-   непрозрачным краем. Здесь ореол из фона убран, чтобы два одинаковых
-   слоя не складывались в плотное облако под швом. */
-@media (min-width: 768px) {
-  .timing {
-    background: var(--surface-solid, var(--night-900));
-  }
-}
-
-/* Секция переведена с тона --deep на --base: почти чёрная середина
-   гасила живой узор, ради которого сюда и добавлен .network-bg.
-   Подсветки вернулись к обычной плотности — поднимать их на треть,
-   как было под --deep, больше незачем. */
-.timing::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background:
-    radial-gradient(56% 50% at 88% 0%, rgba(127, 232, 255, 0.14) 0%, rgba(127, 232, 255, 0) 70%),
-    radial-gradient(58% 54% at 12% 100%, rgba(184, 140, 255, 0.16) 0%, rgba(184, 140, 255, 0) 70%);
-  pointer-events: none;
-}
-
-@media (min-width: 768px) {
-  /* Верхний слой — затухание в общий фон сайта, чтобы на стыках
-     с соседними тёмными секциями не было горизонтальной границы.
-     Схема та же, что у .reason и .path. */
-  .timing::before {
-    background:
-      linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
-        top / 100% 2px no-repeat,
-      radial-gradient(60% 100% at 50% 0%, var(--seam-halo) 0%, transparent 70%)
-        top / 100% 140px no-repeat,
-      linear-gradient(
-        180deg,
-        rgba(11, 4, 38, 1) 0%,
-        rgba(11, 4, 38, 0) 14%,
-        rgba(11, 4, 38, 0) 86%,
-        rgba(11, 4, 38, 1) 100%
-      ) center / cover no-repeat;
-  }
-
-  /* Живой узор точек-линий — see js/network-bg.js. Лежит под ::before
-     (затухание) и под .container. */
-  .timing .network-bg {
-    display: block;
-  }
-}
+/* Живой canvas и затухание в тёмный фон здесь сняты: секция стала
+   светлой: на белом тёмный узор не читается. */
 
 .timing > .container {
   position: relative;
@@ -1913,7 +1708,7 @@
   font-weight: var(--fw-extrabold);
   line-height: var(--lh-tight);
   letter-spacing: var(--ls-tight);
-  background: var(--grad-h1);
+  background: var(--grad-accent-text);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -1924,7 +1719,7 @@
   font-weight: var(--fw-semibold);
   text-transform: uppercase;
   letter-spacing: var(--ls-wide);
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 /* Дорожка недель: семь сегментов курса + восьмой, финальный проект.
@@ -1942,7 +1737,7 @@
 .timing__seg {
   height: 10px;
   border-radius: var(--radius-pill);
-  background-image: linear-gradient(90deg, var(--tessa-lavender) 0%, var(--blush-pink) 100%);
+  background-image: var(--grad-track);
   background-size: 700% 100%;
   transform: scaleX(0);
   transform-origin: left center;
@@ -1961,7 +1756,7 @@
    восьмая неделя отличается от семи учебных по сути */
 .timing__seg--final {
   background-image: none;
-  background-color: var(--ai-glow);
+  background-color: var(--accent-cyan);
   box-shadow: var(--glow-cyan);
 }
 
@@ -1989,12 +1784,12 @@
   margin-top: var(--space-2);
   font-size: var(--fs-eyebrow);
   line-height: 1.2;
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 .timing__weeknum--final {
   font-weight: var(--fw-semibold);
-  color: var(--ai-glow);
+  color: var(--accent-cyan);
 }
 
 /* На мобильных колонка сужается до ~30px — подпись финала
@@ -2011,7 +1806,7 @@
   font-size: var(--fs-body);
   font-weight: var(--fw-semibold);
   line-height: 1.3;
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 /* Правая колонка: две метрики столбиком. На десктопе отделяется
@@ -2052,14 +1847,14 @@
   font-weight: var(--fw-extrabold);
   line-height: var(--lh-tight);
   letter-spacing: var(--ls-tight);
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 .timing__metric-label {
   font-size: var(--fs-small);
   text-transform: uppercase;
   letter-spacing: var(--ls-wide);
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 /* Подвал панели — служебные факты, которые не разбираются
@@ -2072,7 +1867,7 @@
   border-top: 1px solid var(--border-dark);
   font-size: var(--fs-small);
   line-height: 1.4;
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 @media (min-width: 768px) {
@@ -2096,7 +1891,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--tessa-lavender);
+  background: var(--accent);
 }
 
 /* Два абзаца режима обучения. Акцент .grad-text--h1 стоит
@@ -2114,7 +1909,7 @@
   font-size: var(--fs-lead);
   line-height: var(--lh-body);
   text-align: center;
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 /* «Вам не понадобится» — список отрицаний, а не перечень фич.
@@ -2153,13 +1948,13 @@
   margin-bottom: var(--space-6);
   padding-bottom: var(--space-4);
   border-bottom: 1px solid transparent;
-  border-image: linear-gradient(90deg, rgba(184, 140, 255, 0.55), transparent 92%) 1;
+  border-image: linear-gradient(90deg, var(--border-hover), transparent 92%) 1;
   font-size: var(--fs-h3);
   font-weight: var(--fw-bold);
   line-height: 1.2;
   letter-spacing: -0.01em;
   text-align: left;
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 /* ✕ — тот же знак отрицания, что у строк списка, но крупнее и
@@ -2172,13 +1967,13 @@
   flex: none;
   width: 1.75em;
   height: 1.75em;
-  border: 1px solid rgba(184, 140, 255, 0.55);
+  border: 1px solid var(--border-hover);
   border-radius: 50%;
-  background: rgba(184, 140, 255, 0.14);
+  background: var(--accent);
   box-shadow: var(--glow-lavender);
   font-size: 0.62em;
   line-height: 1;
-  color: var(--tessa-lavender);
+  color: #fff;
 }
 
 /* Один столбец на всех ширинах. Две колонки пробовали — пункты
@@ -2202,7 +1997,7 @@
   padding: var(--space-4) 0;
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
   opacity: 0;
   transform: translateY(10px);
   transition: opacity var(--transition-slow), transform var(--transition-slow),
@@ -2216,11 +2011,12 @@
   width: 30px;
   height: 30px;
   margin-top: -0.1em;
-  border: 1px solid rgba(184, 140, 255, 0.35);
+  border: 1px solid var(--border-hover);
   border-radius: 50%;
+  background: var(--accent);
   font-size: 0.6875rem;
   line-height: 1;
-  color: var(--tessa-lavender);
+  color: #fff;
   transition: border-color var(--transition), background-color var(--transition),
     box-shadow var(--transition), color var(--transition);
 }
@@ -2229,18 +2025,18 @@
    на всю ширину дробила бы панель на одинаковые ячейки */
 .timing__free-item + .timing__free-item {
   border-top: 1px solid transparent;
-  border-image: linear-gradient(90deg, rgba(184, 140, 255, 0.28), transparent 92%) 1;
+  border-image: linear-gradient(90deg, var(--border-hairline), transparent 92%) 1;
 }
 
 .timing__free-item:hover {
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 .timing__free-item:hover::before {
-  border-color: rgba(184, 140, 255, 0.7);
-  background: rgba(184, 140, 255, 0.14);
+  border-color: var(--border-hover);
+  background: var(--accent);
   box-shadow: var(--glow-lavender);
-  color: var(--cloud-white);
+  color: #fff;
 }
 
 /* Каскад по .is-visible от IntersectionObserver — тот же приём,
@@ -2263,7 +2059,7 @@
   font-size: var(--fs-small);
   line-height: var(--lh-body);
   text-align: left;
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 @media (max-width: 479px) {
@@ -2347,7 +2143,7 @@
   line-height: 1.22;
   text-transform: none;
   letter-spacing: -0.01em;
-  color: var(--cloud-white);
+  color: var(--text-strong);
   text-wrap: balance;
 }
 
@@ -2372,7 +2168,18 @@
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-lg);
   background: var(--fill-1);
+  box-shadow: var(--card-shadow);
   backdrop-filter: blur(8px);
+}
+
+/* Баннер финального проекта — над заголовком, по центру панели */
+.program__final-image {
+  display: block;
+  max-width: 640px;
+  width: 100%;
+  height: auto;
+  margin: 0 auto var(--space-6);
+  border-radius: var(--radius-md);
 }
 
 /* Заголовок панели + тонкая градиентная черта под ним — как .trend__lead
@@ -2386,7 +2193,7 @@
   text-transform: none;
   letter-spacing: normal;
   text-align: center;
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 .program__final-title::after {
@@ -2398,7 +2205,7 @@
   height: 2px;
   transform: translateX(-50%);
   border-radius: 2px;
-  background: var(--grad-primary);
+  background: var(--grad-mark);
 }
 
 .program__final-promise {
@@ -2407,21 +2214,21 @@
   font-weight: var(--fw-semibold);
   line-height: var(--lh-body);
   text-align: center;
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 .program__final-text {
   margin-top: var(--space-4);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 /* «Итог» набран теми же подписью и текстом, что блоки внутри модулей */
 .program__final-result {
   margin-top: var(--space-8);
   padding-left: var(--space-4);
-  border-left: 2px solid var(--tessa-lavender);
+  border-left: 2px solid var(--accent);
 }
 
 .program__cta {
@@ -2489,7 +2296,7 @@
   line-height: 1.22;
   text-transform: none;
   letter-spacing: -0.01em;
-  color: var(--cloud-white);
+  color: var(--text-strong);
   text-wrap: balance;
 }
 
@@ -2563,7 +2370,7 @@
   line-height: 1.22;
   text-transform: none;
   letter-spacing: -0.01em;
-  color: var(--cloud-white);
+  color: var(--text-strong);
   text-wrap: balance;
 }
 
@@ -2572,25 +2379,32 @@
 .results .section__subtitle {
   margin-top: var(--space-4);
   font-size: var(--fs-lead);
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
-/* Сетка шагов кейса: 1 → 2 → 4 колонки, как у шагов метода
-   на восьмом экране — это такой же короткий порядок из четырёх пунктов. */
+/* Раньше это была сетка из четырёх отдельных карточек — на странице
+   таких карточных сеток уже много (пункты метода, шаги пути, модули),
+   и ещё одна повторяла бы тот же приём. Здесь вместо этого один
+   стеклянный маршрут: четыре сегмента одной панели, разделённые
+   волосяной линией и стрелкой прогресса, а не четыре независимые
+   плашки с тенью и рамкой каждая. Денежный шаг подсвечен не отдельной
+   карточкой, а собственной заливкой сегмента — вложение видно как
+   часть общего пути, а не как отдельный акцент. */
 .results__grid {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr;
-  align-items: stretch;
-  gap: var(--space-6);
+  max-width: 68em;
+  margin-inline: auto;
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-lg);
+  background: var(--fill-1);
+  box-shadow: var(--card-shadow);
+  backdrop-filter: blur(8px);
+  overflow: hidden;
 }
 
-@media (min-width: 768px) {
-  .results__grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1200px) {
+@media (min-width: 900px) {
   .results__grid {
     grid-template-columns: repeat(4, 1fr);
   }
@@ -2647,7 +2461,7 @@
   line-height: 1.22;
   text-transform: none;
   letter-spacing: -0.01em;
-  color: var(--cloud-white);
+  color: var(--text-strong);
   text-wrap: balance;
 }
 
@@ -2701,7 +2515,7 @@
   line-height: 1.22;
   text-transform: none;
   letter-spacing: -0.01em;
-  color: var(--cloud-white);
+  color: var(--text-strong);
   text-wrap: balance;
 }
 
@@ -2720,7 +2534,7 @@
   font-weight: var(--fw-bold);
   text-transform: none;
   letter-spacing: -0.01em;
-  color: var(--cloud-white);
+  color: var(--text-strong);
   text-wrap: balance;
 }
 
@@ -2733,7 +2547,7 @@
   line-height: 1.4;
   text-align: center;
   text-wrap: balance;
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 /* ------------------------------------------------------------
@@ -2789,7 +2603,7 @@
   line-height: 1.22;
   text-transform: none;
   letter-spacing: -0.01em;
-  color: var(--cloud-white);
+  color: var(--text-strong);
   text-wrap: balance;
 }
 
@@ -2855,15 +2669,33 @@
    «а что, если не понравится», а не как самостоятельный экран с
    собственной структурой. Панель — то же тёмное стекло, что у
    .trend__audit. */
+/* Без карточки: текст стоит прямо на фоне секции, а не в белой
+   плашке поверх него — блок короткий и самодостаточный, стеклянная
+   рамка вокруг него была бы лишним слоем. */
 .guarantee__panel {
   max-width: 52em;
   margin-inline: auto;
-  padding: clamp(1.5rem, 0.9rem + 2.4vw, 3rem);
-  border: 1px solid var(--border-dark);
-  border-radius: var(--radius-lg);
-  background: var(--fill-1);
-  backdrop-filter: blur(8px);
   text-align: center;
+}
+
+/* Печать гарантии — спокойный лавандовый бейдж-галочка над заголовком:
+   единственный визуальный акцент панели, без иллюстрации. Отличает
+   блок от .timer__panel, у которой акцент — цветная плашка-срок,
+   а не круглая печать. */
+.guarantee__seal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto var(--space-6);
+  border: 1px solid var(--border-hover);
+  border-radius: 50%;
+  background: var(--accent);
+  font-size: 1.375rem;
+  font-weight: var(--fw-extrabold);
+  line-height: 1;
+  color: #fff;
 }
 
 /* Заголовок — целая фраза, поэтому капс базового h2 снят, как на
@@ -2875,7 +2707,7 @@
   line-height: 1.22;
   text-transform: none;
   letter-spacing: -0.01em;
-  color: var(--cloud-white);
+  color: var(--text-strong);
   text-wrap: balance;
 }
 
@@ -2883,7 +2715,7 @@
   margin-bottom: var(--space-4);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 .guarantee__text:last-of-type {
@@ -2905,11 +2737,11 @@
   padding: var(--space-4) var(--space-6);
   padding-left: calc(var(--space-6) + 2px);
   border-radius: var(--radius-sm);
-  background: rgba(184, 140, 255, 0.12);
+  background: var(--plaque-fill);
   font-size: var(--fs-small);
   line-height: var(--lh-body);
   text-align: left;
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 .guarantee__note::before {
@@ -2918,7 +2750,7 @@
   inset: 0 auto 0 0;
   width: 2px;
   border-radius: var(--radius-sm) 0 0 var(--radius-sm);
-  background: var(--grad-primary);
+  background: var(--grad-mark);
 }
 
 /* ------------------------------------------------------------
@@ -2970,14 +2802,36 @@
    таймер и три пункта читаются как один цельный отсчёт, а не как
    самостоятельный экран со своей структурой. */
 .timer__panel {
+  position: relative;
   max-width: 52em;
   margin-inline: auto;
   padding: clamp(1.5rem, 0.9rem + 2.4vw, 3rem);
-  border: 1px solid var(--border-dark);
+  border: 2px solid var(--badge-ring);
   border-radius: var(--radius-lg);
   background: var(--fill-1);
+  box-shadow: var(--card-shadow), var(--glow-cyan);
   backdrop-filter: blur(8px);
   text-align: center;
+}
+
+/* Плашка срока — цианом, а не лавандой: акцент на ограниченности
+   предложения, а не на спокойной гарантии .guarantee__panel. Сидит
+   на кромке панели, как .tariff-card__badge, поэтому вынесена
+   из потока. */
+.timer__badge {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 0.3125rem 0.75rem;
+  border-radius: var(--radius-pill);
+  background: var(--surface-solid, var(--night-800));
+  border: 1px solid var(--badge-ring);
+  font-size: var(--fs-eyebrow);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  color: var(--accent-cyan);
 }
 
 /* Заголовок — целая фраза, поэтому капс базового h2 снят, как на
@@ -2990,7 +2844,7 @@
   line-height: 1.22;
   text-transform: none;
   letter-spacing: -0.01em;
-  color: var(--cloud-white);
+  color: var(--text-strong);
   text-wrap: balance;
 }
 
@@ -3020,7 +2874,7 @@
   line-height: 1;
   letter-spacing: var(--ls-tight);
   font-variant-numeric: tabular-nums;
-  background-image: var(--grad-primary);
+  background-image: var(--grad-accent-text);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -3031,7 +2885,7 @@
   font-weight: var(--fw-semibold);
   text-transform: uppercase;
   letter-spacing: var(--ls-wide);
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 /* Двоеточие — та же колонка «число + подпись», что .timer__unit,
@@ -3048,7 +2902,7 @@
   font-size: clamp(2rem, 1.5rem + 2.2vw, 3rem);
   font-weight: var(--fw-extrabold);
   line-height: 1;
-  color: var(--border-dark);
+  color: var(--accent-soft);
 }
 
 .timer__colon-spacer {
@@ -3062,7 +2916,7 @@
   margin-bottom: var(--space-4);
   font-size: var(--fs-lead);
   font-weight: var(--fw-semibold);
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 /* Три пункта роста цены — короткий список, поэтому одной колонкой,
@@ -3080,7 +2934,7 @@
   border-bottom: 1px solid var(--border-dark);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 .timer__item:last-child {
@@ -3096,7 +2950,7 @@
   position: absolute;
   left: 0;
   font-weight: var(--fw-bold);
-  color: var(--tessa-lavender);
+  color: var(--accent);
 }
 
 /* Оговорка про места на персональном тарифе — плашка с акцентной
@@ -3110,11 +2964,11 @@
   padding: var(--space-4) var(--space-6);
   padding-left: calc(var(--space-6) + 2px);
   border-radius: var(--radius-sm);
-  background: rgba(184, 140, 255, 0.12);
+  background: var(--plaque-fill);
   font-size: var(--fs-small);
   line-height: var(--lh-body);
   text-align: left;
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 .timer__note::before {
@@ -3123,7 +2977,7 @@
   inset: 0 auto 0 0;
   width: 2px;
   border-radius: var(--radius-sm) 0 0 var(--radius-sm);
-  background: var(--grad-primary);
+  background: var(--grad-mark);
 }
 
 @media (max-width: 479px) {
@@ -3215,13 +3069,15 @@
    по странице продолжается.
    ------------------------------------------------------------ */
 
+/* Фон — атмосферная картинка offer-background-atmosphere.png на всех
+   ширинах: на тоне --deep без неё финальный экран выглядел слишком
+   глухим, особенно на мобильных, где раньше картинки не было вовсе. */
 .cta {
   position: relative;
   background:
     linear-gradient(90deg, transparent 0%, var(--seam-accent) 50%, transparent 100%)
       top / 100% 2px no-repeat,
-    radial-gradient(60% 100% at 50% 0%, var(--seam-halo) 0%, transparent 70%)
-      top / 100% 200px no-repeat,
+    url('../assets/img/offer-background-atmosphere.png') center / cover no-repeat,
     var(--surface-solid, var(--night-900));
   overflow: hidden;
 }
@@ -3259,14 +3115,14 @@
   line-height: 1.22;
   text-transform: none;
   letter-spacing: -0.01em;
-  color: var(--cloud-white);
+  color: var(--text-strong);
   text-wrap: balance;
 }
 
 .cta__intro {
   font-size: var(--fs-lead);
   line-height: var(--lh-body);
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 /* Заглушка стоит между шапкой экрана и чек-листом — .cta__head уже
@@ -3287,6 +3143,7 @@
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-lg);
   background: var(--fill-1);
+  box-shadow: var(--card-shadow);
   backdrop-filter: blur(8px);
 }
 
@@ -3298,7 +3155,7 @@
   font-weight: var(--fw-bold);
   line-height: 1.2;
   text-align: center;
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 .cta__panel-lead::after {
@@ -3310,13 +3167,13 @@
   height: 2px;
   transform: translateX(-50%);
   border-radius: 2px;
-  background: var(--grad-primary);
+  background: var(--grad-mark);
 }
 
 .cta__list {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 0 var(--space-8);
+  gap: var(--space-2) var(--space-8);
 }
 
 @media (min-width: 768px) {
@@ -3327,33 +3184,24 @@
 
 .cta__item {
   position: relative;
-  padding: var(--space-4) 0 var(--space-4) var(--space-8);
-  border-bottom: 1px solid var(--border-dark);
+  padding: 0 0 0 var(--space-6);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
-/* Тире-маркер из исходного списка — на псевдоэлементе,
-   чтобы не попадать в копируемый текст */
+/* Кругляш-маркер — на псевдоэлементе, чтобы не попадать
+   в копируемый текст; выравнен по центру первой строки */
 .cta__item::before {
-  content: '–';
+  content: '';
   position: absolute;
-  left: var(--space-3);
-  font-weight: var(--fw-bold);
-  color: var(--tessa-lavender);
-}
-
-/* В одну колонку нижнюю границу снимает последний пункт,
-   в две — последний в каждом столбце */
-.cta__item:last-child {
-  border-bottom: none;
-}
-
-@media (min-width: 768px) {
-  .cta__item:nth-last-child(-n + 2) {
-    border-bottom: none;
-  }
+  left: var(--space-2);
+  top: calc(var(--lh-body) * 0.5em);
+  width: 0.4em;
+  height: 0.4em;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: var(--accent);
 }
 
 /* Итоговый оффер — без стеклянной панели, в отличие от чек-листа
@@ -3370,7 +3218,7 @@
   font-size: var(--fs-h3);
   font-weight: var(--fw-bold);
   line-height: 1.3;
-  color: var(--cloud-white);
+  color: var(--text-strong);
 }
 
 /* Факты курса — те же таблетки, что .timing__fact на девятом
@@ -3390,17 +3238,18 @@
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-pill);
   background: var(--fill-1);
+  box-shadow: var(--card-shadow);
   backdrop-filter: blur(8px);
   font-size: var(--fs-body);
   font-weight: var(--fw-semibold);
   line-height: 1.3;
-  color: var(--cloud-white);
+  color: var(--text-strong);
   transition: border-color var(--transition), background-color var(--transition),
     box-shadow var(--transition);
 }
 
 .cta__fact:hover {
-  border-color: rgba(184, 140, 255, 0.55);
+  border-color: var(--border-hover);
   background: var(--fill-3);
   box-shadow: var(--glow-lavender);
 }
@@ -3409,9 +3258,9 @@
    а не про содержание курса, поэтому выделен циановым, как деньги
    выделены циановым в .case-step--money и в модулях программы. */
 .cta__fact--urgent {
-  border-color: rgba(127, 232, 255, 0.5);
-  background: rgba(127, 232, 255, 0.1);
-  color: var(--ai-glow);
+  border-color: var(--badge-ring);
+  background: var(--plaque-fill-cyan);
+  color: var(--accent-cyan);
   box-shadow: var(--glow-cyan);
 }
 
@@ -3432,7 +3281,7 @@
   justify-content: center;
   row-gap: var(--space-2);
   font-size: var(--fs-small);
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 .cta__trust-item:not(:first-child) {
@@ -3457,4 +3306,33 @@
   .cta__actions .btn {
     width: min(20rem, 100%);
   }
+}
+
+/* ============================================================
+   СВЕТЛЫЕ ЭКРАНЫ — снятие декора тёмной сцены
+   ============================================================
+   Угловые лавандово-циановые свечения в ::before придуманы для тёмного
+   фона: на белом и сером они читаются как грязные разводы, а не как
+   свет. Сам ::before не убираем — на нём держатся позиционирование и
+   z-index контента, гасим только заливку.
+
+   Блок стоит последним осознанно: у .section--white::before и у
+   .path::before одинаковая специфичность (0,1,1), поэтому решает
+   порядок правил. Медиазапросы специфичности не добавляют — этот блок
+   перебивает и версии внутри @media (min-width: 768px). */
+.section--white::before,
+.section--grey::before {
+  background: none;
+}
+
+/* Иллюстрации нарисованы под тёмную сцену: у них собственный почти
+   чёрный фон. На белом их прямоугольный край читается как обрубок,
+   поэтому на светлых экранах картинка оформляется как отдельная
+   карточка — скруглением и тенью, без штриховой рамки заглушки.
+   --bare исключён: там вырезанный PNG без фона, ему рамка не нужна. */
+.section--white .media-placeholder:not(.media-placeholder--bare):has(img, video),
+.section--grey .media-placeholder:not(.media-placeholder--bare):has(img, video) {
+  border: 0;
+  border-radius: var(--radius-md);
+  box-shadow: var(--card-shadow);
 }

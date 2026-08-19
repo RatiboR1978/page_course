@@ -25,7 +25,9 @@ body {
   font-weight: var(--fw-regular);
   line-height: var(--lh-body);
   color: var(--text-on-light);
-  background: var(--bg-light);
+  /* Страница начинается и заканчивается тёмной секцией — на оверскролле
+     из-под неё должен выглядывать тот же тёмный, а не Clean Pearl. */
+  background: var(--bg-dark);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -85,13 +87,13 @@ h4 { font-size: var(--fs-h4); font-weight: var(--fw-bold); }
 p { text-wrap: pretty; }
 
 :focus-visible {
-  outline: 2px solid var(--tessa-lavender);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 3px;
   border-radius: 4px;
 }
 
 ::selection {
-  background: var(--tessa-lavender);
+  background: var(--accent);
   color: var(--cloud-white);
 }
 
@@ -113,14 +115,95 @@ p { text-wrap: pretty; }
   color: var(--text-on-dark);
 }
 
-.section--light {
-  background: var(--bg-light);
-  color: var(--text-on-light);
+/* ---------- Светлые тона ----------
+   Как и тёмные тона ниже, классы задают только переменные: красит
+   секцию её собственное правило в sections.css. Один общий блок ролей
+   на оба светлых уровня, и лишь поверхность с заливками разная —
+   разница между белым и серым экраном не должна тянуть за собой
+   разный текст и разные акценты. */
+.section--white,
+.section--grey {
+  color: var(--text-strong);
+
+  /* Лавандовые токены брендбука на белом дают 2.3:1 — вместо них
+     затемнённые версии тех же тонов, все проходят AA. */
+  --text-strong: #2E2448;
+  --text-muted:  #6B6590;
+  --accent:      #6C3CE0;
+  --accent-soft: #5B2FB8;
+  --accent-cyan: #0E7490;
+
+  --grad-text-fill:   linear-gradient(90deg, #0E7490 0%, #6C3CE0 52%, #4A1FA8 100%);
+  --grad-accent-text: linear-gradient(90deg, #0E7490 0%, #6C3CE0 52%, #4A1FA8 100%);
+  --grad-mark:        linear-gradient(90deg, #0E7490 0%, #6C3CE0 55%, #B03CC8 100%);
+  --grad-track:       linear-gradient(90deg, #6C3CE0 0%, #B03CC8 100%);
+
+  --border-dark:     rgba(46, 36, 72, 0.12);
+  --border-hover:    rgba(108, 60, 224, 0.45);
+  --border-strong:   #6C3CE0;
+  --border-hairline: rgba(46, 36, 72, 0.10);
+  --badge-ring:      rgba(14, 116, 144, 0.50);
+  --focus-ring:      #6C3CE0;
+
+  --plaque-fill:      rgba(108, 60, 224, 0.10);
+  --plaque-fill-2:    rgba(108, 60, 224, 0.14);
+  --plaque-fill-cyan: rgba(14, 116, 144, 0.10);
+
+  /* Неоновое пятно тёмной сцены на светлом читается грязью — остаётся
+     мягкий тон той же формы, чтобы пульсация иконок не пропала. */
+  --icon-glow: radial-gradient(circle, rgba(108, 60, 224, 0.14) 0%, rgba(14, 116, 144, 0.07) 55%, transparent 75%);
+
+  --media-backing: rgba(46, 36, 72, 0.05);
+  --media-border:  rgba(108, 60, 224, 0.28);
+  --media-film:    linear-gradient(135deg, rgba(108, 60, 224, 0.06) 0%, rgba(14, 116, 144, 0.04) 100%);
+
+  --shadow-card:   0 14px 34px rgba(46, 36, 72, 0.12);
+  --glow-lavender: 0 10px 26px rgba(108, 60, 224, 0.22);
+  --glow-cyan:     0 10px 26px rgba(14, 116, 144, 0.20);
+  --card-shadow:   0 10px 28px rgba(46, 36, 72, 0.10), 0 2px 6px rgba(46, 36, 72, 0.06);
+  /* Свечение точки на белом превращается в грязное пятно */
+  --dot-glow:      none;
+  --mark-opacity:  0.55;
+
+  /* Светлый градиент кнопки даёт к белому 1.35:1 — на бумаге она
+     растворяется, а попытка удержать её обводкой читается наклейкой.
+     На светлой сцене роли меняются местами: заливка — насыщенный
+     фиолетовый акцента, текст белый. Тогда primary и secondary
+     (белая плашка с фиолетовой обводкой) образуют нормальную пару. */
+  --btn-bg:           linear-gradient(90deg, #6C3CE0 0%, #4A1FA8 100%);
+  --btn-fg:           #FFFFFF;
+  --btn-shadow:
+    0 8px 20px rgba(74, 31, 168, 0.26),
+    0 2px 6px rgba(46, 36, 72, 0.10);
+  --btn-shadow-hover:
+    0 12px 26px rgba(74, 31, 168, 0.34),
+    0 3px 8px rgba(46, 36, 72, 0.14);
+
+  --btn-alt-bg:       #FFFFFF;
+  --btn-alt-fg:       #2E2448;
+  --btn-alt-border:   rgba(108, 60, 224, 0.40);
+  --btn-alt-bg-hover: #F6F1FF;
+
+  /* Светящийся рубеж — приём тёмной сцены. На светлом от него остаётся
+     только тонкая линия: без неё стык белого и серого (1.14:1) пропадает. */
+  --seam-accent: rgba(46, 36, 72, 0.10);
+  --seam-halo:   transparent;
 }
 
 .section--white {
-  background: var(--cloud-white);
-  color: var(--text-on-light);
+  --surface-solid: var(--paper-white);
+  --fill-1: #FFFFFF;
+  --fill-2: #FAF8FF;
+  --fill-3: #F6F1FF;
+}
+
+/* На сером экране карточка белая, и светлее ей стать уже некуда:
+   ховер и раскрытое состояние держатся на тени, границе и сдвиге. */
+.section--grey {
+  --surface-solid: var(--paper-grey);
+  --fill-1: #FFFFFF;
+  --fill-2: #FAFAFE;
+  --fill-3: #FFFFFF;
 }
 
 /* Тоновый ритм тёмной сцены. Классы только задают переменные, красит их
@@ -168,17 +251,13 @@ p { text-wrap: pretty; }
 
 .section__subtitle {
   font-size: var(--fs-lead);
-  color: var(--text-on-light-muted);
-}
-
-.section--dark .section__subtitle {
-  color: var(--text-on-dark-muted);
+  color: var(--text-muted);
 }
 
 /* ---------- Утилиты ---------- */
 
 .grad-text {
-  background: var(--grad-primary);
+  background: var(--grad-text-fill);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -190,7 +269,7 @@ p { text-wrap: pretty; }
   font-weight: var(--fw-extrabold);
   letter-spacing: var(--ls-wide);
   text-transform: uppercase;
-  color: var(--tessa-lavender);
+  color: var(--accent);
 }
 
 .visually-hidden {
