@@ -82,12 +82,9 @@
    COUNTDOWN — таймер семнадцатого экрана (#timer):
    «Стоимость для участников вебинара действует 24 часа».
 
-   Дедлайн — 24 часа от первого визита конкретного посетителя,
-   а не от каждой загрузки страницы: момент истечения один раз
-   сохраняется в localStorage и переживает перезагрузку и переход
-   между вкладками. Если посетитель вернётся позже дедлайна,
-   таймер честно останавливается на 00:00:00, а не запускается
-   заново, — цена действительно перестала быть стартовой для него.
+   Дедлайн — 24 часа от текущего захода: при каждой загрузке страницы
+   отсчёт начинается заново с 24:00:00, ничего не сохраняется между
+   визитами и вкладками.
 
    Разметка (см. #timer в index.html):
    [data-countdown] — обёртка часов, [data-countdown-hours/minutes/seconds] —
@@ -96,7 +93,6 @@
 (function () {
   'use strict';
 
-  const STORAGE_KEY = 'tsss-cta-deadline';
   const DURATION_MS = 24 * 60 * 60 * 1000;
 
   const clock = document.querySelector('[data-countdown]');
@@ -107,18 +103,7 @@
   const secondsEl = clock.querySelector('[data-countdown-seconds]');
   if (!hoursEl || !minutesEl || !secondsEl) return;
 
-  let deadline = Number(window.localStorage ? localStorage.getItem(STORAGE_KEY) : NaN);
-
-  if (!deadline || Number.isNaN(deadline)) {
-    deadline = Date.now() + DURATION_MS;
-
-    try {
-      localStorage.setItem(STORAGE_KEY, String(deadline));
-    } catch (e) {
-      /* приватный режим или отключенное хранилище — таймер всё равно
-         отработает эти 24 часа, просто не переживёт перезагрузку */
-    }
-  }
+  const deadline = Date.now() + DURATION_MS;
 
   function pad(value) {
     return String(value).padStart(2, '0');

@@ -45,6 +45,76 @@
   --seam-accent: rgba(184, 140, 255, 0.9);
   --seam-halo:   rgba(184, 140, 255, 0.32);
 
+  /* ---------- Светлая сцена ---------- */
+  /* Два уровня светлого экрана — чистый белый и серый. Серый взят
+     нейтральным (как на референсе), а не подкрашенным в лаванду:
+     рядом с чистым белым любой холодный оттенок читается как грязь. */
+  --paper-white: #FFFFFF;
+  --paper-grey:  #F0F0F0;
+
+  /* ---------- Тоново-зависимые роли ----------
+     Значения здесь — тёмная сцена (дефолт страницы). Классы
+     .section--white / .section--grey в base.css переопределяют этот же
+     набор под светлый фон, поэтому компоненты не знают о своём тоне и
+     не нуждаются в парных правилах. */
+
+  /* Текст */
+  --text-strong: var(--cloud-white);       /* заголовки карточек */
+  --text-muted:  var(--text-on-dark-muted);/* основной текст карточек */
+
+  /* Акценты */
+  --accent-soft: var(--pastel-lilac);      /* номера шагов, вторичные акценты */
+  --accent-cyan: var(--ai-glow);
+
+  /* Градиенты, зависящие от тона: -text- красит текст, -mark- декор */
+  --grad-text-fill:   var(--grad-primary);
+  --grad-accent-text: var(--grad-h1);
+  --grad-mark:        var(--grad-primary);
+  --grad-track:       linear-gradient(90deg, var(--tessa-lavender) 0%, var(--blush-pink) 100%);
+
+  /* Границы и кольца */
+  --border-hover:    rgba(184, 140, 255, 0.55);
+  --border-strong:   rgba(184, 140, 255, 0.85);
+  --border-hairline: rgba(184, 140, 255, 0.18);
+  --badge-ring:      rgba(127, 232, 255, 0.55);
+  --focus-ring:      var(--tessa-lavender);
+
+  /* Плашки — заливка внутри карточки, а не поверхность секции */
+  --plaque-fill:      rgba(184, 140, 255, 0.12);
+  --plaque-fill-2:    rgba(184, 140, 255, 0.16);
+  --plaque-fill-cyan: rgba(127, 232, 255, 0.10);
+
+  /* Свечение под иконкой карточки (offers, audience) */
+  --icon-glow: radial-gradient(circle, rgba(184, 140, 255, 0.38) 0%, rgba(127, 232, 255, 0.18) 55%, transparent 75%);
+
+  /* Подложка под медиа */
+  --media-backing: rgba(11, 4, 38, 0.35);
+  --media-border:  rgba(184, 140, 255, 0.35);
+  --media-film:    linear-gradient(135deg, rgba(184, 140, 255, 0.10) 0%, rgba(127, 232, 255, 0.06) 100%);
+
+  /* На тёмной сцене карточку держит граница, тень не нужна: чёрное на
+     чёрном не читается. На светлой — наоборот, тень основной приём. */
+  --card-shadow:  none;
+  --dot-glow:     0 0 10px rgba(184, 140, 255, 0.7);
+  --mark-opacity: 0.35;
+
+  /* Основная кнопка. На тёмной сцене — светлый градиент брендбука
+     с тёмным текстом и неоновым ореолом. */
+  --btn-bg:           var(--grad-btn);
+  --btn-fg:           var(--deep-night-plum);
+  --btn-shadow:
+    0 0 24px rgba(184, 140, 255, 0.45),
+    0 8px 28px rgba(184, 140, 255, 0.3);
+  --btn-shadow-hover:
+    0 0 32px rgba(184, 140, 255, 0.65),
+    0 12px 34px rgba(184, 140, 255, 0.45);
+
+  /* Вторичная кнопка */
+  --btn-alt-bg:       rgba(120, 120, 170, 0.22);
+  --btn-alt-fg:       var(--cloud-white);
+  --btn-alt-border:   rgba(255, 255, 255, 0.16);
+  --btn-alt-bg-hover: rgba(140, 130, 200, 0.32);
+
   /* ---------- Семантические цвета ---------- */
   --bg-dark: var(--night-900);
   --bg-light: var(--clean-pearl);
