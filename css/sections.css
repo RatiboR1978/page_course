@@ -305,7 +305,16 @@
   background: var(--grad-mark);
 }
 
-/* Список пунктов: 1 → 2 → 3 колонки. Вертикального зазора между
+/* Обёртка списка и иллюстрации. На мобильном/планшете — просто
+   вертикальный поток (список, потом картинка на всю ширину).
+   На десктопе становится флекс-рядом (см. брейкпоинт 1200px): список
+   и картинка — независимые соседи, а не ячейки одной сетки, поэтому
+   растягивание картинки на всю высоту не раздувает строки списка. */
+.pains__group {
+  display: block;
+}
+
+/* Список пунктов: 1 → 2 колонки. Вертикального зазора между
    строками нет — пункты разделяет линия (border-top на .pain-item),
    а не пустота: девять коротких пунктов так занимают вдвое меньше
    высоты, чем прежние карточки-боксы с полями и зазорами. */
@@ -325,18 +334,13 @@
   border-top: none;
 }
 
-/* Иллюстрация — ячейка той же сетки, а не отдельный блок под списком.
-   Пока колонок меньше трёх, она занимает всю ширину и идёт последней
-   строкой: втискивать её в узкую колонку рядом с текстом смысла нет. */
-/* width + justify-self, а не margin-inline: auto: авто-поля в сетке
-   отключают растягивание, и пустая заглушка схлопнулась бы в полоску */
+/* Иллюстрация — сосед списка (не его ячейка), поэтому на мобильном/
+   планшете просто идёт следующим блоком, во всю ширину. */
 .pains__media {
-  grid-column: 1 / -1;
-  justify-self: center;
   width: 100%;
   max-width: 420px;
   aspect-ratio: 4 / 3;
-  margin-top: var(--space-8);
+  margin: var(--space-8) auto 0;
 }
 
 @media (min-width: 768px) {
@@ -350,32 +354,28 @@
 }
 
 @media (min-width: 1200px) {
+  /* Список (2/3 ширины) и картинка (1/3) — в ряд, одной высоты:
+     stretch тянет картинку по высоте самого списка, без лишних
+     пустых строк, которые давала бы общая сетка на все 9 пунктов. */
+  .pains__group {
+    display: flex;
+    align-items: stretch;
+    gap: var(--space-8);
+  }
+
   .pains__list {
-    grid-template-columns: repeat(3, 1fr);
+    flex: 2 1 0%;
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .pain-item:nth-child(-n + 3) {
-    border-top: none;
-  }
-
-  /* Три колонки — иллюстрация встаёт в правую, со 2-й строки до низа.
-     Девять пунктов раскладываются вокруг неё ровно: 3 в первой строке
-     (во всю ширину) + по 2 в трёх следующих. Пустых ячеек не остаётся,
-     а картинка читается как часть блока, а не довесок под ним.
-     Высоту задаёт сетка, поэтому aspect-ratio здесь снимается. */
+  /* Картинка растягивается на всю высоту флекс-ряда (= высоту списка),
+     поэтому фиксированные размеры и пропорция базового правила снимаются. */
   .pains__media {
-    grid-column: 3;
-    grid-row: 2 / span 3;
-    /* align-self обязателен: у списка стоит align-items: start, иначе
-       ячейка не растянется на три строки и схлопнется в полоску */
-    align-self: stretch;
-    /* justify-self и width сбрасываются из базового правила, иначе
-       центрирование по fit-content схлопнет пустую заглушку по ширине */
-    justify-self: stretch;
+    flex: 1 1 0%;
     width: auto;
     max-width: none;
     aspect-ratio: auto;
-    margin: var(--space-4) 0;
+    margin: 0;
   }
 }
 
@@ -595,8 +595,8 @@
   .reason-step:not(:last-child)::after {
     content: '';
     position: absolute;
-    top: 132px;
-    left: 65px;
+    top: 152px;
+    left: 75px;
     width: 2px;
     height: var(--space-6);
     background: var(--grad-mark);
@@ -618,11 +618,11 @@
     align-items: start;
   }
 
-  /* Общая линия под рядом узлов: по центру иконки (132px) */
+  /* Общая линия под рядом узлов: по центру иконки (152px) */
   .reason-step::after {
     content: '';
     position: absolute;
-    top: 66px;
+    top: 76px;
     left: 100%;
     width: var(--space-8);
     height: 2px;
@@ -1326,20 +1326,20 @@
   padding: var(--space-3) 0 var(--space-3) var(--space-6);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
-  color: var(--text-strong);
+  /* Приглушённый, как .offer-card__item выше, а не белый: белый рядом
+     с более тихими карточками OFFERS читался чем-то отдельным/важным,
+     хотя это тот же уровень текста. */
+  color: var(--text-muted);
 }
 
-/* Маркер-кружок вместо тире — тот же приём, что у .expert-card__fact:
-   рисуется на псевдоэлементе, чтобы не попадать в копируемый текст */
+/* Тире-маркер — как у .offer-card__item выше: рисуется на псевдоэлементе,
+   чтобы не попадать в копируемый текст */
 .offers__combo-item::before {
-  content: '';
+  content: '–';
   position: absolute;
-  top: calc(var(--space-3) + var(--lh-body) * 0.5em - 3px);
   left: 0;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--grad-mark);
+  font-weight: var(--fw-bold);
+  color: var(--accent);
 }
 
 /* Сноска об источнике вилок — мельче основного текста,
@@ -1607,14 +1607,15 @@
   }
 
   /* Линия рельса. Начинается и заканчивается на центрах крайних
-     номеров (24px — половина бейджа), поэтому не торчит за первым
-     и последним шагом. Гаснет книзу: процесс идёт сверху вниз. */
+     номеров (карточка даёт 16px левого паддинга + 24px — половина
+     бейджа), поэтому не торчит за первым и последним шагом.
+     Гаснет книзу: процесс идёт сверху вниз. */
   .method__rail::before {
     content: '';
     position: absolute;
     top: calc(var(--space-3) + 24px);
     bottom: calc(var(--space-3) + 24px);
-    left: 24px;
+    left: calc(var(--space-4) + 24px);
     width: 1px;
     background: linear-gradient(
       180deg,
@@ -1959,7 +1960,10 @@
 
 /* ✕ — тот же знак отрицания, что у строк списка, но крупнее и
    в бейдже: он держит смысл заголовка («не понадобится») и
-   рифмуется с бейджами пунктов. */
+   рифмуется с бейджами пунктов. Красный, а не фирменный лавандовый:
+   лавандой на странице закрашено всё — акценты, чекбоксы, активные
+   состояния, — и ✕ в тон им читался обычным маркером списка, а не
+   запретом. Красный — единственный явно «отрицательный» цвет здесь. */
 .timing__free-title::before {
   content: '✕';
   display: grid;
@@ -1967,10 +1971,10 @@
   flex: none;
   width: 1.75em;
   height: 1.75em;
-  border: 1px solid var(--border-hover);
+  border: 1px solid rgba(255, 90, 110, 0.55);
   border-radius: 50%;
-  background: var(--accent);
-  box-shadow: var(--glow-lavender);
+  background: #E8425F;
+  box-shadow: 0 0 0 4px rgba(232, 66, 95, 0.16);
   font-size: 0.62em;
   line-height: 1;
   color: #fff;
@@ -2011,9 +2015,9 @@
   width: 30px;
   height: 30px;
   margin-top: -0.1em;
-  border: 1px solid var(--border-hover);
+  border: 1px solid rgba(255, 90, 110, 0.4);
   border-radius: 50%;
-  background: var(--accent);
+  background: #E8425F;
   font-size: 0.6875rem;
   line-height: 1;
   color: #fff;
@@ -2033,9 +2037,9 @@
 }
 
 .timing__free-item:hover::before {
-  border-color: var(--border-hover);
-  background: var(--accent);
-  box-shadow: var(--glow-lavender);
+  border-color: rgba(255, 90, 110, 0.7);
+  background: #E8425F;
+  box-shadow: 0 0 0 4px rgba(232, 66, 95, 0.18);
   color: #fff;
 }
 

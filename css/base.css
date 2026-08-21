@@ -151,7 +151,7 @@ p { text-wrap: pretty; }
 
   /* Неоновое пятно тёмной сцены на светлом читается грязью — остаётся
      мягкий тон той же формы, чтобы пульсация иконок не пропала. */
-  --icon-glow: radial-gradient(circle, rgba(108, 60, 224, 0.14) 0%, rgba(14, 116, 144, 0.07) 55%, transparent 75%);
+  --icon-glow: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.55) 50%, transparent 80%);
 
   --media-backing: rgba(46, 36, 72, 0.05);
   --media-border:  rgba(108, 60, 224, 0.28);
